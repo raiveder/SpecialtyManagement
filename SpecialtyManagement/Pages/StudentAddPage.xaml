@@ -1,0 +1,46 @@
+﻿<Page x:Class="SpecialtyManagement.Pages.StudentAddPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SpecialtyManagement.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="800" d:DesignWidth="960"
+      Title="StudentAddPage">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition/>
+            <RowDefinition Height="70"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Добавление студента" FontSize="30" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <Grid Grid.Row="1" Margin="10 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="Фамилия" Margin="0 0 0 5"/>
+                <TextBox Name="TBSurname" Width="200" Height="{Binding ActualHeight, ElementName=DPBirthday}" HorizontalAlignment="Left" Margin="0 0 0 20"/>
+                <TextBlock Text="Имя" Margin="0 0 0 5"/>
+                <TextBox Name="TBName" Width="200" Height="{Binding ActualHeight, ElementName=DPBirthday}" HorizontalAlignment="Left" Margin="0 0 0 20"/>
+                <TextBlock Text="Отчество" Margin="0 0 0 5"/>
+                <TextBox Name="TBPatronymic" Width="200" Height="{Binding ActualHeight, ElementName=DPBirthday}" HorizontalAlignment="Left"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="Дата рождения" Margin="0 0 0 5"/>
+                <DatePicker Name="DPBirthday" Width="200" HorizontalAlignment="Left" Margin="0 0 0 20"/>
+                <TextBlock Text="Примечание" Margin="0 0 0 5"/>
+                <TextBox Name="TBNote" Width="200" Height="{Binding ActualHeight, ElementName=DPBirthday}" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+            </StackPanel>
+        </Grid>
+
+        <Button Grid.Row="2" Name="BtnBack" Content="Назад" HorizontalAlignment="Left" Click="BtnBack_Click" Margin="10"/>
+        <Button Grid.Row="2" Name="BtnAdd" Content="Добавить" HorizontalAlignment="Right" Click="BtnAdd_Click" Margin="10"/>
+    </Grid>
+</Page>

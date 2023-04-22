@@ -1,0 +1,1004 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище SpecialtyManagementModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Arrears">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdStudent" Type="int" Nullable="false" />
+          <Property Name="IdType" Type="int" Nullable="false" />
+          <Property Name="StartYear" Type="int" Nullable="false" />
+          <Property Name="SemesterNumber" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ArrearsLessons">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdArrear" Type="int" Nullable="false" />
+          <Property Name="IdLesson" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DistributionLessons">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdTeacher" Type="int" Nullable="false" />
+          <Property Name="IdLesson" Type="int" Nullable="false" />
+          <Property Name="IdGroup" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ExpelledStudents">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Surname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Patronymic" Type="nvarchar" MaxLength="50" />
+          <Property Name="Birthday" Type="date" Nullable="false" />
+          <Property Name="IdGroup" Type="int" Nullable="false" />
+          <Property Name="Note" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Groups">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Group" Type="nvarchar" MaxLength="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Informations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Key" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Information" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Lessons">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IdType" Type="int" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="5" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LiquidationsCompositions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdArrearLesson" Type="int" Nullable="false" />
+          <Property Name="IdTeacher" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Students">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Surname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Patronymic" Type="nvarchar" MaxLength="50" />
+          <Property Name="Birthday" Type="date" Nullable="false" />
+          <Property Name="IdGroup" Type="int" Nullable="false" />
+          <Property Name="Note" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="StudentsPerformance">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdStudent" Type="int" Nullable="false" />
+          <Property Name="NumberOfStudents" Type="int" Nullable="false" />
+          <Property Name="NumberOfSuccessful" Type="int" Nullable="false" />
+          <Property Name="NumberOfUnsuccessful" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Teachers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Surname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Patronymic" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TeachersSchedule">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdTeacher" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="AudienceNumber" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="StartYear" Type="int" Nullable="false" />
+          <Property Name="SemesterNumber" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TypesArrears">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="13" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TypesLessons">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="3" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Arrears__IdStude__3F466844">
+          <End Role="Students" Type="Self.Students" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Arrears" Type="Self.Arrears" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Arrears">
+              <PropertyRef Name="IdStudent" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Arrears__IdType__403A8C7D">
+          <End Role="TypesArrears" Type="Self.TypesArrears" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Arrears" Type="Self.Arrears" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TypesArrears">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Arrears">
+              <PropertyRef Name="IdType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ArrearsLe__IdArr__4316F928">
+          <End Role="Arrears" Type="Self.Arrears" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ArrearsLessons" Type="Self.ArrearsLessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Arrears">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArrearsLessons">
+              <PropertyRef Name="IdArrear" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ArrearsLe__IdLes__440B1D61">
+          <End Role="Lessons" Type="Self.Lessons" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ArrearsLessons" Type="Self.ArrearsLessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lessons">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArrearsLessons">
+              <PropertyRef Name="IdLesson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Distribut__IdGro__2F10007B">
+          <End Role="Groups" Type="Self.Groups" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DistributionLessons" Type="Self.DistributionLessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DistributionLessons">
+              <PropertyRef Name="IdGroup" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Distribut__IdLes__2E1BDC42">
+          <End Role="Lessons" Type="Self.Lessons" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DistributionLessons" Type="Self.DistributionLessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lessons">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DistributionLessons">
+              <PropertyRef Name="IdLesson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Distribut__IdTea__2D27B809">
+          <End Role="Teachers" Type="Self.Teachers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DistributionLessons" Type="Self.DistributionLessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teachers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DistributionLessons">
+              <PropertyRef Name="IdTeacher" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ExpelledS__IdGro__34C8D9D1">
+          <End Role="Groups" Type="Self.Groups" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ExpelledStudents" Type="Self.ExpelledStudents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ExpelledStudents">
+              <PropertyRef Name="IdGroup" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Lessons__IdType__286302EC">
+          <End Role="TypesLessons" Type="Self.TypesLessons" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Lessons" Type="Self.Lessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TypesLessons">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Lessons">
+              <PropertyRef Name="IdType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Liquidati__IdArr__46E78A0C">
+          <End Role="ArrearsLessons" Type="Self.ArrearsLessons" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LiquidationsCompositions" Type="Self.LiquidationsCompositions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArrearsLessons">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LiquidationsCompositions">
+              <PropertyRef Name="IdArrearLesson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Liquidati__IdTea__47DBAE45">
+          <End Role="Teachers" Type="Self.Teachers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LiquidationsCompositions" Type="Self.LiquidationsCompositions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teachers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LiquidationsCompositions">
+              <PropertyRef Name="IdTeacher" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Students__IdGrou__31EC6D26">
+          <End Role="Groups" Type="Self.Groups" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Students" Type="Self.Students" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Students">
+              <PropertyRef Name="IdGroup" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StudentsP__IdStu__37A5467C">
+          <End Role="Students" Type="Self.Students" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StudentsPerformance" Type="Self.StudentsPerformance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentsPerformance">
+              <PropertyRef Name="IdStudent" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TeachersS__IdTea__3A81B327">
+          <End Role="Teachers" Type="Self.Teachers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TeachersSchedule" Type="Self.TeachersSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teachers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TeachersSchedule">
+              <PropertyRef Name="IdTeacher" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище SpecialtyManagementModelContainer">
+          <EntitySet Name="Arrears" EntityType="Self.Arrears" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ArrearsLessons" EntityType="Self.ArrearsLessons" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DistributionLessons" EntityType="Self.DistributionLessons" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExpelledStudents" EntityType="Self.ExpelledStudents" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Groups" EntityType="Self.Groups" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Informations" EntityType="Self.Informations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Lessons" EntityType="Self.Lessons" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LiquidationsCompositions" EntityType="Self.LiquidationsCompositions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentsPerformance" EntityType="Self.StudentsPerformance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Teachers" EntityType="Self.Teachers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TeachersSchedule" EntityType="Self.TeachersSchedule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TypesArrears" EntityType="Self.TypesArrears" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TypesLessons" EntityType="Self.TypesLessons" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Arrears__IdStude__3F466844" Association="Self.FK__Arrears__IdStude__3F466844">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="Arrears" EntitySet="Arrears" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Arrears__IdType__403A8C7D" Association="Self.FK__Arrears__IdType__403A8C7D">
+            <End Role="TypesArrears" EntitySet="TypesArrears" />
+            <End Role="Arrears" EntitySet="Arrears" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ArrearsLe__IdArr__4316F928" Association="Self.FK__ArrearsLe__IdArr__4316F928">
+            <End Role="Arrears" EntitySet="Arrears" />
+            <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ArrearsLe__IdLes__440B1D61" Association="Self.FK__ArrearsLe__IdLes__440B1D61">
+            <End Role="Lessons" EntitySet="Lessons" />
+            <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Distribut__IdGro__2F10007B" Association="Self.FK__Distribut__IdGro__2F10007B">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="DistributionLessons" EntitySet="DistributionLessons" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Distribut__IdLes__2E1BDC42" Association="Self.FK__Distribut__IdLes__2E1BDC42">
+            <End Role="Lessons" EntitySet="Lessons" />
+            <End Role="DistributionLessons" EntitySet="DistributionLessons" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Distribut__IdTea__2D27B809" Association="Self.FK__Distribut__IdTea__2D27B809">
+            <End Role="Teachers" EntitySet="Teachers" />
+            <End Role="DistributionLessons" EntitySet="DistributionLessons" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ExpelledS__IdGro__34C8D9D1" Association="Self.FK__ExpelledS__IdGro__34C8D9D1">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="ExpelledStudents" EntitySet="ExpelledStudents" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Lessons__IdType__286302EC" Association="Self.FK__Lessons__IdType__286302EC">
+            <End Role="TypesLessons" EntitySet="TypesLessons" />
+            <End Role="Lessons" EntitySet="Lessons" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Liquidati__IdArr__46E78A0C" Association="Self.FK__Liquidati__IdArr__46E78A0C">
+            <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
+            <End Role="LiquidationsCompositions" EntitySet="LiquidationsCompositions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Liquidati__IdTea__47DBAE45" Association="Self.FK__Liquidati__IdTea__47DBAE45">
+            <End Role="Teachers" EntitySet="Teachers" />
+            <End Role="LiquidationsCompositions" EntitySet="LiquidationsCompositions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Students__IdGrou__31EC6D26" Association="Self.FK__Students__IdGrou__31EC6D26">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="Students" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StudentsP__IdStu__37A5467C" Association="Self.FK__StudentsP__IdStu__37A5467C">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="StudentsPerformance" EntitySet="StudentsPerformance" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TeachersS__IdTea__3A81B327" Association="Self.FK__TeachersS__IdTea__3A81B327">
+            <End Role="Teachers" EntitySet="Teachers" />
+            <End Role="TeachersSchedule" EntitySet="TeachersSchedule" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SpecialtyManagementModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Arrears">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdStudent" Type="Int32" Nullable="false" />
+          <Property Name="IdType" Type="Int32" Nullable="false" />
+          <Property Name="StartYear" Type="Int32" Nullable="false" />
+          <Property Name="SemesterNumber" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Students" Relationship="Self.FK__Arrears__IdStude__3F466844" FromRole="Arrears" ToRole="Students" />
+          <NavigationProperty Name="TypesArrears" Relationship="Self.FK__Arrears__IdType__403A8C7D" FromRole="Arrears" ToRole="TypesArrears" />
+          <NavigationProperty Name="ArrearsLessons" Relationship="Self.FK__ArrearsLe__IdArr__4316F928" FromRole="Arrears" ToRole="ArrearsLessons" />
+        </EntityType>
+        <EntityType Name="ArrearsLessons">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdArrear" Type="Int32" Nullable="false" />
+          <Property Name="IdLesson" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Arrears" Relationship="Self.FK__ArrearsLe__IdArr__4316F928" FromRole="ArrearsLessons" ToRole="Arrears" />
+          <NavigationProperty Name="Lessons" Relationship="Self.FK__ArrearsLe__IdLes__440B1D61" FromRole="ArrearsLessons" ToRole="Lessons" />
+          <NavigationProperty Name="LiquidationsCompositions" Relationship="Self.FK__Liquidati__IdArr__46E78A0C" FromRole="ArrearsLessons" ToRole="LiquidationsCompositions" />
+        </EntityType>
+        <EntityType Name="DistributionLessons">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdTeacher" Type="Int32" Nullable="false" />
+          <Property Name="IdLesson" Type="Int32" Nullable="false" />
+          <Property Name="IdGroup" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Groups" Relationship="Self.FK__Distribut__IdGro__2F10007B" FromRole="DistributionLessons" ToRole="Groups" />
+          <NavigationProperty Name="Lessons" Relationship="Self.FK__Distribut__IdLes__2E1BDC42" FromRole="DistributionLessons" ToRole="Lessons" />
+          <NavigationProperty Name="Teachers" Relationship="Self.FK__Distribut__IdTea__2D27B809" FromRole="DistributionLessons" ToRole="Teachers" />
+        </EntityType>
+        <EntityType Name="ExpelledStudents">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Patronymic" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Birthday" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="IdGroup" Type="Int32" Nullable="false" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Groups" Relationship="Self.FK__ExpelledS__IdGro__34C8D9D1" FromRole="ExpelledStudents" ToRole="Groups" />
+        </EntityType>
+        <EntityType Name="Groups">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Group" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="DistributionLessons" Relationship="Self.FK__Distribut__IdGro__2F10007B" FromRole="Groups" ToRole="DistributionLessons" />
+          <NavigationProperty Name="ExpelledStudents" Relationship="Self.FK__ExpelledS__IdGro__34C8D9D1" FromRole="Groups" ToRole="ExpelledStudents" />
+          <NavigationProperty Name="Students" Relationship="Self.FK__Students__IdGrou__31EC6D26" FromRole="Groups" ToRole="Students" />
+        </EntityType>
+        <EntityType Name="Informations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Key" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Information" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Lessons">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IdType" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="ArrearsLessons" Relationship="Self.FK__ArrearsLe__IdLes__440B1D61" FromRole="Lessons" ToRole="ArrearsLessons" />
+          <NavigationProperty Name="DistributionLessons" Relationship="Self.FK__Distribut__IdLes__2E1BDC42" FromRole="Lessons" ToRole="DistributionLessons" />
+          <NavigationProperty Name="TypesLessons" Relationship="Self.FK__Lessons__IdType__286302EC" FromRole="Lessons" ToRole="TypesLessons" />
+        </EntityType>
+        <EntityType Name="LiquidationsCompositions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdArrearLesson" Type="Int32" Nullable="false" />
+          <Property Name="IdTeacher" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ArrearsLessons" Relationship="Self.FK__Liquidati__IdArr__46E78A0C" FromRole="LiquidationsCompositions" ToRole="ArrearsLessons" />
+          <NavigationProperty Name="Teachers" Relationship="Self.FK__Liquidati__IdTea__47DBAE45" FromRole="LiquidationsCompositions" ToRole="Teachers" />
+        </EntityType>
+        <EntityType Name="Students">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Patronymic" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Birthday" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="IdGroup" Type="Int32" Nullable="false" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Arrears" Relationship="Self.FK__Arrears__IdStude__3F466844" FromRole="Students" ToRole="Arrears" />
+          <NavigationProperty Name="Groups" Relationship="Self.FK__Students__IdGrou__31EC6D26" FromRole="Students" ToRole="Groups" />
+          <NavigationProperty Name="StudentsPerformance" Relationship="Self.FK__StudentsP__IdStu__37A5467C" FromRole="Students" ToRole="StudentsPerformance" />
+        </EntityType>
+        <EntityType Name="StudentsPerformance">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdStudent" Type="Int32" Nullable="false" />
+          <Property Name="NumberOfStudents" Type="Int32" Nullable="false" />
+          <Property Name="NumberOfSuccessful" Type="Int32" Nullable="false" />
+          <Property Name="NumberOfUnsuccessful" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Students" Relationship="Self.FK__StudentsP__IdStu__37A5467C" FromRole="StudentsPerformance" ToRole="Students" />
+        </EntityType>
+        <EntityType Name="Teachers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Patronymic" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="DistributionLessons" Relationship="Self.FK__Distribut__IdTea__2D27B809" FromRole="Teachers" ToRole="DistributionLessons" />
+          <NavigationProperty Name="LiquidationsCompositions" Relationship="Self.FK__Liquidati__IdTea__47DBAE45" FromRole="Teachers" ToRole="LiquidationsCompositions" />
+          <NavigationProperty Name="TeachersSchedule" Relationship="Self.FK__TeachersS__IdTea__3A81B327" FromRole="Teachers" ToRole="TeachersSchedule" />
+        </EntityType>
+        <EntityType Name="TeachersSchedule">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdTeacher" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AudienceNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StartYear" Type="Int32" Nullable="false" />
+          <Property Name="SemesterNumber" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Teachers" Relationship="Self.FK__TeachersS__IdTea__3A81B327" FromRole="TeachersSchedule" ToRole="Teachers" />
+        </EntityType>
+        <EntityType Name="TypesArrears">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" MaxLength="13" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Arrears" Relationship="Self.FK__Arrears__IdType__403A8C7D" FromRole="TypesArrears" ToRole="Arrears" />
+        </EntityType>
+        <EntityType Name="TypesLessons">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Lessons" Relationship="Self.FK__Lessons__IdType__286302EC" FromRole="TypesLessons" ToRole="Lessons" />
+        </EntityType>
+        <Association Name="FK__Arrears__IdStude__3F466844">
+          <End Role="Students" Type="Self.Students" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Arrears" Type="Self.Arrears" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Arrears">
+              <PropertyRef Name="IdStudent" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Arrears__IdType__403A8C7D">
+          <End Role="TypesArrears" Type="Self.TypesArrears" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Arrears" Type="Self.Arrears" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TypesArrears">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Arrears">
+              <PropertyRef Name="IdType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ArrearsLe__IdArr__4316F928">
+          <End Role="Arrears" Type="Self.Arrears" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ArrearsLessons" Type="Self.ArrearsLessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Arrears">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArrearsLessons">
+              <PropertyRef Name="IdArrear" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ArrearsLe__IdLes__440B1D61">
+          <End Role="Lessons" Type="Self.Lessons" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ArrearsLessons" Type="Self.ArrearsLessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lessons">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArrearsLessons">
+              <PropertyRef Name="IdLesson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Liquidati__IdArr__46E78A0C">
+          <End Role="ArrearsLessons" Type="Self.ArrearsLessons" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LiquidationsCompositions" Type="Self.LiquidationsCompositions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArrearsLessons">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LiquidationsCompositions">
+              <PropertyRef Name="IdArrearLesson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Distribut__IdGro__2F10007B">
+          <End Role="Groups" Type="Self.Groups" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DistributionLessons" Type="Self.DistributionLessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DistributionLessons">
+              <PropertyRef Name="IdGroup" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Distribut__IdLes__2E1BDC42">
+          <End Role="Lessons" Type="Self.Lessons" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DistributionLessons" Type="Self.DistributionLessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lessons">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DistributionLessons">
+              <PropertyRef Name="IdLesson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Distribut__IdTea__2D27B809">
+          <End Role="Teachers" Type="Self.Teachers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DistributionLessons" Type="Self.DistributionLessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teachers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DistributionLessons">
+              <PropertyRef Name="IdTeacher" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ExpelledS__IdGro__34C8D9D1">
+          <End Role="Groups" Type="Self.Groups" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ExpelledStudents" Type="Self.ExpelledStudents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ExpelledStudents">
+              <PropertyRef Name="IdGroup" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Students__IdGrou__31EC6D26">
+          <End Role="Groups" Type="Self.Groups" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Students" Type="Self.Students" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Students">
+              <PropertyRef Name="IdGroup" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Lessons__IdType__286302EC">
+          <End Role="TypesLessons" Type="Self.TypesLessons" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Lessons" Type="Self.Lessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TypesLessons">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Lessons">
+              <PropertyRef Name="IdType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Liquidati__IdTea__47DBAE45">
+          <End Role="Teachers" Type="Self.Teachers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LiquidationsCompositions" Type="Self.LiquidationsCompositions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teachers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LiquidationsCompositions">
+              <PropertyRef Name="IdTeacher" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StudentsP__IdStu__37A5467C">
+          <End Role="Students" Type="Self.Students" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StudentsPerformance" Type="Self.StudentsPerformance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentsPerformance">
+              <PropertyRef Name="IdStudent" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TeachersS__IdTea__3A81B327">
+          <End Role="Teachers" Type="Self.Teachers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TeachersSchedule" Type="Self.TeachersSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teachers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TeachersSchedule">
+              <PropertyRef Name="IdTeacher" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SpecialtyManagementEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Arrears" EntityType="Self.Arrears" />
+          <EntitySet Name="ArrearsLessons" EntityType="Self.ArrearsLessons" />
+          <EntitySet Name="DistributionLessons" EntityType="Self.DistributionLessons" />
+          <EntitySet Name="ExpelledStudents" EntityType="Self.ExpelledStudents" />
+          <EntitySet Name="Groups" EntityType="Self.Groups" />
+          <EntitySet Name="Informations" EntityType="Self.Informations" />
+          <EntitySet Name="Lessons" EntityType="Self.Lessons" />
+          <EntitySet Name="LiquidationsCompositions" EntityType="Self.LiquidationsCompositions" />
+          <EntitySet Name="Students" EntityType="Self.Students" />
+          <EntitySet Name="StudentsPerformance" EntityType="Self.StudentsPerformance" />
+          <EntitySet Name="Teachers" EntityType="Self.Teachers" />
+          <EntitySet Name="TeachersSchedule" EntityType="Self.TeachersSchedule" />
+          <EntitySet Name="TypesArrears" EntityType="Self.TypesArrears" />
+          <EntitySet Name="TypesLessons" EntityType="Self.TypesLessons" />
+          <AssociationSet Name="FK__Arrears__IdStude__3F466844" Association="Self.FK__Arrears__IdStude__3F466844">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="Arrears" EntitySet="Arrears" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Arrears__IdType__403A8C7D" Association="Self.FK__Arrears__IdType__403A8C7D">
+            <End Role="TypesArrears" EntitySet="TypesArrears" />
+            <End Role="Arrears" EntitySet="Arrears" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ArrearsLe__IdArr__4316F928" Association="Self.FK__ArrearsLe__IdArr__4316F928">
+            <End Role="Arrears" EntitySet="Arrears" />
+            <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ArrearsLe__IdLes__440B1D61" Association="Self.FK__ArrearsLe__IdLes__440B1D61">
+            <End Role="Lessons" EntitySet="Lessons" />
+            <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Liquidati__IdArr__46E78A0C" Association="Self.FK__Liquidati__IdArr__46E78A0C">
+            <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
+            <End Role="LiquidationsCompositions" EntitySet="LiquidationsCompositions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Distribut__IdGro__2F10007B" Association="Self.FK__Distribut__IdGro__2F10007B">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="DistributionLessons" EntitySet="DistributionLessons" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Distribut__IdLes__2E1BDC42" Association="Self.FK__Distribut__IdLes__2E1BDC42">
+            <End Role="Lessons" EntitySet="Lessons" />
+            <End Role="DistributionLessons" EntitySet="DistributionLessons" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Distribut__IdTea__2D27B809" Association="Self.FK__Distribut__IdTea__2D27B809">
+            <End Role="Teachers" EntitySet="Teachers" />
+            <End Role="DistributionLessons" EntitySet="DistributionLessons" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ExpelledS__IdGro__34C8D9D1" Association="Self.FK__ExpelledS__IdGro__34C8D9D1">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="ExpelledStudents" EntitySet="ExpelledStudents" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Students__IdGrou__31EC6D26" Association="Self.FK__Students__IdGrou__31EC6D26">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="Students" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Lessons__IdType__286302EC" Association="Self.FK__Lessons__IdType__286302EC">
+            <End Role="TypesLessons" EntitySet="TypesLessons" />
+            <End Role="Lessons" EntitySet="Lessons" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Liquidati__IdTea__47DBAE45" Association="Self.FK__Liquidati__IdTea__47DBAE45">
+            <End Role="Teachers" EntitySet="Teachers" />
+            <End Role="LiquidationsCompositions" EntitySet="LiquidationsCompositions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StudentsP__IdStu__37A5467C" Association="Self.FK__StudentsP__IdStu__37A5467C">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="StudentsPerformance" EntitySet="StudentsPerformance" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TeachersS__IdTea__3A81B327" Association="Self.FK__TeachersS__IdTea__3A81B327">
+            <End Role="Teachers" EntitySet="Teachers" />
+            <End Role="TeachersSchedule" EntitySet="TeachersSchedule" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище SpecialtyManagementModelContainer" CdmEntityContainer="SpecialtyManagementEntities">
+          <EntitySetMapping Name="Arrears">
+            <EntityTypeMapping TypeName="SpecialtyManagementModel.Arrears">
+              <MappingFragment StoreEntitySet="Arrears">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdStudent" ColumnName="IdStudent" />
+                <ScalarProperty Name="IdType" ColumnName="IdType" />
+                <ScalarProperty Name="StartYear" ColumnName="StartYear" />
+                <ScalarProperty Name="SemesterNumber" ColumnName="SemesterNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ArrearsLessons">
+            <EntityTypeMapping TypeName="SpecialtyManagementModel.ArrearsLessons">
+              <MappingFragment StoreEntitySet="ArrearsLessons">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdArrear" ColumnName="IdArrear" />
+                <ScalarProperty Name="IdLesson" ColumnName="IdLesson" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DistributionLessons">
+            <EntityTypeMapping TypeName="SpecialtyManagementModel.DistributionLessons">
+              <MappingFragment StoreEntitySet="DistributionLessons">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdTeacher" ColumnName="IdTeacher" />
+                <ScalarProperty Name="IdLesson" ColumnName="IdLesson" />
+                <ScalarProperty Name="IdGroup" ColumnName="IdGroup" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExpelledStudents">
+            <EntityTypeMapping TypeName="SpecialtyManagementModel.ExpelledStudents">
+              <MappingFragment StoreEntitySet="ExpelledStudents">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Patronymic" ColumnName="Patronymic" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="IdGroup" ColumnName="IdGroup" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Groups">
+            <EntityTypeMapping TypeName="SpecialtyManagementModel.Groups">
+              <MappingFragment StoreEntitySet="Groups">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Group" ColumnName="Group" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Informations">
+            <EntityTypeMapping TypeName="SpecialtyManagementModel.Informations">
+              <MappingFragment StoreEntitySet="Informations">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="Information" ColumnName="Information" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Lessons">
+            <EntityTypeMapping TypeName="SpecialtyManagementModel.Lessons">
+              <MappingFragment StoreEntitySet="Lessons">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IdType" ColumnName="IdType" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LiquidationsCompositions">
+            <EntityTypeMapping TypeName="SpecialtyManagementModel.LiquidationsCompositions">
+              <MappingFragment StoreEntitySet="LiquidationsCompositions">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdArrearLesson" ColumnName="IdArrearLesson" />
+                <ScalarProperty Name="IdTeacher" ColumnName="IdTeacher" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Students">
+            <EntityTypeMapping TypeName="SpecialtyManagementModel.Students">
+              <MappingFragment StoreEntitySet="Students">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Patronymic" ColumnName="Patronymic" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="IdGroup" ColumnName="IdGroup" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentsPerformance">
+            <EntityTypeMapping TypeName="SpecialtyManagementModel.StudentsPerformance">
+              <MappingFragment StoreEntitySet="StudentsPerformance">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdStudent" ColumnName="IdStudent" />
+                <ScalarProperty Name="NumberOfStudents" ColumnName="NumberOfStudents" />
+                <ScalarProperty Name="NumberOfSuccessful" ColumnName="NumberOfSuccessful" />
+                <ScalarProperty Name="NumberOfUnsuccessful" ColumnName="NumberOfUnsuccessful" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Teachers">
+            <EntityTypeMapping TypeName="SpecialtyManagementModel.Teachers">
+              <MappingFragment StoreEntitySet="Teachers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Patronymic" ColumnName="Patronymic" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TeachersSchedule">
+            <EntityTypeMapping TypeName="SpecialtyManagementModel.TeachersSchedule">
+              <MappingFragment StoreEntitySet="TeachersSchedule">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdTeacher" ColumnName="IdTeacher" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="AudienceNumber" ColumnName="AudienceNumber" />
+                <ScalarProperty Name="StartYear" ColumnName="StartYear" />
+                <ScalarProperty Name="SemesterNumber" ColumnName="SemesterNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TypesArrears">
+            <EntityTypeMapping TypeName="SpecialtyManagementModel.TypesArrears">
+              <MappingFragment StoreEntitySet="TypesArrears">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TypesLessons">
+            <EntityTypeMapping TypeName="SpecialtyManagementModel.TypesLessons">
+              <MappingFragment StoreEntitySet="TypesLessons">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
