@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         MinHeight="800"
         MinWidth="1200"
-        Title="Управление специальностью" Height="800" Width="1200">
+        Title="Управление специальностью" Height="800" Width="1200" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition MaxWidth="320"/>

@@ -27,7 +27,7 @@ namespace SpecialtyManagement.Pages
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
-
+            Navigation.Frame.Navigate(new StudentsShowPage());
         }
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)

@@ -8,7 +8,7 @@
 
         <SolidColorBrush x:Key="ColorPrimary" Color="#EEEEFB"/>
         <SolidColorBrush x:Key="ColorSecondary" Color="#BDBDFF"/>
-        <SolidColorBrush x:Key="ColorAccent" Color="#E29AFF"/>
+        <SolidColorBrush x:Key="ColorAccent" Color="#7F47D9"/>
         <FontFamily x:Key="Font">Arial</FontFamily>
 
         <Style TargetType="TextBlock">
