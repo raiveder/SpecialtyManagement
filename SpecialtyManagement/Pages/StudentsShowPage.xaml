@@ -45,21 +45,29 @@
             </StackPanel>
         </StackPanel>
 
-        <DataGrid Grid.Row="1" Name="DGStudents" Margin="10 0" ColumnWidth="*">
+        <DataGrid Grid.Row="1" Name="DGStudents" Margin="10 0" ColumnWidth="*" MouseLeftButtonUp="DGStudents_MouseLeftButtonUp" MouseRightButtonUp="DGStudents_MouseRightButtonUp">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="№" Binding="{Binding Id}" MinWidth="40" MaxWidth="40"/>
-                <DataGridTextColumn Header="Группа" Binding="{Binding Groups.Group}" MinWidth="80" MaxWidth="80"/>
+                <DataGridTextColumn Header="№" Binding="{Binding SequenceNumber}" MinWidth="40" MaxWidth="40" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>
+                <DataGridTextColumn Header="Группа" Binding="{Binding Groups.Group}" MinWidth="80" MaxWidth="80" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>
                 <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}" MinWidth="200" MaxWidth="320"/>
-                <DataGridTextColumn Header="Дата рождения" Binding="{Binding Birthdate, StringFormat={}{0:dd.MM.yyyy}}" MinWidth="160" MaxWidth="160"/>
+                <DataGridTextColumn Header="Дата рождения" Binding="{Binding Birthday, StringFormat={}{0:dd.MM.yyyy}}" MinWidth="160" MaxWidth="160" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>
                 <DataGridTextColumn Header="Примечание" Binding="{Binding Note}"/>
             </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu Name="CMStudents" Closed="CMStudents_Closed">
+                    <MenuItem Name="MIChange" Header="Изменить" Click="MIChange_Click"/>
+                    <MenuItem Name="MIExpel" Header="Отчислить" Click="MIExpel_Click"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
         </DataGrid>
 
-        <Menu Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10">
-            <MenuItem Header="Дополнительные действия" Style="{DynamicResource MenuItemStyle}">
-                <MenuItem Header="Добавить студента" Style="{DynamicResource SubMenuItemStyle}" Click="MIAdd_Click"/>
-                <MenuItem Header="Загрузить из файла" Style="{DynamicResource SubMenuItemStyle}" Click="MIReadFile_Click"/>
+        <Menu Grid.Row="2" HorizontalAlignment="Left" Margin="10">
+            <MenuItem Header="Добавить" Style="{DynamicResource MenuItemStyle}">
+                <MenuItem Name="MIAdd" Header="Добавить студента" Style="{DynamicResource SubMenuItemStyle}" Click="MIAdd_Click"/>
+                <MenuItem Name="MIReadFile" Header="Загрузить из файла" Style="{DynamicResource SubMenuItemStyle}" Click="MIReadFile_Click"/>
             </MenuItem>
         </Menu>
+
+        <Button Grid.Row="2" Name="BtnCertification" Content="Аттестация" HorizontalAlignment="Right" Margin="10" Click="BtnCertification_Click"/>
     </Grid>
 </Page>

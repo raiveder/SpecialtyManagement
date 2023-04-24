@@ -10,12 +10,13 @@
         <SolidColorBrush x:Key="ColorSecondary" Color="#BDBDFF"/>
         <SolidColorBrush x:Key="ColorAccent" Color="#7F47D9"/>
         <FontFamily x:Key="Font">Arial</FontFamily>
+        <CornerRadius x:Key="CornerRadius">10</CornerRadius>
 
         <Style TargetType="TextBlock">
             <Setter Property="FontFamily" Value="{StaticResource Font}"/>
             <Setter Property="FontSize" Value="20"/>
         </Style>
-        
+
         <Style TargetType="TextBox">
             <Setter Property="FontFamily" Value="{StaticResource Font}"/>
             <Setter Property="FontSize" Value="20"/>
@@ -31,18 +32,19 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="BtnBorder"
-                                CornerRadius="10"
-                                Background="{TemplateBinding Background}"
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="{StaticResource CornerRadius}"
                                 Padding="10"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
+                                MinWidth="200"
                                 SnapsToDevicePixels="true">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="BtnBorder" Property="Background" Value="{StaticResource ColorAccent}"/>
+                                <Setter Property="Background" Value="{StaticResource ColorAccent}"/>
+                                <Setter Property="Foreground" Value="White"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -56,8 +58,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="CheckBox">
-                        <Border x:Name="CheckBoxBorder"
-                                Background="{TemplateBinding Background}"
+                        <Border Background="{TemplateBinding Background}"
                                 BorderBrush="#FFACACAC"
                                 BorderThickness="1"
                                 Width="{TemplateBinding Height}"
@@ -65,17 +66,17 @@
                                 VerticalAlignment="Center"
                                 Cursor="Hand"
                                 SnapsToDevicePixels="true">
-                            <ContentPresenter x:Name="CheckBoxContentPresenter"
-                                              HorizontalAlignment="Center"
+                            <ContentPresenter HorizontalAlignment="Center"
                                               VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="CheckBoxBorder" Property="Background" Value="{StaticResource ColorAccent}"/>
-                                <Setter TargetName="CheckBoxContentPresenter" Property="Content" Value="✓"/>
+                                <Setter Property="Background" Value="{StaticResource ColorAccent}"/>
+                                <Setter Property="Content" Value="✓"/>
+                                <Setter Property="Foreground" Value="White"/>
                             </Trigger>
                             <Trigger Property="IsChecked" Value="False">
-                                <Setter TargetName="CheckBoxBorder" Property="Background" Value="{StaticResource ColorPrimary}"/>
+                                <Setter Property="Background" Value="{StaticResource ColorPrimary}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -83,7 +84,7 @@
             </Setter>
         </Style>
 
-        <Style TargetType="{x:Type Menu}">
+        <Style TargetType="Menu">
             <Setter Property="FontFamily" Value="{StaticResource Font}"/>
             <Setter Property="FontSize" Value="20"/>
             <Setter Property="Background" Value="{StaticResource ColorSecondary}"/>
@@ -93,7 +94,9 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Menu}">
                         <Border Background="{TemplateBinding Background}"
-                                CornerRadius="10"
+                                CornerRadius="{StaticResource CornerRadius}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
                                 SnapsToDevicePixels="true">
                             <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         </Border>
@@ -112,6 +115,7 @@
             <Setter Property="CanUserReorderColumns" Value="False"/>
             <Setter Property="Background" Value="{StaticResource ColorPrimary}"/>
             <Setter Property="RowBackground" Value="{StaticResource ColorPrimary}"/>
+            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="ColumnHeaderStyle">
                 <Setter.Value>
                     <Style TargetType="DataGridColumnHeader">
@@ -130,6 +134,7 @@
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding Text}"
                                                            VerticalAlignment="Center"
+                                                           HorizontalAlignment="{Binding HorizontalAlignment}"
                                                            TextWrapping="Wrap"
                                                            Padding="5"/>
                                             </DataTemplate>
@@ -141,6 +146,33 @@
                     </Style>
                 </Setter.Value>
             </Setter>
+            <Setter Property="RowStyle">
+                <Setter.Value>
+                    <Style TargetType="DataGridRow">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource ColorSecondary}"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{StaticResource ColorSecondary}"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="DatePicker">
+            <Setter Property="FontFamily" Value="{StaticResource Font}"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Background" Value="{StaticResource ColorPrimary}"/>
+        </Style>
+
+        <Style TargetType="DatePickerTextBox">
+            <Setter Property="FontFamily" Value="{StaticResource Font}"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Background" Value="{StaticResource ColorPrimary}"/>
         </Style>
 
         <Style TargetType="ComboBoxItem">
@@ -466,10 +498,10 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Grid>
-                            <Border CornerRadius="10"
+                            <Border Background="{StaticResource ColorSecondary}"
+                                    CornerRadius="{StaticResource CornerRadius}"
                                     Height="{Binding Height}"
                                     Width="{Binding Width}"
-                                    Background="{StaticResource ColorSecondary}"
                                     SnapsToDevicePixels="True">
                                 <Border.Style>
                                     <Style TargetType="Border">
@@ -482,16 +514,20 @@
                                 </Border.Style>
                             </Border>
                             <Border x:Name="BtnBorder"
-                                    CornerRadius="10"
                                     Background="{TemplateBinding Background}"
+                                    CornerRadius="{StaticResource CornerRadius}"
                                     Padding="10"
                                     SnapsToDevicePixels="True">
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <ContentControl x:Name="BtnContentControl"
+                                                Content="{TemplateBinding Content}"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"/>
                             </Border>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="BtnBorder" Property="Background" Value="{StaticResource ColorAccent}"/>
+                                <Setter TargetName="BtnContentControl" Property="Foreground" Value="White"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -507,19 +543,23 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="MenuItem">
-                        <Border x:Name="BorderMenuItem"
-                                CornerRadius="10"
-                                Background="{TemplateBinding Background}"
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="{StaticResource CornerRadius}"
+                                MinWidth="200"
                                 Padding="10"
                                 SnapsToDevicePixels="true">
                             <Grid>
-                                <ContentPresenter ContentSource="Header"
-                                                  HorizontalAlignment="Center"
-                                                  VerticalAlignment="Center"/>
+                                <ContentControl x:Name="MenuItemStyleContentControl"
+                                                Content="{TemplateBinding Header}"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"/>
                                 <Popup AllowsTransparency="True"
                                        IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}"
                                        Placement="{DynamicResource {x:Static SystemParameters.MenuPopupAnimation}}">
-                                    <Border Background="{StaticResource ColorPrimary}" SnapsToDevicePixels="true">
+                                    <Border Background="{StaticResource ColorPrimary}"
+                                            BorderBrush="#FFACACAC"
+                                            BorderThickness="1"
+                                            SnapsToDevicePixels="true">
                                         <ItemsPresenter/>
                                     </Border>
                                 </Popup>
@@ -527,7 +567,8 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsHighlighted" Value="True">
-                                <Setter TargetName="BorderMenuItem" Property="Background" Value="{StaticResource ColorAccent}"/>
+                                <Setter Property="Background" Value="{StaticResource ColorAccent}"/>
+                                <Setter TargetName="MenuItemStyleContentControl" Property="Foreground" Value="White"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -543,8 +584,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="MenuItem">
-                        <Border x:Name="BorderSubMenuItem"
-                                Background="{TemplateBinding Background}"
+                        <Border Background="{TemplateBinding Background}"
                                 Padding="10"
                                 SnapsToDevicePixels="true">
                             <ContentPresenter ContentSource="Header"
@@ -553,12 +593,18 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsHighlighted" Value="True">
-                                <Setter TargetName="BorderSubMenuItem" Property="Background" Value="{StaticResource ColorSecondary}"/>
+                                <Setter Property="Background" Value="{StaticResource ColorSecondary}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+        
+        <Style x:Key="TextBlockAligmentCenter" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource Font}"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="20"/>
         </Style>
 
     </Application.Resources>

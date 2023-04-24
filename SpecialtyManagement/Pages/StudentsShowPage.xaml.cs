@@ -1,17 +1,48 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using SpecialtyManagement.Windows;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace SpecialtyManagement.Pages
 {
+    public struct FilterStudent
+    {
+        public string FindText { get; set; }
+        public int IndexSort { get; set; }
+        public int IndexGroup { get; set; }
+        public bool HasNote { get; set; }
+    }
+
     /// <summary>
     /// Логика взаимодействия для StudentsShowPage.xaml
     /// </summary>
     public partial class StudentsShowPage : Page
     {
         public StudentsShowPage()
+        {
+            InitializeComponent();
+
+            UploadPage();
+
+            CBGroup.SelectedIndex = 0;
+            CBSort.SelectedIndex = 0;
+        }
+
+        public StudentsShowPage(FilterStudent filter)
+        {
+            UploadPage();
+
+            TBoxFind.Text = filter.FindText;
+            CBGroup.SelectedIndex = filter.IndexGroup;
+            CBSort.SelectedIndex = filter.IndexSort;
+            ChBNote.IsChecked = filter.HasNote;
+        }
+
+        private void UploadPage()
         {
             InitializeComponent();
 
@@ -27,9 +58,8 @@ namespace SpecialtyManagement.Pages
             groups.AddRange(Database.Entities.Groups.ToList());
 
             CBGroup.ItemsSource = groups;
-
-            CBGroup.SelectedIndex = 0;
-            CBSort.SelectedIndex = 0;
+            CBGroup.SelectedValuePath = "Id";
+            CBGroup.DisplayMemberPath = "Group";
         }
 
         private void TBoxFind_TextChanged(object sender, TextChangedEventArgs e)
@@ -77,7 +107,7 @@ namespace SpecialtyManagement.Pages
                 case 3:
                     students.Sort((x, y) => x.Birthday.CompareTo(y.Birthday));
                     break;
-                case 41:
+                case 4:
                     students.Sort((x, y) => x.FullName.CompareTo(y.FullName));
                     students.Reverse();
                     break;
@@ -93,17 +123,142 @@ namespace SpecialtyManagement.Pages
                     break;
             }
 
+            int number = 1;
+            foreach (Students item in students)
+            {
+                item.SequenceNumber = number++;
+            }
+
             DGStudents.ItemsSource = students;
+
+            if (students.Count == 0)
+            {
+                MessageBox.Show("Подходящих фильтру студентов не найдено", "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void MIAdd_Click(object sender, RoutedEventArgs e)
         {
-            Navigation.Frame.Navigate(new StudentAddPage());
+            FilterStudent filter = new FilterStudent()
+            {
+                FindText = TBoxFind.Text,
+                IndexGroup = CBGroup.SelectedIndex,
+                IndexSort = CBSort.SelectedIndex,
+                HasNote = (bool)ChBNote.IsChecked
+            };
+
+            Navigation.Frame.Navigate(new StudentAddPage(filter));
         }
 
         private void MIReadFile_Click(object sender, RoutedEventArgs e)
         {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            ofd.Filter = "Все файлы|*.*|CSV|*.csv";
+            ofd.FilterIndex = 2;
+            ofd.ShowDialog();
 
+            if (ofd.FileName.Length > 0)
+            {
+                List<Students> students = Students.GetStudentsFromFile(ofd.FileName);
+
+                if (students.Count != 0)
+                {
+                    new ChoiceGroupWindow(students).ShowDialog();
+
+                    Database.Entities.Students.AddRange(students);
+
+                    try
+                    {
+                        Database.Entities.SaveChanges();
+
+                        CBGroup.SelectedValue = students[0].IdGroup;
+
+                        MessageBox.Show("Студенты успешно добавлены", "Студенты", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("При добавлении студентов возникла ошибка", "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+            }
+        }
+
+        private void BtnCertification_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MIChange_Click(object sender, RoutedEventArgs e)
+        {
+            if (DGStudents.SelectedItems.Count == 1)
+            {
+                FilterStudent filter = new FilterStudent()
+                {
+                    FindText = TBoxFind.Text,
+                    IndexGroup = CBGroup.SelectedIndex,
+                    IndexSort = CBSort.SelectedIndex,
+                    HasNote = (bool)ChBNote.IsChecked
+                };
+
+                Navigation.Frame.Navigate(new StudentAddPage(filter, DGStudents.SelectedItem as Students));
+            }
+        }
+
+        private void MIExpel_Click(object sender, RoutedEventArgs e)
+        {
+            List<Students> students = new List<Students>();
+            List<ExpelledStudents> ecpelledStudents = new List<ExpelledStudents>();
+
+            foreach (Students item in DGStudents.SelectedItems)
+            {
+                students.Add(item);
+
+                ecpelledStudents.Add(new ExpelledStudents
+                {
+                    Surname = item.Surname,
+                    Name = item.Name,
+                    Patronymic = item.Patronymic,
+                    IdGroup = item.IdGroup,
+                    Birthday = item.Birthday,
+                    Note = item.Note
+                });
+            }
+
+
+            Database.Entities.Students.RemoveRange(students);
+            Database.Entities.ExpelledStudents.AddRange(ecpelledStudents);
+
+            try
+            {
+                Database.Entities.SaveChanges();
+                SetFilter();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show
+                (
+                    "При отчислении " + (DGStudents.SelectedItems.Count == 1 ? "студента" : "студентов") + " возникла ошибка",
+                    "Студенты",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning
+                );
+            }
+        }
+
+        private void DGStudents_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            CMStudents.IsOpen = true;
+        }
+
+        private void DGStudents_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void CMStudents_Closed(object sender, RoutedEventArgs e)
+        {
+            DGStudents.SelectedItems.Clear();
         }
     }
 }

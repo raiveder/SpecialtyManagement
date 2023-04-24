@@ -30,14 +30,15 @@ namespace SpecialtyManagement
         public virtual DbSet<DistributionLessons> DistributionLessons { get; set; }
         public virtual DbSet<ExpelledStudents> ExpelledStudents { get; set; }
         public virtual DbSet<Groups> Groups { get; set; }
-        public virtual DbSet<Informations> Informations { get; set; }
         public virtual DbSet<Lessons> Lessons { get; set; }
         public virtual DbSet<LiquidationsCompositions> LiquidationsCompositions { get; set; }
+        public virtual DbSet<Specialty> Specialty { get; set; }
         public virtual DbSet<Students> Students { get; set; }
         public virtual DbSet<StudentsPerformance> StudentsPerformance { get; set; }
         public virtual DbSet<Teachers> Teachers { get; set; }
         public virtual DbSet<TeachersSchedule> TeachersSchedule { get; set; }
         public virtual DbSet<TypesArrears> TypesArrears { get; set; }
+        public virtual DbSet<TypesGroups> TypesGroups { get; set; }
         public virtual DbSet<TypesLessons> TypesLessons { get; set; }
     }
 }

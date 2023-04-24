@@ -14,7 +14,7 @@
             <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
 
-        <Border HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="1"/>
+        <StackPanel Background="{StaticResource ColorPrimary}"/>
 
         <StackPanel Name="SPMenu" Margin="20 10 20 10">
             <Image Source="Resources/Logo.png" Margin="0 0 0 10"/>

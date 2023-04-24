@@ -4,35 +4,37 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="67f9b7bf1a284a79a75c808772060fa9" Name="Diagram1">
-        <EntityTypeShape EntityType="SpecialtyManagementModel.Arrears" Width="1.5" PointX="1.5" PointY="15.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SpecialtyManagementModel.ArrearsLessons" Width="1.5" PointX="0.75" PointY="10.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SpecialtyManagementModel.DistributionLessons" Width="1.5" PointX="3" PointY="4.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SpecialtyManagementModel.ExpelledStudents" Width="1.5" PointX="3.75" PointY="22.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SpecialtyManagementModel.Groups" Width="1.5" PointX="1.5" PointY="23.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SpecialtyManagementModel.Informations" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SpecialtyManagementModel.Lessons" Width="1.5" PointX="1.5" PointY="29.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SpecialtyManagementModel.LiquidationsCompositions" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SpecialtyManagementModel.Students" Width="1.5" PointX="1.5" PointY="19.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SpecialtyManagementModel.StudentsPerformance" Width="1.5" PointX="3.75" PointY="18.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SpecialtyManagementModel.Teachers" Width="1.5" PointX="0.75" PointY="4.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SpecialtyManagementModel.TeachersSchedule" Width="1.5" PointX="3" PointY="10" IsExpanded="true" />
-        <EntityTypeShape EntityType="SpecialtyManagementModel.TypesArrears" Width="1.5" PointX="1.5" PointY="27.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SpecialtyManagementModel.TypesLessons" Width="1.5" PointX="1.5" PointY="32.875" IsExpanded="true" />
-        <AssociationConnector Association="SpecialtyManagementModel.FK__Arrears__IdStude__3F466844" ManuallyRouted="false" />
-        <AssociationConnector Association="SpecialtyManagementModel.FK__Arrears__IdType__403A8C7D" ManuallyRouted="false" />
-        <AssociationConnector Association="SpecialtyManagementModel.FK__ArrearsLe__IdArr__4316F928" ManuallyRouted="false" />
-        <AssociationConnector Association="SpecialtyManagementModel.FK__ArrearsLe__IdLes__440B1D61" ManuallyRouted="false" />
-        <AssociationConnector Association="SpecialtyManagementModel.FK__Liquidati__IdArr__46E78A0C" ManuallyRouted="false" />
-        <AssociationConnector Association="SpecialtyManagementModel.FK__Distribut__IdGro__2F10007B" ManuallyRouted="false" />
-        <AssociationConnector Association="SpecialtyManagementModel.FK__Distribut__IdLes__2E1BDC42" ManuallyRouted="false" />
-        <AssociationConnector Association="SpecialtyManagementModel.FK__Distribut__IdTea__2D27B809" ManuallyRouted="false" />
-        <AssociationConnector Association="SpecialtyManagementModel.FK__ExpelledS__IdGro__34C8D9D1" ManuallyRouted="false" />
-        <AssociationConnector Association="SpecialtyManagementModel.FK__Students__IdGrou__31EC6D26" ManuallyRouted="false" />
+      <Diagram DiagramId="c9f02c9f045c4ddf8da1d5d1f3854f5b" Name="Diagram1">
+        <EntityTypeShape EntityType="SpecialtyManagementModel.Arrears" Width="1.5" PointX="7.5" PointY="10.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SpecialtyManagementModel.ArrearsLessons" Width="1.5" PointX="9.75" PointY="11" IsExpanded="true" />
+        <EntityTypeShape EntityType="SpecialtyManagementModel.DistributionLessons" Width="1.5" PointX="5.25" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SpecialtyManagementModel.ExpelledStudents" Width="1.5" PointX="5.25" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SpecialtyManagementModel.Groups" Width="1.5" PointX="3" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SpecialtyManagementModel.Lessons" Width="1.5" PointX="3" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SpecialtyManagementModel.LiquidationsCompositions" Width="1.5" PointX="12" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SpecialtyManagementModel.Specialty" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SpecialtyManagementModel.Students" Width="1.5" PointX="5.25" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SpecialtyManagementModel.StudentsPerformance" Width="1.5" PointX="7.5" PointY="14.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SpecialtyManagementModel.Teachers" Width="1.5" PointX="3" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SpecialtyManagementModel.TeachersSchedule" Width="1.5" PointX="5.25" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SpecialtyManagementModel.TypesArrears" Width="1.5" PointX="5.25" PointY="15.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SpecialtyManagementModel.TypesGroups" Width="1.5" PointX="0.75" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SpecialtyManagementModel.TypesLessons" Width="1.5" PointX="0.75" PointY="3" IsExpanded="true" />
+        <AssociationConnector Association="SpecialtyManagementModel.FK__Arrears__IdStude__4222D4EF" ManuallyRouted="false" />
+        <AssociationConnector Association="SpecialtyManagementModel.FK__Arrears__IdType__4316F928" ManuallyRouted="false" />
+        <AssociationConnector Association="SpecialtyManagementModel.FK__ArrearsLe__IdArr__45F365D3" ManuallyRouted="false" />
+        <AssociationConnector Association="SpecialtyManagementModel.FK__ArrearsLe__IdLes__46E78A0C" ManuallyRouted="false" />
+        <AssociationConnector Association="SpecialtyManagementModel.FK__Liquidati__IdArr__49C3F6B7" ManuallyRouted="false" />
+        <AssociationConnector Association="SpecialtyManagementModel.FK__Distribut__IdGro__31EC6D26" ManuallyRouted="false" />
+        <AssociationConnector Association="SpecialtyManagementModel.FK__Distribut__IdLes__30F848ED" ManuallyRouted="false" />
+        <AssociationConnector Association="SpecialtyManagementModel.FK__Distribut__IdTea__300424B4" ManuallyRouted="false" />
+        <AssociationConnector Association="SpecialtyManagementModel.FK__ExpelledS__IdGro__37A5467C" ManuallyRouted="false" />
+        <AssociationConnector Association="SpecialtyManagementModel.FK__Groups__IdType__2D27B809" ManuallyRouted="false" />
+        <AssociationConnector Association="SpecialtyManagementModel.FK__Students__IdGrou__34C8D9D1" ManuallyRouted="false" />
         <AssociationConnector Association="SpecialtyManagementModel.FK__Lessons__IdType__286302EC" ManuallyRouted="false" />
-        <AssociationConnector Association="SpecialtyManagementModel.FK__Liquidati__IdTea__47DBAE45" ManuallyRouted="false" />
-        <AssociationConnector Association="SpecialtyManagementModel.FK__StudentsP__IdStu__37A5467C" ManuallyRouted="false" />
-        <AssociationConnector Association="SpecialtyManagementModel.FK__TeachersS__IdTea__3A81B327" ManuallyRouted="false" />
+        <AssociationConnector Association="SpecialtyManagementModel.FK__Liquidati__IdTea__4AB81AF0" ManuallyRouted="false" />
+        <AssociationConnector Association="SpecialtyManagementModel.FK__StudentsP__IdStu__3A81B327" ManuallyRouted="false" />
+        <AssociationConnector Association="SpecialtyManagementModel.FK__TeachersS__IdTea__3D5E1FD2" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

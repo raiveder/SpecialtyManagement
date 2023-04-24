@@ -50,15 +50,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdType" Type="int" Nullable="false" />
           <Property Name="Group" Type="nvarchar" MaxLength="3" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Informations">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Key" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Information" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Lessons">
           <Key>
@@ -76,6 +69,14 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdArrearLesson" Type="int" Nullable="false" />
           <Property Name="IdTeacher" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Specialty">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Head" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="Students">
           <Key>
@@ -126,6 +127,13 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Type" Type="nvarchar" MaxLength="13" Nullable="false" />
         </EntityType>
+        <EntityType Name="TypesGroups">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="10" Nullable="false" />
+        </EntityType>
         <EntityType Name="TypesLessons">
           <Key>
             <PropertyRef Name="Id" />
@@ -133,7 +141,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Type" Type="nvarchar" MaxLength="3" Nullable="false" />
         </EntityType>
-        <Association Name="FK__Arrears__IdStude__3F466844">
+        <Association Name="FK__Arrears__IdStude__4222D4EF">
           <End Role="Students" Type="Self.Students" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -147,7 +155,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Arrears__IdType__403A8C7D">
+        <Association Name="FK__Arrears__IdType__4316F928">
           <End Role="TypesArrears" Type="Self.TypesArrears" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -161,7 +169,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ArrearsLe__IdArr__4316F928">
+        <Association Name="FK__ArrearsLe__IdArr__45F365D3">
           <End Role="Arrears" Type="Self.Arrears" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -175,7 +183,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ArrearsLe__IdLes__440B1D61">
+        <Association Name="FK__ArrearsLe__IdLes__46E78A0C">
           <End Role="Lessons" Type="Self.Lessons" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -189,7 +197,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Distribut__IdGro__2F10007B">
+        <Association Name="FK__Distribut__IdGro__31EC6D26">
           <End Role="Groups" Type="Self.Groups" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -203,7 +211,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Distribut__IdLes__2E1BDC42">
+        <Association Name="FK__Distribut__IdLes__30F848ED">
           <End Role="Lessons" Type="Self.Lessons" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -217,7 +225,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Distribut__IdTea__2D27B809">
+        <Association Name="FK__Distribut__IdTea__300424B4">
           <End Role="Teachers" Type="Self.Teachers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -231,7 +239,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ExpelledS__IdGro__34C8D9D1">
+        <Association Name="FK__ExpelledS__IdGro__37A5467C">
           <End Role="Groups" Type="Self.Groups" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -242,6 +250,20 @@
             </Principal>
             <Dependent Role="ExpelledStudents">
               <PropertyRef Name="IdGroup" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Groups__IdType__2D27B809">
+          <End Role="TypesGroups" Type="Self.TypesGroups" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Groups" Type="Self.Groups" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TypesGroups">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Groups">
+              <PropertyRef Name="IdType" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -259,7 +281,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Liquidati__IdArr__46E78A0C">
+        <Association Name="FK__Liquidati__IdArr__49C3F6B7">
           <End Role="ArrearsLessons" Type="Self.ArrearsLessons" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -273,7 +295,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Liquidati__IdTea__47DBAE45">
+        <Association Name="FK__Liquidati__IdTea__4AB81AF0">
           <End Role="Teachers" Type="Self.Teachers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -287,7 +309,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Students__IdGrou__31EC6D26">
+        <Association Name="FK__Students__IdGrou__34C8D9D1">
           <End Role="Groups" Type="Self.Groups" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -301,7 +323,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__StudentsP__IdStu__37A5467C">
+        <Association Name="FK__StudentsP__IdStu__3A81B327">
           <End Role="Students" Type="Self.Students" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -315,7 +337,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TeachersS__IdTea__3A81B327">
+        <Association Name="FK__TeachersS__IdTea__3D5E1FD2">
           <End Role="Teachers" Type="Self.Teachers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -335,68 +357,73 @@
           <EntitySet Name="DistributionLessons" EntityType="Self.DistributionLessons" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ExpelledStudents" EntityType="Self.ExpelledStudents" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Groups" EntityType="Self.Groups" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Informations" EntityType="Self.Informations" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Lessons" EntityType="Self.Lessons" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LiquidationsCompositions" EntityType="Self.LiquidationsCompositions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Specialty" EntityType="Self.Specialty" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StudentsPerformance" EntityType="Self.StudentsPerformance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Teachers" EntityType="Self.Teachers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TeachersSchedule" EntityType="Self.TeachersSchedule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TypesArrears" EntityType="Self.TypesArrears" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TypesGroups" EntityType="Self.TypesGroups" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TypesLessons" EntityType="Self.TypesLessons" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Arrears__IdStude__3F466844" Association="Self.FK__Arrears__IdStude__3F466844">
+          <AssociationSet Name="FK__Arrears__IdStude__4222D4EF" Association="Self.FK__Arrears__IdStude__4222D4EF">
             <End Role="Students" EntitySet="Students" />
             <End Role="Arrears" EntitySet="Arrears" />
           </AssociationSet>
-          <AssociationSet Name="FK__Arrears__IdType__403A8C7D" Association="Self.FK__Arrears__IdType__403A8C7D">
+          <AssociationSet Name="FK__Arrears__IdType__4316F928" Association="Self.FK__Arrears__IdType__4316F928">
             <End Role="TypesArrears" EntitySet="TypesArrears" />
             <End Role="Arrears" EntitySet="Arrears" />
           </AssociationSet>
-          <AssociationSet Name="FK__ArrearsLe__IdArr__4316F928" Association="Self.FK__ArrearsLe__IdArr__4316F928">
+          <AssociationSet Name="FK__ArrearsLe__IdArr__45F365D3" Association="Self.FK__ArrearsLe__IdArr__45F365D3">
             <End Role="Arrears" EntitySet="Arrears" />
             <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
           </AssociationSet>
-          <AssociationSet Name="FK__ArrearsLe__IdLes__440B1D61" Association="Self.FK__ArrearsLe__IdLes__440B1D61">
+          <AssociationSet Name="FK__ArrearsLe__IdLes__46E78A0C" Association="Self.FK__ArrearsLe__IdLes__46E78A0C">
             <End Role="Lessons" EntitySet="Lessons" />
             <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
           </AssociationSet>
-          <AssociationSet Name="FK__Distribut__IdGro__2F10007B" Association="Self.FK__Distribut__IdGro__2F10007B">
+          <AssociationSet Name="FK__Distribut__IdGro__31EC6D26" Association="Self.FK__Distribut__IdGro__31EC6D26">
             <End Role="Groups" EntitySet="Groups" />
             <End Role="DistributionLessons" EntitySet="DistributionLessons" />
           </AssociationSet>
-          <AssociationSet Name="FK__Distribut__IdLes__2E1BDC42" Association="Self.FK__Distribut__IdLes__2E1BDC42">
+          <AssociationSet Name="FK__Distribut__IdLes__30F848ED" Association="Self.FK__Distribut__IdLes__30F848ED">
             <End Role="Lessons" EntitySet="Lessons" />
             <End Role="DistributionLessons" EntitySet="DistributionLessons" />
           </AssociationSet>
-          <AssociationSet Name="FK__Distribut__IdTea__2D27B809" Association="Self.FK__Distribut__IdTea__2D27B809">
+          <AssociationSet Name="FK__Distribut__IdTea__300424B4" Association="Self.FK__Distribut__IdTea__300424B4">
             <End Role="Teachers" EntitySet="Teachers" />
             <End Role="DistributionLessons" EntitySet="DistributionLessons" />
           </AssociationSet>
-          <AssociationSet Name="FK__ExpelledS__IdGro__34C8D9D1" Association="Self.FK__ExpelledS__IdGro__34C8D9D1">
+          <AssociationSet Name="FK__ExpelledS__IdGro__37A5467C" Association="Self.FK__ExpelledS__IdGro__37A5467C">
             <End Role="Groups" EntitySet="Groups" />
             <End Role="ExpelledStudents" EntitySet="ExpelledStudents" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Groups__IdType__2D27B809" Association="Self.FK__Groups__IdType__2D27B809">
+            <End Role="TypesGroups" EntitySet="TypesGroups" />
+            <End Role="Groups" EntitySet="Groups" />
           </AssociationSet>
           <AssociationSet Name="FK__Lessons__IdType__286302EC" Association="Self.FK__Lessons__IdType__286302EC">
             <End Role="TypesLessons" EntitySet="TypesLessons" />
             <End Role="Lessons" EntitySet="Lessons" />
           </AssociationSet>
-          <AssociationSet Name="FK__Liquidati__IdArr__46E78A0C" Association="Self.FK__Liquidati__IdArr__46E78A0C">
+          <AssociationSet Name="FK__Liquidati__IdArr__49C3F6B7" Association="Self.FK__Liquidati__IdArr__49C3F6B7">
             <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
             <End Role="LiquidationsCompositions" EntitySet="LiquidationsCompositions" />
           </AssociationSet>
-          <AssociationSet Name="FK__Liquidati__IdTea__47DBAE45" Association="Self.FK__Liquidati__IdTea__47DBAE45">
+          <AssociationSet Name="FK__Liquidati__IdTea__4AB81AF0" Association="Self.FK__Liquidati__IdTea__4AB81AF0">
             <End Role="Teachers" EntitySet="Teachers" />
             <End Role="LiquidationsCompositions" EntitySet="LiquidationsCompositions" />
           </AssociationSet>
-          <AssociationSet Name="FK__Students__IdGrou__31EC6D26" Association="Self.FK__Students__IdGrou__31EC6D26">
+          <AssociationSet Name="FK__Students__IdGrou__34C8D9D1" Association="Self.FK__Students__IdGrou__34C8D9D1">
             <End Role="Groups" EntitySet="Groups" />
             <End Role="Students" EntitySet="Students" />
           </AssociationSet>
-          <AssociationSet Name="FK__StudentsP__IdStu__37A5467C" Association="Self.FK__StudentsP__IdStu__37A5467C">
+          <AssociationSet Name="FK__StudentsP__IdStu__3A81B327" Association="Self.FK__StudentsP__IdStu__3A81B327">
             <End Role="Students" EntitySet="Students" />
             <End Role="StudentsPerformance" EntitySet="StudentsPerformance" />
           </AssociationSet>
-          <AssociationSet Name="FK__TeachersS__IdTea__3A81B327" Association="Self.FK__TeachersS__IdTea__3A81B327">
+          <AssociationSet Name="FK__TeachersS__IdTea__3D5E1FD2" Association="Self.FK__TeachersS__IdTea__3D5E1FD2">
             <End Role="Teachers" EntitySet="Teachers" />
             <End Role="TeachersSchedule" EntitySet="TeachersSchedule" />
           </AssociationSet>
@@ -415,9 +442,9 @@
           <Property Name="IdType" Type="Int32" Nullable="false" />
           <Property Name="StartYear" Type="Int32" Nullable="false" />
           <Property Name="SemesterNumber" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Students" Relationship="Self.FK__Arrears__IdStude__3F466844" FromRole="Arrears" ToRole="Students" />
-          <NavigationProperty Name="TypesArrears" Relationship="Self.FK__Arrears__IdType__403A8C7D" FromRole="Arrears" ToRole="TypesArrears" />
-          <NavigationProperty Name="ArrearsLessons" Relationship="Self.FK__ArrearsLe__IdArr__4316F928" FromRole="Arrears" ToRole="ArrearsLessons" />
+          <NavigationProperty Name="Students" Relationship="Self.FK__Arrears__IdStude__4222D4EF" FromRole="Arrears" ToRole="Students" />
+          <NavigationProperty Name="TypesArrears" Relationship="Self.FK__Arrears__IdType__4316F928" FromRole="Arrears" ToRole="TypesArrears" />
+          <NavigationProperty Name="ArrearsLessons" Relationship="Self.FK__ArrearsLe__IdArr__45F365D3" FromRole="Arrears" ToRole="ArrearsLessons" />
         </EntityType>
         <EntityType Name="ArrearsLessons">
           <Key>
@@ -427,9 +454,9 @@
           <Property Name="IdArrear" Type="Int32" Nullable="false" />
           <Property Name="IdLesson" Type="Int32" Nullable="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Arrears" Relationship="Self.FK__ArrearsLe__IdArr__4316F928" FromRole="ArrearsLessons" ToRole="Arrears" />
-          <NavigationProperty Name="Lessons" Relationship="Self.FK__ArrearsLe__IdLes__440B1D61" FromRole="ArrearsLessons" ToRole="Lessons" />
-          <NavigationProperty Name="LiquidationsCompositions" Relationship="Self.FK__Liquidati__IdArr__46E78A0C" FromRole="ArrearsLessons" ToRole="LiquidationsCompositions" />
+          <NavigationProperty Name="Arrears" Relationship="Self.FK__ArrearsLe__IdArr__45F365D3" FromRole="ArrearsLessons" ToRole="Arrears" />
+          <NavigationProperty Name="Lessons" Relationship="Self.FK__ArrearsLe__IdLes__46E78A0C" FromRole="ArrearsLessons" ToRole="Lessons" />
+          <NavigationProperty Name="LiquidationsCompositions" Relationship="Self.FK__Liquidati__IdArr__49C3F6B7" FromRole="ArrearsLessons" ToRole="LiquidationsCompositions" />
         </EntityType>
         <EntityType Name="DistributionLessons">
           <Key>
@@ -439,9 +466,9 @@
           <Property Name="IdTeacher" Type="Int32" Nullable="false" />
           <Property Name="IdLesson" Type="Int32" Nullable="false" />
           <Property Name="IdGroup" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Groups" Relationship="Self.FK__Distribut__IdGro__2F10007B" FromRole="DistributionLessons" ToRole="Groups" />
-          <NavigationProperty Name="Lessons" Relationship="Self.FK__Distribut__IdLes__2E1BDC42" FromRole="DistributionLessons" ToRole="Lessons" />
-          <NavigationProperty Name="Teachers" Relationship="Self.FK__Distribut__IdTea__2D27B809" FromRole="DistributionLessons" ToRole="Teachers" />
+          <NavigationProperty Name="Groups" Relationship="Self.FK__Distribut__IdGro__31EC6D26" FromRole="DistributionLessons" ToRole="Groups" />
+          <NavigationProperty Name="Lessons" Relationship="Self.FK__Distribut__IdLes__30F848ED" FromRole="DistributionLessons" ToRole="Lessons" />
+          <NavigationProperty Name="Teachers" Relationship="Self.FK__Distribut__IdTea__300424B4" FromRole="DistributionLessons" ToRole="Teachers" />
         </EntityType>
         <EntityType Name="ExpelledStudents">
           <Key>
@@ -454,25 +481,19 @@
           <Property Name="Birthday" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="IdGroup" Type="Int32" Nullable="false" />
           <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Groups" Relationship="Self.FK__ExpelledS__IdGro__34C8D9D1" FromRole="ExpelledStudents" ToRole="Groups" />
+          <NavigationProperty Name="Groups" Relationship="Self.FK__ExpelledS__IdGro__37A5467C" FromRole="ExpelledStudents" ToRole="Groups" />
         </EntityType>
         <EntityType Name="Groups">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdType" Type="Int32" Nullable="false" />
           <Property Name="Group" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="DistributionLessons" Relationship="Self.FK__Distribut__IdGro__2F10007B" FromRole="Groups" ToRole="DistributionLessons" />
-          <NavigationProperty Name="ExpelledStudents" Relationship="Self.FK__ExpelledS__IdGro__34C8D9D1" FromRole="Groups" ToRole="ExpelledStudents" />
-          <NavigationProperty Name="Students" Relationship="Self.FK__Students__IdGrou__31EC6D26" FromRole="Groups" ToRole="Students" />
-        </EntityType>
-        <EntityType Name="Informations">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Key" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Information" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="DistributionLessons" Relationship="Self.FK__Distribut__IdGro__31EC6D26" FromRole="Groups" ToRole="DistributionLessons" />
+          <NavigationProperty Name="ExpelledStudents" Relationship="Self.FK__ExpelledS__IdGro__37A5467C" FromRole="Groups" ToRole="ExpelledStudents" />
+          <NavigationProperty Name="TypesGroups" Relationship="Self.FK__Groups__IdType__2D27B809" FromRole="Groups" ToRole="TypesGroups" />
+          <NavigationProperty Name="Students" Relationship="Self.FK__Students__IdGrou__34C8D9D1" FromRole="Groups" ToRole="Students" />
         </EntityType>
         <EntityType Name="Lessons">
           <Key>
@@ -482,8 +503,8 @@
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IdType" Type="Int32" Nullable="false" />
           <Property Name="Code" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="ArrearsLessons" Relationship="Self.FK__ArrearsLe__IdLes__440B1D61" FromRole="Lessons" ToRole="ArrearsLessons" />
-          <NavigationProperty Name="DistributionLessons" Relationship="Self.FK__Distribut__IdLes__2E1BDC42" FromRole="Lessons" ToRole="DistributionLessons" />
+          <NavigationProperty Name="ArrearsLessons" Relationship="Self.FK__ArrearsLe__IdLes__46E78A0C" FromRole="Lessons" ToRole="ArrearsLessons" />
+          <NavigationProperty Name="DistributionLessons" Relationship="Self.FK__Distribut__IdLes__30F848ED" FromRole="Lessons" ToRole="DistributionLessons" />
           <NavigationProperty Name="TypesLessons" Relationship="Self.FK__Lessons__IdType__286302EC" FromRole="Lessons" ToRole="TypesLessons" />
         </EntityType>
         <EntityType Name="LiquidationsCompositions">
@@ -493,8 +514,16 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdArrearLesson" Type="Int32" Nullable="false" />
           <Property Name="IdTeacher" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ArrearsLessons" Relationship="Self.FK__Liquidati__IdArr__46E78A0C" FromRole="LiquidationsCompositions" ToRole="ArrearsLessons" />
-          <NavigationProperty Name="Teachers" Relationship="Self.FK__Liquidati__IdTea__47DBAE45" FromRole="LiquidationsCompositions" ToRole="Teachers" />
+          <NavigationProperty Name="ArrearsLessons" Relationship="Self.FK__Liquidati__IdArr__49C3F6B7" FromRole="LiquidationsCompositions" ToRole="ArrearsLessons" />
+          <NavigationProperty Name="Teachers" Relationship="Self.FK__Liquidati__IdTea__4AB81AF0" FromRole="LiquidationsCompositions" ToRole="Teachers" />
+        </EntityType>
+        <EntityType Name="Specialty">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Head" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
         <EntityType Name="Students">
           <Key>
@@ -507,9 +536,9 @@
           <Property Name="Birthday" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="IdGroup" Type="Int32" Nullable="false" />
           <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Arrears" Relationship="Self.FK__Arrears__IdStude__3F466844" FromRole="Students" ToRole="Arrears" />
-          <NavigationProperty Name="Groups" Relationship="Self.FK__Students__IdGrou__31EC6D26" FromRole="Students" ToRole="Groups" />
-          <NavigationProperty Name="StudentsPerformance" Relationship="Self.FK__StudentsP__IdStu__37A5467C" FromRole="Students" ToRole="StudentsPerformance" />
+          <NavigationProperty Name="Arrears" Relationship="Self.FK__Arrears__IdStude__4222D4EF" FromRole="Students" ToRole="Arrears" />
+          <NavigationProperty Name="Groups" Relationship="Self.FK__Students__IdGrou__34C8D9D1" FromRole="Students" ToRole="Groups" />
+          <NavigationProperty Name="StudentsPerformance" Relationship="Self.FK__StudentsP__IdStu__3A81B327" FromRole="Students" ToRole="StudentsPerformance" />
         </EntityType>
         <EntityType Name="StudentsPerformance">
           <Key>
@@ -520,7 +549,7 @@
           <Property Name="NumberOfStudents" Type="Int32" Nullable="false" />
           <Property Name="NumberOfSuccessful" Type="Int32" Nullable="false" />
           <Property Name="NumberOfUnsuccessful" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Students" Relationship="Self.FK__StudentsP__IdStu__37A5467C" FromRole="StudentsPerformance" ToRole="Students" />
+          <NavigationProperty Name="Students" Relationship="Self.FK__StudentsP__IdStu__3A81B327" FromRole="StudentsPerformance" ToRole="Students" />
         </EntityType>
         <EntityType Name="Teachers">
           <Key>
@@ -530,9 +559,9 @@
           <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Patronymic" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="DistributionLessons" Relationship="Self.FK__Distribut__IdTea__2D27B809" FromRole="Teachers" ToRole="DistributionLessons" />
-          <NavigationProperty Name="LiquidationsCompositions" Relationship="Self.FK__Liquidati__IdTea__47DBAE45" FromRole="Teachers" ToRole="LiquidationsCompositions" />
-          <NavigationProperty Name="TeachersSchedule" Relationship="Self.FK__TeachersS__IdTea__3A81B327" FromRole="Teachers" ToRole="TeachersSchedule" />
+          <NavigationProperty Name="DistributionLessons" Relationship="Self.FK__Distribut__IdTea__300424B4" FromRole="Teachers" ToRole="DistributionLessons" />
+          <NavigationProperty Name="LiquidationsCompositions" Relationship="Self.FK__Liquidati__IdTea__4AB81AF0" FromRole="Teachers" ToRole="LiquidationsCompositions" />
+          <NavigationProperty Name="TeachersSchedule" Relationship="Self.FK__TeachersS__IdTea__3D5E1FD2" FromRole="Teachers" ToRole="TeachersSchedule" />
         </EntityType>
         <EntityType Name="TeachersSchedule">
           <Key>
@@ -544,7 +573,7 @@
           <Property Name="AudienceNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="StartYear" Type="Int32" Nullable="false" />
           <Property Name="SemesterNumber" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Teachers" Relationship="Self.FK__TeachersS__IdTea__3A81B327" FromRole="TeachersSchedule" ToRole="Teachers" />
+          <NavigationProperty Name="Teachers" Relationship="Self.FK__TeachersS__IdTea__3D5E1FD2" FromRole="TeachersSchedule" ToRole="Teachers" />
         </EntityType>
         <EntityType Name="TypesArrears">
           <Key>
@@ -552,7 +581,15 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Type" Type="String" MaxLength="13" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Arrears" Relationship="Self.FK__Arrears__IdType__403A8C7D" FromRole="TypesArrears" ToRole="Arrears" />
+          <NavigationProperty Name="Arrears" Relationship="Self.FK__Arrears__IdType__4316F928" FromRole="TypesArrears" ToRole="Arrears" />
+        </EntityType>
+        <EntityType Name="TypesGroups">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Groups" Relationship="Self.FK__Groups__IdType__2D27B809" FromRole="TypesGroups" ToRole="Groups" />
         </EntityType>
         <EntityType Name="TypesLessons">
           <Key>
@@ -562,7 +599,7 @@
           <Property Name="Type" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Lessons" Relationship="Self.FK__Lessons__IdType__286302EC" FromRole="TypesLessons" ToRole="Lessons" />
         </EntityType>
-        <Association Name="FK__Arrears__IdStude__3F466844">
+        <Association Name="FK__Arrears__IdStude__4222D4EF">
           <End Role="Students" Type="Self.Students" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -576,7 +613,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Arrears__IdType__403A8C7D">
+        <Association Name="FK__Arrears__IdType__4316F928">
           <End Role="TypesArrears" Type="Self.TypesArrears" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -590,7 +627,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ArrearsLe__IdArr__4316F928">
+        <Association Name="FK__ArrearsLe__IdArr__45F365D3">
           <End Role="Arrears" Type="Self.Arrears" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -604,7 +641,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ArrearsLe__IdLes__440B1D61">
+        <Association Name="FK__ArrearsLe__IdLes__46E78A0C">
           <End Role="Lessons" Type="Self.Lessons" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -618,7 +655,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Liquidati__IdArr__46E78A0C">
+        <Association Name="FK__Liquidati__IdArr__49C3F6B7">
           <End Role="ArrearsLessons" Type="Self.ArrearsLessons" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -632,7 +669,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Distribut__IdGro__2F10007B">
+        <Association Name="FK__Distribut__IdGro__31EC6D26">
           <End Role="Groups" Type="Self.Groups" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -646,7 +683,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Distribut__IdLes__2E1BDC42">
+        <Association Name="FK__Distribut__IdLes__30F848ED">
           <End Role="Lessons" Type="Self.Lessons" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -660,7 +697,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Distribut__IdTea__2D27B809">
+        <Association Name="FK__Distribut__IdTea__300424B4">
           <End Role="Teachers" Type="Self.Teachers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -674,7 +711,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ExpelledS__IdGro__34C8D9D1">
+        <Association Name="FK__ExpelledS__IdGro__37A5467C">
           <End Role="Groups" Type="Self.Groups" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -688,7 +725,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Students__IdGrou__31EC6D26">
+        <Association Name="FK__Groups__IdType__2D27B809">
+          <End Role="TypesGroups" Type="Self.TypesGroups" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Groups" Type="Self.Groups" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TypesGroups">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Groups">
+              <PropertyRef Name="IdType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Students__IdGrou__34C8D9D1">
           <End Role="Groups" Type="Self.Groups" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -716,7 +767,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Liquidati__IdTea__47DBAE45">
+        <Association Name="FK__Liquidati__IdTea__4AB81AF0">
           <End Role="Teachers" Type="Self.Teachers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -730,7 +781,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__StudentsP__IdStu__37A5467C">
+        <Association Name="FK__StudentsP__IdStu__3A81B327">
           <End Role="Students" Type="Self.Students" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -744,7 +795,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TeachersS__IdTea__3A81B327">
+        <Association Name="FK__TeachersS__IdTea__3D5E1FD2">
           <End Role="Teachers" Type="Self.Teachers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -764,52 +815,57 @@
           <EntitySet Name="DistributionLessons" EntityType="Self.DistributionLessons" />
           <EntitySet Name="ExpelledStudents" EntityType="Self.ExpelledStudents" />
           <EntitySet Name="Groups" EntityType="Self.Groups" />
-          <EntitySet Name="Informations" EntityType="Self.Informations" />
           <EntitySet Name="Lessons" EntityType="Self.Lessons" />
           <EntitySet Name="LiquidationsCompositions" EntityType="Self.LiquidationsCompositions" />
+          <EntitySet Name="Specialty" EntityType="Self.Specialty" />
           <EntitySet Name="Students" EntityType="Self.Students" />
           <EntitySet Name="StudentsPerformance" EntityType="Self.StudentsPerformance" />
           <EntitySet Name="Teachers" EntityType="Self.Teachers" />
           <EntitySet Name="TeachersSchedule" EntityType="Self.TeachersSchedule" />
           <EntitySet Name="TypesArrears" EntityType="Self.TypesArrears" />
+          <EntitySet Name="TypesGroups" EntityType="Self.TypesGroups" />
           <EntitySet Name="TypesLessons" EntityType="Self.TypesLessons" />
-          <AssociationSet Name="FK__Arrears__IdStude__3F466844" Association="Self.FK__Arrears__IdStude__3F466844">
+          <AssociationSet Name="FK__Arrears__IdStude__4222D4EF" Association="Self.FK__Arrears__IdStude__4222D4EF">
             <End Role="Students" EntitySet="Students" />
             <End Role="Arrears" EntitySet="Arrears" />
           </AssociationSet>
-          <AssociationSet Name="FK__Arrears__IdType__403A8C7D" Association="Self.FK__Arrears__IdType__403A8C7D">
+          <AssociationSet Name="FK__Arrears__IdType__4316F928" Association="Self.FK__Arrears__IdType__4316F928">
             <End Role="TypesArrears" EntitySet="TypesArrears" />
             <End Role="Arrears" EntitySet="Arrears" />
           </AssociationSet>
-          <AssociationSet Name="FK__ArrearsLe__IdArr__4316F928" Association="Self.FK__ArrearsLe__IdArr__4316F928">
+          <AssociationSet Name="FK__ArrearsLe__IdArr__45F365D3" Association="Self.FK__ArrearsLe__IdArr__45F365D3">
             <End Role="Arrears" EntitySet="Arrears" />
             <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
           </AssociationSet>
-          <AssociationSet Name="FK__ArrearsLe__IdLes__440B1D61" Association="Self.FK__ArrearsLe__IdLes__440B1D61">
+          <AssociationSet Name="FK__ArrearsLe__IdLes__46E78A0C" Association="Self.FK__ArrearsLe__IdLes__46E78A0C">
             <End Role="Lessons" EntitySet="Lessons" />
             <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
           </AssociationSet>
-          <AssociationSet Name="FK__Liquidati__IdArr__46E78A0C" Association="Self.FK__Liquidati__IdArr__46E78A0C">
+          <AssociationSet Name="FK__Liquidati__IdArr__49C3F6B7" Association="Self.FK__Liquidati__IdArr__49C3F6B7">
             <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
             <End Role="LiquidationsCompositions" EntitySet="LiquidationsCompositions" />
           </AssociationSet>
-          <AssociationSet Name="FK__Distribut__IdGro__2F10007B" Association="Self.FK__Distribut__IdGro__2F10007B">
+          <AssociationSet Name="FK__Distribut__IdGro__31EC6D26" Association="Self.FK__Distribut__IdGro__31EC6D26">
             <End Role="Groups" EntitySet="Groups" />
             <End Role="DistributionLessons" EntitySet="DistributionLessons" />
           </AssociationSet>
-          <AssociationSet Name="FK__Distribut__IdLes__2E1BDC42" Association="Self.FK__Distribut__IdLes__2E1BDC42">
+          <AssociationSet Name="FK__Distribut__IdLes__30F848ED" Association="Self.FK__Distribut__IdLes__30F848ED">
             <End Role="Lessons" EntitySet="Lessons" />
             <End Role="DistributionLessons" EntitySet="DistributionLessons" />
           </AssociationSet>
-          <AssociationSet Name="FK__Distribut__IdTea__2D27B809" Association="Self.FK__Distribut__IdTea__2D27B809">
+          <AssociationSet Name="FK__Distribut__IdTea__300424B4" Association="Self.FK__Distribut__IdTea__300424B4">
             <End Role="Teachers" EntitySet="Teachers" />
             <End Role="DistributionLessons" EntitySet="DistributionLessons" />
           </AssociationSet>
-          <AssociationSet Name="FK__ExpelledS__IdGro__34C8D9D1" Association="Self.FK__ExpelledS__IdGro__34C8D9D1">
+          <AssociationSet Name="FK__ExpelledS__IdGro__37A5467C" Association="Self.FK__ExpelledS__IdGro__37A5467C">
             <End Role="Groups" EntitySet="Groups" />
             <End Role="ExpelledStudents" EntitySet="ExpelledStudents" />
           </AssociationSet>
-          <AssociationSet Name="FK__Students__IdGrou__31EC6D26" Association="Self.FK__Students__IdGrou__31EC6D26">
+          <AssociationSet Name="FK__Groups__IdType__2D27B809" Association="Self.FK__Groups__IdType__2D27B809">
+            <End Role="TypesGroups" EntitySet="TypesGroups" />
+            <End Role="Groups" EntitySet="Groups" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Students__IdGrou__34C8D9D1" Association="Self.FK__Students__IdGrou__34C8D9D1">
             <End Role="Groups" EntitySet="Groups" />
             <End Role="Students" EntitySet="Students" />
           </AssociationSet>
@@ -817,15 +873,15 @@
             <End Role="TypesLessons" EntitySet="TypesLessons" />
             <End Role="Lessons" EntitySet="Lessons" />
           </AssociationSet>
-          <AssociationSet Name="FK__Liquidati__IdTea__47DBAE45" Association="Self.FK__Liquidati__IdTea__47DBAE45">
+          <AssociationSet Name="FK__Liquidati__IdTea__4AB81AF0" Association="Self.FK__Liquidati__IdTea__4AB81AF0">
             <End Role="Teachers" EntitySet="Teachers" />
             <End Role="LiquidationsCompositions" EntitySet="LiquidationsCompositions" />
           </AssociationSet>
-          <AssociationSet Name="FK__StudentsP__IdStu__37A5467C" Association="Self.FK__StudentsP__IdStu__37A5467C">
+          <AssociationSet Name="FK__StudentsP__IdStu__3A81B327" Association="Self.FK__StudentsP__IdStu__3A81B327">
             <End Role="Students" EntitySet="Students" />
             <End Role="StudentsPerformance" EntitySet="StudentsPerformance" />
           </AssociationSet>
-          <AssociationSet Name="FK__TeachersS__IdTea__3A81B327" Association="Self.FK__TeachersS__IdTea__3A81B327">
+          <AssociationSet Name="FK__TeachersS__IdTea__3D5E1FD2" Association="Self.FK__TeachersS__IdTea__3D5E1FD2">
             <End Role="Teachers" EntitySet="Teachers" />
             <End Role="TeachersSchedule" EntitySet="TeachersSchedule" />
           </AssociationSet>
@@ -884,16 +940,8 @@
             <EntityTypeMapping TypeName="SpecialtyManagementModel.Groups">
               <MappingFragment StoreEntitySet="Groups">
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdType" ColumnName="IdType" />
                 <ScalarProperty Name="Group" ColumnName="Group" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Informations">
-            <EntityTypeMapping TypeName="SpecialtyManagementModel.Informations">
-              <MappingFragment StoreEntitySet="Informations">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Key" ColumnName="Key" />
-                <ScalarProperty Name="Information" ColumnName="Information" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -913,6 +961,15 @@
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="IdArrearLesson" ColumnName="IdArrearLesson" />
                 <ScalarProperty Name="IdTeacher" ColumnName="IdTeacher" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Specialty">
+            <EntityTypeMapping TypeName="SpecialtyManagementModel.Specialty">
+              <MappingFragment StoreEntitySet="Specialty">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Head" ColumnName="Head" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -965,6 +1022,14 @@
           <EntitySetMapping Name="TypesArrears">
             <EntityTypeMapping TypeName="SpecialtyManagementModel.TypesArrears">
               <MappingFragment StoreEntitySet="TypesArrears">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TypesGroups">
+            <EntityTypeMapping TypeName="SpecialtyManagementModel.TypesGroups">
+              <MappingFragment StoreEntitySet="TypesGroups">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
               </MappingFragment>

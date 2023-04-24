@@ -12,10 +12,18 @@ namespace SpecialtyManagement
     using System;
     using System.Collections.Generic;
     
-    public partial class Informations
+    public partial class TypesGroups
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public TypesGroups()
+        {
+            this.Groups = new HashSet<Groups>();
+        }
+    
         public int Id { get; set; }
-        public string Key { get; set; }
-        public string Information { get; set; }
+        public string Type { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Groups> Groups { get; set; }
     }
 }

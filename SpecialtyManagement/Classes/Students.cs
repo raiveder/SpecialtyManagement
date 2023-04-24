@@ -8,6 +8,7 @@ namespace SpecialtyManagement
 {
     public partial class Students
     {
+        public int SequenceNumber { get; set; }
 
         public string FullName
         {
@@ -36,7 +37,13 @@ namespace SpecialtyManagement
 
                         if (student == null)
                         {
-                            MessageBox.Show("При чтении файла произошла ошибка. Проверьте кооректность заполнения файла.");
+                            MessageBox.Show
+                            (
+                                "При чтении файла произошла ошибка. Проверьте корректность заполнения файла",
+                                "Студенты",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Information
+                            );
                             return new List<Students>();
                         }
 
@@ -46,7 +53,7 @@ namespace SpecialtyManagement
             }
             else
             {
-                MessageBox.Show("Файл не найден.");
+                MessageBox.Show("Файл не найден", "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 
             return students;
@@ -59,8 +66,9 @@ namespace SpecialtyManagement
         /// <returns>Объект типа Students из данной строки.</returns>
         private static Students ParseStringToStudent(string text)
         {
+            text = text.Trim();
             string[] array = text.Split(';');
-            string[] fullName = array[0].Split(' ');
+            string[] fullName = array[1].Split(' ');
 
             try
             {
@@ -71,19 +79,19 @@ namespace SpecialtyManagement
                         Surname = fullName[0],
                         Name = fullName[1],
                         Patronymic = fullName[2],
-                        Birthday = Convert.ToDateTime(array[1]),
-                        Note = array[2]
+                        Birthday = Convert.ToDateTime(array[2]),
+                        Note = array[3] == string.Empty ? null : array[3]
                     };
                 }
                 else
                 {
                     return new Students()
                     {
-                        Surname = array[0],
-                        Name = array[1],
-                        Patronymic = array[2],
-                        Birthday = Convert.ToDateTime(array[3]),
-                        Note = array[4]
+                        Surname = array[1],
+                        Name = array[2],
+                        Patronymic = array[3],
+                        Birthday = Convert.ToDateTime(array[4]),
+                        Note = array[5] == string.Empty ? null : array[5]
                     };
                 }
             }
