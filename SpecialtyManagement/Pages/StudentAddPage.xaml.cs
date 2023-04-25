@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,16 +25,22 @@ namespace SpecialtyManagement.Pages
             UploadPage(filter);
 
             TBHeader.Text = "Изменение студента";
+            BtnAdd.Content = "Изменить";
 
             _student = student;
 
             TBoxSurname.Text = _student.Surname;
             TBoxName.Text = _student.Name;
             TBoxPatronymic.Text = _student.Patronymic;
+            CBGroups.SelectedValue = _student.IdGroup;
             DPBirthday.SelectedDate = _student.Birthday;
             TBoxNote.Text = _student.Note;
         }
 
+        /// <summary>
+        /// Настраивает элементы управления страницы.
+        /// </summary>
+        /// <param name="filter">Настройки фильтра.</param>
         private void UploadPage(Filter filter)
         {
             InitializeComponent();
@@ -42,9 +49,9 @@ namespace SpecialtyManagement.Pages
 
             DPBirthday.DisplayDateEnd = DateTime.Now.AddYears(-14);
 
-            CBGroup.ItemsSource = Database.Entities.Groups.ToList();
-            CBGroup.SelectedValuePath = "Id";
-            CBGroup.DisplayMemberPath = "Group";
+            CBGroups.ItemsSource = Database.Entities.Groups.ToList();
+            CBGroups.SelectedValuePath = "Id";
+            CBGroups.DisplayMemberPath = "Group";
         }
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
@@ -56,35 +63,67 @@ namespace SpecialtyManagement.Pages
         {
             if (CheckFillData())
             {
+                bool isUpdate;
+
                 if (_student == null)
                 {
                     Database.Entities.Students.Add(new Students()
                     {
                         Surname = TBoxSurname.Text,
                         Name = TBoxName.Text,
-                        Patronymic = TBoxPatronymic.Text,
-                        IdGroup = (int)CBGroup.SelectedValue,
+                        Patronymic = TBoxPatronymic.Text.Length == 0 ? null : TBoxPatronymic.Text,
+                        IdGroup = (int)CBGroups.SelectedValue,
                         Birthday = DPBirthday.SelectedDate.Value,
                         Note = TBoxNote.Text.Length == 0 ? null : TBoxNote.Text
                     });
+
+                    isUpdate = false;
                 }
                 else
                 {
-                    Database.Entities.Students.Add(_student);
+                    _student.Surname = TBoxSurname.Text;
+                    _student.Name = TBoxName.Text;
+                    _student.Patronymic = TBoxPatronymic.Text.Length == 0 ? null : TBoxPatronymic.Text;
+                    _student.IdGroup = (int)CBGroups.SelectedValue;
+                    _student.Birthday = DPBirthday.SelectedDate.Value;
+                    _student.Note = TBoxNote.Text.Length == 0 ? null : TBoxNote.Text;
+
+                    isUpdate = true;
                 }
 
                 try
                 {
                     Database.Entities.SaveChanges();
-                    MessageBox.Show("Студент успешно доабвлен", "Студенты", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    if (isUpdate)
+                    {
+                        MessageBox.Show("Данные успешно обновлены", "Студенты", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Студент успешно добавлен", "Студенты", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+
+                    _student = null;
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("При добавлении студента произошла ошибка", "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    if (isUpdate)
+                    {
+                        MessageBox.Show("При сохранении данных произошла ошибка", "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                    else
+                    {
+                        MessageBox.Show("При добавлении студента произошла ошибка", "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
                 }
             }
         }
 
+        /// <summary>
+        /// Проверяет корректность заполнения полей.
+        /// </summary>
+        /// <returns>True - если все данные заполнены корректно, в противном случае - false.</returns>
         private bool CheckFillData()
         {
             Regex regexText = new Regex(@"^[А-Я][а-я]*$");
@@ -109,17 +148,12 @@ namespace SpecialtyManagement.Pages
                 MessageBox.Show("Введите имя студента корректно", "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
-            else if (TBoxPatronymic.Text.Length == 0)
-            {
-                MessageBox.Show("Введите отчество студента", "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return false;
-            }
-            else if (!regexText.IsMatch(TBoxPatronymic.Text))
+            else if (!regexText.IsMatch(TBoxPatronymic.Text) && TBoxPatronymic.Text.Length > 0)
             {
                 MessageBox.Show("Введите отчество студента корректно", "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
-            else if (CBGroup.SelectedIndex == -1)
+            else if (CBGroups.SelectedIndex == -1)
             {
                 MessageBox.Show("Выберите группу студента", "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
@@ -127,6 +161,14 @@ namespace SpecialtyManagement.Pages
             else if (DPBirthday.SelectedDate == null)
             {
                 MessageBox.Show("Выберите дату рождения студента", "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            else if (_student == null && Database.Entities.Students.FirstOrDefault(x => x.Surname == TBoxSurname.Text &&
+            x.Name == TBoxName.Text && x.Patronymic == (TBoxPatronymic.Text.Length == 0 ? null : TBoxPatronymic.Text) &&
+            x.IdGroup == (int)CBGroups.SelectedValue && x.Birthday == DPBirthday.SelectedDate.Value &&
+            x.Note == (TBoxNote.Text.Length == 0 ? null : TBoxNote.Text)) != null)
+            {
+                MessageBox.Show("Данный студент уже есть в базе данных", "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
 

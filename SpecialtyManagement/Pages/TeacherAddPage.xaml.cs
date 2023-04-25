@@ -1,17 +1,11 @@
-﻿using System;
+﻿using SpecialtyManagement.Windows;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SpecialtyManagement.Pages
 {
@@ -20,11 +14,44 @@ namespace SpecialtyManagement.Pages
     /// </summary>
     public partial class TeacherAddPage : Page
     {
-        private List<Lessons> _lessons = new List<Lessons>();
-        private Teachers _teacher;
         private Filter _filter;
+        private Teachers _teacher;
+        private List<Lessons> _lessons = new List<Lessons>(); // Список дисциплин, которые ведёт преподаватель.
+        private List<Groups> _groupsForLessons = new List<Groups>(); // Список групп, у которых преподаватель ведёт выбранную дисциплину.
+        private int _indexGroup = 0; // Индекс для отображения группы из списка _groupsForLessons.
 
         public TeacherAddPage(Filter filter)
+        {
+            UploadPage(filter);
+        }
+
+        public TeacherAddPage(Filter filter, Teachers teacher)
+        {
+            UploadPage(filter);
+
+            TBHeader.Text = "Изменение преподавателя";
+            BtnAdd.Content = "Изменить";
+
+            _teacher = teacher;
+
+            TBoxSurname.Text = _teacher.Surname;
+            TBoxName.Text = _teacher.Name;
+            TBoxPatronymic.Text = _teacher.Patronymic;
+
+            foreach (DistributionLessons item in Database.Entities.DistributionLessons.Where(x => x.IdTeacher == _teacher.Id))
+            {
+                _lessons.Add(item.Lessons);
+                _groupsForLessons.Add(item.Groups);
+            }
+
+            LVLessons.ItemsSource = _lessons;
+        }
+
+        /// <summary>
+        /// Настраивает элементы управления страницы.
+        /// </summary>
+        /// <param name="filter">Настройки фильтра.</param>
+        private void UploadPage(Filter filter)
         {
             InitializeComponent();
             _filter = filter;
@@ -34,18 +61,56 @@ namespace SpecialtyManagement.Pages
             LBLessons.DisplayMemberPath = "FullName";
         }
 
-        public TeacherAddPage(Filter filter, Teachers teacher)
+        private void LBLessons_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            InitializeComponent();
-            _filter = filter;
+            Lessons lesson = LBLessons.SelectedItem as Lessons;
 
-            TBHeader.Text = "Изменение преподавателя";
+            if (!_lessons.Contains(lesson))
+            {
+                Groups group = new Groups();
+                ChoiceGroupWindow window = new ChoiceGroupWindow(group)
+                {
+                    Text = lesson.FullName
+                };
+                window.ShowDialog();
 
-            _teacher = teacher;
+                if ((bool)window.DialogResult)
+                {
+                    _lessons.Add(lesson);
+                    _groupsForLessons.Add(group);
 
-            TBoxSurname.Text = _teacher.Surname;
-            TBoxName.Text = _teacher.Name;
-            TBoxPatronymic.Text = _teacher.Patronymic;
+                    List<Lessons> tempLessons = new List<Lessons>();
+                    tempLessons.AddRange(_lessons);
+
+                    _indexGroup = 0;
+                    LVLessons.ItemsSource = tempLessons;
+                }
+            }
+        }
+
+        private void TBGroup_Loaded(object sender, RoutedEventArgs e)
+        {
+            TextBlock tb = sender as TextBlock;
+
+            tb.Text = "(" + _groupsForLessons[_indexGroup++].Group + ")";
+        }
+
+        private void TBDeleteLesson_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            TextBlock tb = sender as TextBlock;
+            int id = Convert.ToInt32(tb.Uid);
+
+            Lessons lesson = Database.Entities.Lessons.FirstOrDefault(x => x.Id == id);
+            int index = LVLessons.Items.IndexOf(lesson);
+
+            _lessons.RemoveAt(index);
+            _groupsForLessons.RemoveAt(index);
+
+            List<Lessons> tempLessons = new List<Lessons>();
+            tempLessons.AddRange(_lessons);
+
+            _indexGroup = 0;
+            LVLessons.ItemsSource = tempLessons;
         }
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
@@ -55,22 +120,125 @@ namespace SpecialtyManagement.Pages
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
+            if (CheckFillData())
+            {
+                bool isUpdate;
 
+                if (_teacher == null)
+                {
+                    _teacher = new Teachers()
+                    {
+                        Surname = TBoxSurname.Text,
+                        Name = TBoxName.Text,
+                        Patronymic = TBoxPatronymic.Text.Length == 0 ? null : TBoxPatronymic.Text
+                    };
+
+                    Database.Entities.Teachers.Add(_teacher);
+
+                    isUpdate = false;
+                }
+                else
+                {
+                    _teacher.Surname = TBoxSurname.Text;
+                    _teacher.Name = TBoxName.Text;
+                    _teacher.Patronymic = TBoxPatronymic.Text.Length == 0 ? null : TBoxPatronymic.Text;
+
+                    isUpdate = true;
+                }
+
+                try
+                {
+                    Database.Entities.SaveChanges();
+
+                    SaveTeacherLessons();
+
+                    if (isUpdate)
+                    {
+                        MessageBox.Show("Данные успешно обновлены", "Преподаватели", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Преподаватель успешно добавлен", "Преподаватели", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+
+                    _teacher = null;
+                }
+                catch (Exception)
+                {
+                    if (isUpdate)
+                    {
+                        MessageBox.Show("При сохранении данных произошла ошибка", "Преподаватели", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                    else
+                    {
+                        MessageBox.Show("При добавлении преподавателя произошла ошибка", "Преподаватели", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+            }
         }
 
-        private void LBLessons_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        /// <summary>
+        /// Проверяет корректность заполнения полей.
+        /// </summary>
+        /// <returns>True - если все данные заполнены корректно, в противном случае - false.</returns>
+        private bool CheckFillData()
         {
-            Lessons lesson = LBLessons.SelectedItem as Lessons;
+            Regex regexText = new Regex(@"^[А-Я][а-я]*$");
 
-            if (!_lessons.Contains(lesson))
+            if (TBoxSurname.Text.Length == 0)
             {
-                _lessons.Add(Database.Entities.Lessons.FirstOrDefault(x => x.Id == lesson.Id));
-
-                List<Lessons> tempLessons = new List<Lessons>();
-                tempLessons.AddRange(_lessons);
-
-                LVLessons.ItemsSource = tempLessons;
+                MessageBox.Show("Введите фамилию преподавателя", "Преподаватели", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
             }
+            else if (!regexText.IsMatch(TBoxSurname.Text))
+            {
+                MessageBox.Show("Введите фамилию преподавателя корректно", "Преподаватели", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            else if (TBoxName.Text.Length == 0)
+            {
+                MessageBox.Show("Введите имя преподавателя", "Преподаватели", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            else if (!regexText.IsMatch(TBoxName.Text))
+            {
+                MessageBox.Show("Введите имя преподавателя корректно", "Преподаватели", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            else if (!regexText.IsMatch(TBoxPatronymic.Text) && TBoxPatronymic.Text.Length > 0)
+            {
+                MessageBox.Show("Введите отчество преподавателя корректно", "Преподаватели", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            else if (_teacher == null && Database.Entities.Teachers.FirstOrDefault(x => x.Surname == TBoxSurname.Text &&
+            x.Name == TBoxName.Text && x.Patronymic == (TBoxPatronymic.Text.Length == 0 ? null : TBoxPatronymic.Text)) != null)
+            {
+                MessageBox.Show("Данный преподаватель уже есть в базе данных", "Преподаватели", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Сохраняет данные о дисциплинах, которые ведён преподаватель, в БД.
+        /// </summary>
+        /// <returns>True - если сохранение прошло успешно, в противном случае - false.</returns>
+        private void SaveTeacherLessons()
+        {
+            Database.Entities.DistributionLessons.RemoveRange(Database.Entities.DistributionLessons.Where(x => x.IdTeacher == _teacher.Id));
+
+            for (int i = 0; i < _lessons.Count; i++)
+            {
+                Database.Entities.DistributionLessons.Add(new DistributionLessons()
+                {
+                    IdTeacher = _teacher.Id,
+                    IdLesson = _lessons[i].Id,
+                    IdGroup = _groupsForLessons[i].Id
+                });
+            }
+
+            Database.Entities.SaveChanges();
         }
     }
 }

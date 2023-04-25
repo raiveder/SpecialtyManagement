@@ -34,6 +34,10 @@ namespace SpecialtyManagement.Pages
             ChBNote.IsChecked = filter.HasNote;
         }
 
+        /// <summary>
+        /// Настраивает элементы управления страницы.
+        /// </summary>
+        /// <param name="filter">Настройки фильтра.</param>
         private void UploadPage()
         {
             InitializeComponent();
@@ -156,7 +160,11 @@ namespace SpecialtyManagement.Pages
 
                 if (students.Count != 0)
                 {
-                    new ChoiceGroupWindow(students).ShowDialog();
+                    ChoiceGroupWindow window = new ChoiceGroupWindow(students)
+                    {
+                        Text = "Добавление студентов"
+                    };
+                    window.ShowDialog();
 
                     Database.Entities.Students.AddRange(students);
 
