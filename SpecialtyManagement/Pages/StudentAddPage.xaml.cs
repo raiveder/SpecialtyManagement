@@ -12,16 +12,18 @@ namespace SpecialtyManagement.Pages
     public partial class StudentAddPage : Page
     {
         private Students _student;
-        private FilterStudent _filter;
+        private Filter _filter;
 
-        public StudentAddPage(FilterStudent filter)
+        public StudentAddPage(Filter filter)
         {
             UploadPage(filter);
         }
 
-        public StudentAddPage(FilterStudent filter, Students student)
+        public StudentAddPage(Filter filter, Students student)
         {
             UploadPage(filter);
+
+            TBHeader.Text = "Изменение студента";
 
             _student = student;
 
@@ -32,7 +34,7 @@ namespace SpecialtyManagement.Pages
             TBoxNote.Text = _student.Note;
         }
 
-        private void UploadPage(FilterStudent filter)
+        private void UploadPage(Filter filter)
         {
             InitializeComponent();
 

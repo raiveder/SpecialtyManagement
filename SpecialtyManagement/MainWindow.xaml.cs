@@ -52,6 +52,8 @@ namespace SpecialtyManagement
         private void BtnTeachers_Click(object sender, RoutedEventArgs e)
         {
             SelectButton((Button)sender);
+
+            Navigation.Frame.Navigate(new TeahersShowPage());
         }
 
         private void BtnGroups_Click(object sender, RoutedEventArgs e)

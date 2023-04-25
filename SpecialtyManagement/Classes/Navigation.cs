@@ -2,6 +2,17 @@
 
 namespace SpecialtyManagement
 {
+    /// <summary>
+    /// Структура для сохранения настроек фильтра данных.
+    /// </summary>
+    public struct Filter
+    {
+        public string FindText { get; set; }
+        public int IndexSort { get; set; }
+        public int IndexGroup { get; set; }
+        public bool HasNote { get; set; }
+    }
+
     public class Navigation
     {
         public static Frame Frame;

@@ -9,14 +9,6 @@ using System.Windows.Input;
 
 namespace SpecialtyManagement.Pages
 {
-    public struct FilterStudent
-    {
-        public string FindText { get; set; }
-        public int IndexSort { get; set; }
-        public int IndexGroup { get; set; }
-        public bool HasNote { get; set; }
-    }
-
     /// <summary>
     /// Логика взаимодействия для StudentsShowPage.xaml
     /// </summary>
@@ -32,7 +24,7 @@ namespace SpecialtyManagement.Pages
             CBSort.SelectedIndex = 0;
         }
 
-        public StudentsShowPage(FilterStudent filter)
+        public StudentsShowPage(Filter filter)
         {
             UploadPage();
 
@@ -139,7 +131,7 @@ namespace SpecialtyManagement.Pages
 
         private void MIAdd_Click(object sender, RoutedEventArgs e)
         {
-            FilterStudent filter = new FilterStudent()
+            Filter filter = new Filter()
             {
                 FindText = TBoxFind.Text,
                 IndexGroup = CBGroup.SelectedIndex,
@@ -184,16 +176,11 @@ namespace SpecialtyManagement.Pages
             }
         }
 
-        private void BtnCertification_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void MIChange_Click(object sender, RoutedEventArgs e)
         {
             if (DGStudents.SelectedItems.Count == 1)
             {
-                FilterStudent filter = new FilterStudent()
+                Filter filter = new Filter()
                 {
                     FindText = TBoxFind.Text,
                     IndexGroup = CBGroup.SelectedIndex,
@@ -202,6 +189,10 @@ namespace SpecialtyManagement.Pages
                 };
 
                 Navigation.Frame.Navigate(new StudentAddPage(filter, DGStudents.SelectedItem as Students));
+            }
+            else
+            {
+                MessageBox.Show("Выберите одного студента", "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -259,6 +250,11 @@ namespace SpecialtyManagement.Pages
         private void CMStudents_Closed(object sender, RoutedEventArgs e)
         {
             DGStudents.SelectedItems.Clear();
+        }
+
+        private void BtnCertification_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
