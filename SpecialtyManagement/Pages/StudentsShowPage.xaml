@@ -49,9 +49,9 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="№" Binding="{Binding SequenceNumber}" MinWidth="40" MaxWidth="40" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>
                 <DataGridTextColumn Header="Группа" Binding="{Binding Groups.Group}" MinWidth="80" MaxWidth="80" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>
-                <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}" MinWidth="200" MaxWidth="320"/>
+                <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}" MinWidth="200"/>
                 <DataGridTextColumn Header="Дата рождения" Binding="{Binding Birthday, StringFormat={}{0:dd.MM.yyyy}}" MinWidth="160" MaxWidth="160" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>
-                <DataGridTextColumn Header="Примечание" Binding="{Binding Note}"/>
+                <DataGridTextColumn Header="Примечание" Binding="{Binding Note}" MinWidth="150"/>
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu Name="CMStudents" Closed="CMStudents_Closed">

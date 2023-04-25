@@ -166,19 +166,22 @@ namespace SpecialtyManagement.Pages
                     };
                     window.ShowDialog();
 
-                    Database.Entities.Students.AddRange(students);
-
-                    try
+                    if ((bool)window.DialogResult)
                     {
-                        Database.Entities.SaveChanges();
+                        Database.Entities.Students.AddRange(students);
 
-                        CBGroup.SelectedValue = students[0].IdGroup;
+                        try
+                        {
+                            Database.Entities.SaveChanges();
 
-                        MessageBox.Show("Студенты успешно добавлены", "Студенты", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
-                    catch (Exception)
-                    {
-                        MessageBox.Show("При добавлении студентов возникла ошибка", "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            CBGroup.SelectedValue = students[0].IdGroup;
+
+                            MessageBox.Show("Студенты успешно добавлены", "Студенты", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        catch (Exception)
+                        {
+                            MessageBox.Show("При добавлении студентов возникла ошибка", "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        }
                     }
                 }
             }
