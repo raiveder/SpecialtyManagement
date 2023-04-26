@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SpecialtyManagement.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="800" d:DesignWidth="960"
+      d:DesignHeight="730" d:DesignWidth="960"
       Title="StudentAddPage">
 
     <Grid>

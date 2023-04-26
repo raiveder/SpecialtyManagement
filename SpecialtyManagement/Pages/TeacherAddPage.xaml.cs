@@ -183,7 +183,7 @@ namespace SpecialtyManagement.Pages
         /// <returns>True - если все данные заполнены корректно, в противном случае - false.</returns>
         private bool CheckFillData()
         {
-            Regex regexText = new Regex(@"^[А-Я][а-я]*$");
+            Regex regexText = new Regex(@"^[А-Я][а-я]+");
 
             if (TBoxSurname.Text.Length == 0)
             {

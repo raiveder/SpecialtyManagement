@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using SpecialtyManagement.Classes;
+using System.Windows.Controls;
 
 namespace SpecialtyManagement
 {
@@ -16,5 +17,6 @@ namespace SpecialtyManagement
     public class Navigation
     {
         public static Frame Frame;
+        public static Setting Setting;
     }
 }

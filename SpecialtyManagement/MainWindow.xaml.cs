@@ -1,4 +1,5 @@
-﻿using SpecialtyManagement.Pages;
+﻿using SpecialtyManagement.Classes;
+using SpecialtyManagement.Pages;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -20,11 +21,16 @@ namespace SpecialtyManagement
             InitializeComponent();
 
             _buttonsMenu = SPMenu.Children.OfType<Button>().ToList();
+            _buttonsMenu.Add(BtnSettings);
             SelectButton(_buttonsMenu[0]);
 
             Database.Entities = new SpecialtyManagementEntities(); // Сделать проверку подключения.
+
             Navigation.Frame = MainFrame;
+            Navigation.Setting = new Setting();
             Navigation.Frame.Navigate(new StudentsShowPage());
+
+            DataContext = Navigation.Setting;
         }
 
         private void BtnStudents_Click(object sender, RoutedEventArgs e)
@@ -82,6 +88,13 @@ namespace SpecialtyManagement
         private void BtnExit_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void BtnSettings_Click(object sender, RoutedEventArgs e)
+        {
+            SelectButton((Button)sender);
+
+            Navigation.Frame.Navigate(new SettingsPage());
         }
     }
 }

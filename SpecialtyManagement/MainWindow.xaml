@@ -13,10 +13,14 @@
             <ColumnDefinition MaxWidth="320"/>
             <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
-        <StackPanel Background="{StaticResource ColorPrimary}"/>
+        <StackPanel Grid.RowSpan="2" Background="{StaticResource ColorPrimary}"/>
 
-        <StackPanel Name="SPMenu" Margin="20 10 20 10">
+        <StackPanel Grid.RowSpan="2" Name="SPMenu" Margin="20 20 20 10">
             <Image Source="Resources/Logo.png" Margin="0 0 0 10"/>
             <Button Name="BtnStudents" Content="Студенты" Style="{StaticResource BtnMenuStyle}" Click="BtnStudents_Click"/>
             <Button Name="BtnArrears" Content="Задолженности" Style="{StaticResource BtnMenuStyle}" Click="BtnArrears_Click"/>
@@ -26,8 +30,18 @@
             <Button Name="BtnGroups" Content="Группы" Style="{StaticResource BtnMenuStyle}" Click="BtnGroups_Click"/>
         </StackPanel>
 
-        <Button Name="BtnExit" Content="Выйти" Style="{StaticResource BtnMenuStyle}" VerticalAlignment="Bottom" Margin="20 0 20 50" Click="BtnExit_Click"/>
+        <StackPanel Grid.RowSpan="2" VerticalAlignment="Bottom"  Margin="20">
+            <Button Name="BtnSettings" Content="Настройки" Style="{StaticResource BtnMenuStyle}" Click="BtnSettings_Click"/>
+            <Button Name="BtnExit" Content="Выйти" Style="{StaticResource BtnMenuStyle}" Click="BtnExit_Click"/>
+        </StackPanel>
 
-        <Frame Grid.Column="1" Name="MainFrame" NavigationUIVisibility="Hidden"/>
+        <Border Grid.Column="1" Background="{StaticResource ColorSecondary}" CornerRadius="0 0 10 10">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Name="TBSpecialty" Text="{Binding Specialty}" HorizontalAlignment="Center"/>
+                <TextBlock Name="TBHead" Text="{Binding HeadOfSpecialty}" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <Frame Grid.Row="1" Grid.Column="1" Name="MainFrame" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SpecialtyManagement.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="800" d:DesignWidth="960"
+      d:DesignHeight="730" d:DesignWidth="960"
       Title="StudentAddPage">
 
     <Grid>
@@ -24,11 +24,11 @@
 
         <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Text="Фамилия" Margin="0 0 0 5"/>
-            <TextBox Name="TBoxSurname" Width="300" Height="30" HorizontalAlignment="Left" Margin="0 0 0 20"/>
+            <TextBox Name="TBoxSurname" Width="300" HorizontalAlignment="Left" Margin="0 0 0 20"/>
             <TextBlock Text="Имя" Margin="0 0 0 5"/>
-            <TextBox Name="TBoxName" Width="300" Height="30" HorizontalAlignment="Left" Margin="0 0 0 20"/>
+            <TextBox Name="TBoxName" Width="300" HorizontalAlignment="Left" Margin="0 0 0 20"/>
             <TextBlock Text="Отчество" Margin="0 0 0 5"/>
-            <TextBox Name="TBoxPatronymic" Width="300" Height="30" HorizontalAlignment="Left"/>
+            <TextBox Name="TBoxPatronymic" Width="300" HorizontalAlignment="Left"/>
         </StackPanel>
 
         <TextBlock Grid.Row="1" Grid.Column="1" Text="Дисциплины" Margin="10"/>

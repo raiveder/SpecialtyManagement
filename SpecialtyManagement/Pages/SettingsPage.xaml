@@ -1,0 +1,31 @@
+﻿<Page x:Class="SpecialtyManagement.Pages.SettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SpecialtyManagement.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="730" d:DesignWidth="960"
+      Title="StudentAddPage">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition/>
+            <RowDefinition Height="70"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Настройки" FontSize="30" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Код специальности" Margin="0 0 0 5"/>
+            <TextBox Name="TBoxCode" Width="300" HorizontalAlignment="Left" Margin="0 0 0 20"/>
+            <TextBlock Text="Наименование специальности" Margin="0 0 0 5"/>
+            <TextBox Name="TBoxName" Width="300" HorizontalAlignment="Left" Margin="0 0 0 20" TextWrapping="Wrap"/>
+            <TextBlock Text="ФИО зав. специальности" Margin="0 0 0 5"/>
+            <TextBox Name="TBoxHead" Width="300" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+        </StackPanel>
+        
+        <Button Grid.Row="2" Name="BtnSave" Content="Сохранить" Margin="10" Click="BtnSave_Click"/>
+    </Grid>
+</Page>
