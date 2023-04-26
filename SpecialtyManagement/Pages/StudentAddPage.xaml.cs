@@ -25,7 +25,7 @@ namespace SpecialtyManagement.Pages
             UploadPage(filter);
 
             TBHeader.Text = "Изменение студента";
-            BtnAdd.Content = "Изменить";
+            BtnAdd.Content = "Сохранить";
 
             _student = student;
 
@@ -52,11 +52,6 @@ namespace SpecialtyManagement.Pages
             CBGroups.ItemsSource = Database.Entities.Groups.ToList();
             CBGroups.SelectedValuePath = "Id";
             CBGroups.DisplayMemberPath = "Group";
-        }
-
-        private void BtnBack_Click(object sender, RoutedEventArgs e)
-        {
-            Navigation.Frame.Navigate(new StudentsShowPage(_filter));
         }
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
@@ -98,6 +93,7 @@ namespace SpecialtyManagement.Pages
                     if (isUpdate)
                     {
                         MessageBox.Show("Данные успешно обновлены", "Студенты", MessageBoxButton.OK, MessageBoxImage.Information);
+                        Navigation.Frame.Navigate(new StudentsShowPage(_filter));
                     }
                     else
                     {
@@ -173,6 +169,11 @@ namespace SpecialtyManagement.Pages
             }
 
             return true;
+        }
+
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            Navigation.Frame.Navigate(new StudentsShowPage(_filter));
         }
     }
 }

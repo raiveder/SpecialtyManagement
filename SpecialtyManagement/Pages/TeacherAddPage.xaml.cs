@@ -17,8 +17,8 @@ namespace SpecialtyManagement.Pages
         private Filter _filter;
         private Teachers _teacher;
         private List<Lessons> _lessons = new List<Lessons>(); // Список дисциплин, которые ведёт преподаватель.
-        private List<Groups> _groupsForLessons = new List<Groups>(); // Список групп, у которых преподаватель ведёт выбранную дисциплину.
-        private int _indexGroup = 0; // Индекс для отображения группы из списка _groupsForLessons.
+        private List<Groups> _groups = new List<Groups>(); // Список групп, у которых преподаватель ведёт выбранную дисциплину.
+        private int _indexGroup = 0; // Индекс для отображения группы из списка _groups.
 
         public TeacherAddPage(Filter filter)
         {
@@ -30,7 +30,7 @@ namespace SpecialtyManagement.Pages
             UploadPage(filter);
 
             TBHeader.Text = "Изменение преподавателя";
-            BtnAdd.Content = "Изменить";
+            BtnAdd.Content = "Сохранить";
 
             _teacher = teacher;
 
@@ -41,7 +41,7 @@ namespace SpecialtyManagement.Pages
             foreach (DistributionLessons item in Database.Entities.DistributionLessons.Where(x => x.IdTeacher == _teacher.Id))
             {
                 _lessons.Add(item.Lessons);
-                _groupsForLessons.Add(item.Groups);
+                _groups.Add(item.Groups);
             }
 
             LVLessons.ItemsSource = _lessons;
@@ -77,7 +77,7 @@ namespace SpecialtyManagement.Pages
                 if ((bool)window.DialogResult)
                 {
                     _lessons.Add(lesson);
-                    _groupsForLessons.Add(group);
+                    _groups.Add(group);
 
                     List<Lessons> tempLessons = new List<Lessons>();
                     tempLessons.AddRange(_lessons);
@@ -90,32 +90,24 @@ namespace SpecialtyManagement.Pages
 
         private void TBGroup_Loaded(object sender, RoutedEventArgs e)
         {
-            TextBlock tb = sender as TextBlock;
-
-            tb.Text = "(" + _groupsForLessons[_indexGroup++].Group + ")";
+            (sender as TextBlock).Text = "(" + _groups[_indexGroup++].Group + ")";
         }
 
         private void TBDeleteLesson_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            TextBlock tb = sender as TextBlock;
-            int id = Convert.ToInt32(tb.Uid);
+            int id = Convert.ToInt32((sender as TextBlock).Uid);
 
             Lessons lesson = Database.Entities.Lessons.FirstOrDefault(x => x.Id == id);
-            int index = LVLessons.Items.IndexOf(lesson);
+            int index = _lessons.IndexOf(lesson);
 
             _lessons.RemoveAt(index);
-            _groupsForLessons.RemoveAt(index);
+            _groups.RemoveAt(index);
 
             List<Lessons> tempLessons = new List<Lessons>();
             tempLessons.AddRange(_lessons);
 
             _indexGroup = 0;
             LVLessons.ItemsSource = tempLessons;
-        }
-
-        private void BtnBack_Click(object sender, RoutedEventArgs e)
-        {
-            Navigation.Frame.Navigate(new TeahersShowPage(_filter));
         }
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
@@ -155,6 +147,7 @@ namespace SpecialtyManagement.Pages
                     if (isUpdate)
                     {
                         MessageBox.Show("Данные успешно обновлены", "Преподаватели", MessageBoxButton.OK, MessageBoxImage.Information);
+                        Navigation.Frame.Navigate(new TeahersShowPage(_filter));
                     }
                     else
                     {
@@ -221,7 +214,7 @@ namespace SpecialtyManagement.Pages
         }
 
         /// <summary>
-        /// Сохраняет данные о дисциплинах, которые ведён преподаватель, в БД.
+        /// Сохраняет данные о дисциплинах, которые ведёт преподаватель.
         /// </summary>
         /// <returns>True - если сохранение прошло успешно, в противном случае - false.</returns>
         private void SaveTeacherLessons()
@@ -234,11 +227,16 @@ namespace SpecialtyManagement.Pages
                 {
                     IdTeacher = _teacher.Id,
                     IdLesson = _lessons[i].Id,
-                    IdGroup = _groupsForLessons[i].Id
+                    IdGroup = _groups[i].Id
                 });
             }
 
             Database.Entities.SaveChanges();
+        }
+
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            Navigation.Frame.Navigate(new TeahersShowPage(_filter));
         }
     }
 }

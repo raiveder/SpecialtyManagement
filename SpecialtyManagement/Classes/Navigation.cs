@@ -11,6 +11,7 @@ namespace SpecialtyManagement
         public string FindText { get; set; }
         public int IndexSort { get; set; }
         public int IndexGroup { get; set; }
+        public int IndexType { get; set; }
         public bool HasNote { get; set; }
     }
 

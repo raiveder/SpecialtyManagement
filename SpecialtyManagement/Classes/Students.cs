@@ -12,7 +12,14 @@ namespace SpecialtyManagement
 
         public string FullName
         {
-            get => Surname + " " + Name + " " + Patronymic;
+            get
+            {
+                if (Patronymic == null)
+                {
+                    return Surname + " " + Name;
+                }
+                return Surname + " " + Name + " " + Patronymic;
+            }
         }
 
         /// <summary>

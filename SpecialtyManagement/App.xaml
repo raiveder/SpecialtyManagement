@@ -31,16 +31,20 @@
             <Setter Property="FontFamily" Value="{StaticResource Font}"/>
             <Setter Property="FontSize" Value="{StaticResource FontSize}"/>
             <Setter Property="Background" Value="{StaticResource ColorSecondary}"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="MinWidth" Value="200"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}"
                                 CornerRadius="{StaticResource CornerRadius}"
-                                Padding="10"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                MinWidth="200"
+                                Padding="{TemplateBinding Padding}"
+                                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                VerticalAlignment="{TemplateBinding HorizontalAlignment}"
+                                MinWidth="{TemplateBinding MinWidth}"
                                 SnapsToDevicePixels="true">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
@@ -177,6 +181,11 @@
             <Setter Property="FontSize" Value="{StaticResource FontSize}"/>
             <Setter Property="Background" Value="{StaticResource ColorPrimary}"/>
         </Style>
+        
+        <Style TargetType="ListView">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+        </Style>
 
         <Style TargetType="ListBox">
             <Setter Property="FontFamily" Value="{StaticResource Font}"/>
@@ -205,7 +214,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-    
+
         <!--#region ComboBox Style-->
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
@@ -639,6 +648,54 @@
             <Setter Property="FontFamily" Value="{StaticResource Font}"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="FontSize" Value="{StaticResource FontSize}"/>
+        </Style>
+
+        <Style x:Key="ListViewItemNotStyle" TargetType="ListViewItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <ContentPresenter/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ListViewItemMouseOverStyle" TargetType="ListViewItem">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <Border x:Name="Border" CornerRadius="{StaticResource CornerRadius}"
+                                Background="{StaticResource ColorSecondary}"
+                                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                Padding="{TemplateBinding Padding}"
+                                Margin="{TemplateBinding Margin}">
+                            <ContentPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource ColorAccent}"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="TextBlockMouseOverStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource Font}"/>
+            <Setter Property="FontSize" Value="{StaticResource FontSize}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource ColorAccent}"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
     </Application.Resources>

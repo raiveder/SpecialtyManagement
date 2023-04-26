@@ -1,4 +1,4 @@
-﻿<Page x:Class="SpecialtyManagement.Pages.TeahersShowPage"
+﻿<Page x:Class="SpecialtyManagement.Pages.LessonsShowPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:SpecialtyManagement.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="730" d:DesignWidth="960"
-      Title="TeachersShowPage">
+      Title="LessonsShowPage">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -24,26 +24,18 @@
 
         <StackPanel Margin="10" HorizontalAlignment="Right" VerticalAlignment="Center">
             <StackPanel Orientation="Horizontal" Margin="0 0 0 20">
-                <TextBlock Name="TBSort" Text="Сортировка" Padding="0 0 10 0" VerticalAlignment="Center"/>
-                <ComboBox Name="CBSort" Width="200" VerticalAlignment="Center" SelectionChanged="CBSort_SelectionChanged">
-                    <ComboBoxItem>По умолчанию</ComboBoxItem>
-                    <ComboBoxItem>ФИО ↑</ComboBoxItem>
-                    <ComboBoxItem>Группа ↑</ComboBoxItem>
-                    <ComboBoxItem>Дата рождения ↑</ComboBoxItem>
-                    <ComboBoxItem>ФИО ↓</ComboBoxItem>
-                    <ComboBoxItem>Группа ↓</ComboBoxItem>
-                    <ComboBoxItem>Дата рождения ↓</ComboBoxItem>
-                </ComboBox>
+                <TextBlock Name="TBType" Text="Тип" Padding="0 0 10 0" VerticalAlignment="Center"/>
+                <ComboBox Name="CBType" Width="200" VerticalAlignment="Center" SelectionChanged="CBType_SelectionChanged"/>
             </StackPanel>
         </StackPanel>
 
-        <DataGrid Grid.Row="1" Name="DGTeachers" Margin="10 0" ColumnWidth="*" MouseLeftButtonUp="DGTeachers_MouseLeftButtonUp" MouseRightButtonUp="DGTeachers_MouseRightButtonUp">
+        <DataGrid Grid.Row="1" Name="DGLessons" Margin="10 0" ColumnWidth="*" MouseLeftButtonUp="DGLessons_MouseLeftButtonUp" MouseRightButtonUp="DGLessons_MouseRightButtonUp">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="№" Binding="{Binding SequenceNumber}" MinWidth="40" MaxWidth="40" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>
-                <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}"/>
+                <DataGridTextColumn Header="Дисциплина" Binding="{Binding FullName}"/>
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
-                <ContextMenu Name="CMTeachers" Closed="CMTeachers_Closed">
+                <ContextMenu Name="CMLessons" Closed="CMLessons_Closed">
                     <MenuItem Name="MIChange" Header="Изменить" Click="MIChange_Click"/>
                     <MenuItem Name="MIDelete" Header="Удалить" Click="MIDelete_Click"/>
                 </ContextMenu>

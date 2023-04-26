@@ -2,6 +2,8 @@
 {
     public partial class Lessons
     {
+        public int SequenceNumber { get; set; }
+
         public string ShortName
         {
             get => TypesLessons.Type + " " + Code;

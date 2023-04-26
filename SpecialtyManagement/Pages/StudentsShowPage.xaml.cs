@@ -73,6 +73,9 @@ namespace SpecialtyManagement.Pages
             SetFilter();
         }
 
+        /// <summary>
+        /// Устанавливает фильтр для вывода данных.
+        /// </summary>
         private void SetFilter()
         {
             List<Students> students = Database.Entities.Students.ToList();

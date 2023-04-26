@@ -1,0 +1,82 @@
+﻿<Page x:Class="SpecialtyManagement.Pages.GroupsShowPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SpecialtyManagement.Pages"
+      xmlns:system="clr-namespace:System;assembly=mscorlib"
+      mc:Ignorable="d" 
+      d:DesignHeight="730" d:DesignWidth="960"
+      Title="GroupsShowPage">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="200"/>
+            <RowDefinition/>
+            <RowDefinition Height="70"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Button Content="1 курс" Background="{StaticResource ColorAccent}" Foreground="White" MinWidth="0" Margin="40 10" Padding="0 20" HorizontalAlignment="Stretch" Cursor="Arrow"/>
+        <Button Grid.Column="1" Content="2 курс"  Background="{StaticResource ColorAccent}" Foreground="White" MinWidth="0" Margin="40 10" Padding="0 20" HorizontalAlignment="Stretch" Cursor="Arrow"/>
+        <Button Grid.Column="2" Content="3 курс"  Background="{StaticResource ColorAccent}" Foreground="White" MinWidth="0" Margin="40 10" Padding="0 20" HorizontalAlignment="Stretch" Cursor="Arrow"/>
+        <Button Grid.Column="3" Content="4 курс"  Background="{StaticResource ColorAccent}" Foreground="White" MinWidth="0" Margin="40 10" Padding="0 20" HorizontalAlignment="Stretch" Cursor="Arrow"/>
+
+        <ListView Grid.Row="1" Name="LVFirstYear" BorderThickness="0 0.5" BorderBrush="{StaticResource ColorPrimary}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Button Content="{Binding Group}" MinWidth="0" Margin="40 10" Padding="0 20" HorizontalAlignment="Stretch"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem" BasedOn="{StaticResource ListViewItemNotStyle}"/>
+            </ListView.ItemContainerStyle>
+        </ListView>
+
+        <ListView Grid.Row="1" Grid.Column="1" Name="LVSecondYear">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Button Content="{Binding Group}" MinWidth="0" Margin="40 10" Padding="0 20" HorizontalAlignment="Stretch"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem" BasedOn="{StaticResource ListViewItemNotStyle}"/>
+            </ListView.ItemContainerStyle>
+        </ListView>
+
+        <ListView Grid.Row="1" Grid.Column="2" Name="LVThirdYear">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Button Content="{Binding Group}" MinWidth="0" Margin="40 10" Padding="0 20" HorizontalAlignment="Stretch"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem" BasedOn="{StaticResource ListViewItemNotStyle}"/>
+            </ListView.ItemContainerStyle>
+        </ListView>
+
+        <ListView Grid.Row="1" Grid.Column="3" Name="LVFourthYear">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Button Content="{Binding Group}" MinWidth="0" Margin="40 10" Padding="0 20" HorizontalAlignment="Stretch"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem" BasedOn="{StaticResource ListViewItemNotStyle}"/>
+            </ListView.ItemContainerStyle>
+        </ListView>
+
+        <Border Grid.RowSpan="2" BorderBrush="Gray" BorderThickness="0.5 0" Margin="0 40 0 0"/>
+        <Border Grid.RowSpan="2" Grid.Column="1" BorderBrush="Gray" BorderThickness="0 0 0.5 0" Margin="0 40 0 0"/>
+        <Border Grid.RowSpan="2" Grid.Column="2" BorderBrush="Gray" BorderThickness="0.5 0" Margin="0 40 0 0"/>
+        <Border Grid.RowSpan="2" Grid.Column="3" BorderBrush="Gray" BorderThickness="0.5 0 0 0" Margin="0 40 0 0"/>
+        
+        <Button Grid.Row="2" Name="BtnAdd" Content="Добавить (?)" HorizontalAlignment="Left" Margin="10" Click="BtnAdd_Click"/>
+        <Button Grid.Row="2" Grid.ColumnSpan="4" Name="BtnOffset" Content="Смещение на год" HorizontalAlignment="Right" Margin="10" Click="BtnOffset_Click"/>
+    </Grid>
+</Page>

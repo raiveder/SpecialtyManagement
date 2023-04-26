@@ -1,4 +1,4 @@
-﻿<Page x:Class="SpecialtyManagement.Pages.TeacherAddPage"
+﻿<Page x:Class="SpecialtyManagement.Pages.LessonAddPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:SpecialtyManagement.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="730" d:DesignWidth="960"
-      Title="TeachersAddPage">
+      Title="LessonsAddPage">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -20,35 +20,35 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.ColumnSpan="2" Name="TBHeader" Text="Добавление преподавателя" FontSize="30" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.ColumnSpan="2" Name="TBHeader" Text="Добавление дисциплины" FontSize="30" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
         <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="Фамилия" Margin="0 0 0 5"/>
-            <TextBox Name="TBoxSurname" Width="300" HorizontalAlignment="Left" Margin="0 0 0 20"/>
-            <TextBlock Text="Имя" Margin="0 0 0 5"/>
-            <TextBox Name="TBoxName" Width="300" HorizontalAlignment="Left" Margin="0 0 0 20"/>
-            <TextBlock Text="Отчество" Margin="0 0 0 5"/>
-            <TextBox Name="TBoxPatronymic" Width="300" HorizontalAlignment="Left"/>
+            <TextBlock Text="Тип" Margin="0 0 0 5"/>
+            <ComboBox Name="CBType" Width="300" HorizontalAlignment="Left" Margin="0 0 0 20"/>
+            <TextBlock Text="Код" Margin="0 0 0 5"/>
+            <TextBox Name="TBoxCode" Width="300" HorizontalAlignment="Left" Margin="0 0 0 20"/>
+            <TextBlock Text="Наименование" Margin="0 0 0 5"/>
+            <TextBox Name="TBoxName" Width="300" HorizontalAlignment="Left"/>
         </StackPanel>
 
-        <TextBlock Grid.Row="1" Grid.Column="1" Text="Дисциплины" Margin="10"/>
-        <ListBox Grid.Row="1" Grid.Column="1" Name="LBLessons" Margin="10 40 10 10" SelectionChanged="LBLessons_SelectionChanged"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="Преподаватели" Margin="10"/>
+        <ListBox Grid.Row="1" Grid.Column="1" Name="LBTeachers" Margin="10 40 10 10" SelectionChanged="LBTeachers_SelectionChanged"/>
 
-        <TextBlock Grid.Row="2" Text="Выбранные дисциплины:" Margin="10"/>
-        <ListView Grid.Row="2" Grid.ColumnSpan="2" Name="LVLessons" Margin="10 40 10 0">
+        <TextBlock Grid.Row="2" Text="Выбранные преподаватели:" Margin="10"/>
+        <ListView Grid.Row="2" Grid.ColumnSpan="2" Name="LVTeachers" Margin="10 40 10 0">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel/>
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
-            
+
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Border CornerRadius="{StaticResource CornerRadius}" Background="{StaticResource ColorSecondary}" Padding="10" Margin="5">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding ShortName}" Margin="0 0 2 0"/>
                             <TextBlock Name="TBGroup" Margin="0 0 5 0" Loaded="TBGroup_Loaded"/>
-                            <TextBlock Name="TBDeleteLesson" Uid="{Binding Id}" Text="✕" Style="{StaticResource TextBlockMouseOverStyle}" MouseDown="TBDeleteLesson_MouseDown"/>
+                            <TextBlock Name="TBDelete" Uid="{Binding Id}" Text="✕" Style="{StaticResource TextBlockMouseOverStyle}" MouseDown="TBDelete_MouseDown"/>
                         </StackPanel>
                     </Border>
                 </DataTemplate>

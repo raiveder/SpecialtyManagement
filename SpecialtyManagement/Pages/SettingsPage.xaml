@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:SpecialtyManagement.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="730" d:DesignWidth="960"
-      Title="StudentAddPage">
+      Title="SettingsPage">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -15,7 +15,7 @@
             <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Настройки" FontSize="30" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Text="Настройки" FontSize="30" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
 
         <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Text="Код специальности" Margin="0 0 0 5"/>

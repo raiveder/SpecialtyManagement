@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:SpecialtyManagement.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="730" d:DesignWidth="960"
-      Title="StudentsPage">
+      Title="StudentsShowPage">
 
     <Grid>
         <Grid.RowDefinitions>

@@ -46,6 +46,9 @@ namespace SpecialtyManagement.Pages
             SetFilter();
         }
 
+        /// <summary>
+        /// Устанавливает фильтр для вывода данных.
+        /// </summary>
         private void SetFilter()
         {
             List<Teachers> teachers = Database.Entities.Teachers.ToList();

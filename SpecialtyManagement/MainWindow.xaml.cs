@@ -13,8 +13,7 @@ namespace SpecialtyManagement
     /// </summary>
     public partial class MainWindow : Window
     {
-        // Список кнопок меню.
-        private List<Button> _buttonsMenu;
+        private List<Button> _buttonsMenu; // Список кнопок навигации меню.
 
         public MainWindow()
         {
@@ -36,7 +35,6 @@ namespace SpecialtyManagement
         private void BtnStudents_Click(object sender, RoutedEventArgs e)
         {
             SelectButton((Button)sender);
-
             Navigation.Frame.Navigate(new StudentsShowPage());
         }
 
@@ -53,18 +51,19 @@ namespace SpecialtyManagement
         private void BtnLessons_Click(object sender, RoutedEventArgs e)
         {
             SelectButton((Button)sender);
+            Navigation.Frame.Navigate(new LessonsShowPage());
         }
 
         private void BtnTeachers_Click(object sender, RoutedEventArgs e)
         {
             SelectButton((Button)sender);
-
             Navigation.Frame.Navigate(new TeahersShowPage());
         }
 
         private void BtnGroups_Click(object sender, RoutedEventArgs e)
         {
             SelectButton((Button)sender);
+            Navigation.Frame.Navigate(new GroupsShowPage());
         }
 
         /// <summary>
@@ -85,16 +84,15 @@ namespace SpecialtyManagement
             currentButton.FontWeight = FontWeights.DemiBold;
         }
 
-        private void BtnExit_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
         private void BtnSettings_Click(object sender, RoutedEventArgs e)
         {
             SelectButton((Button)sender);
-
             Navigation.Frame.Navigate(new SettingsPage());
+        }
+
+        private void BtnExit_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }
