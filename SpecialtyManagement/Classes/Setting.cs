@@ -15,7 +15,7 @@ namespace SpecialtyManagement.Classes
 
                 if (specialty != null)
                 {
-                    return specialty.Code + " " + specialty.Name;
+                    return specialty.FullName;
                 }
 
                 return "Специальность не указана";
