@@ -37,7 +37,6 @@ namespace SpecialtyManagement.Pages
         /// <summary>
         /// Настраивает элементы управления страницы.
         /// </summary>
-        /// <param name="filter">Настройки фильтра.</param>
         private void UploadPage()
         {
             InitializeComponent();

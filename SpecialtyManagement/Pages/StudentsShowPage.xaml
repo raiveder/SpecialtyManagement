@@ -62,9 +62,9 @@
         </DataGrid>
 
         <Menu Grid.Row="2" HorizontalAlignment="Left" Margin="10">
-            <MenuItem Header="Добавить" Style="{DynamicResource MenuItemStyle}">
-                <MenuItem Name="MIAdd" Header="Добавить студента" Style="{DynamicResource SubMenuItemStyle}" Click="MIAdd_Click"/>
-                <MenuItem Name="MIReadFile" Header="Загрузить из файла" Style="{DynamicResource SubMenuItemStyle}" Click="MIReadFile_Click"/>
+            <MenuItem Header="Добавить" Style="{StaticResource MenuItemStyle}">
+                <MenuItem Name="MIAdd" Header="Добавить студента" Style="{StaticResource SubMenuItemStyle}" Click="MIAdd_Click"/>
+                <MenuItem Name="MIReadFile" Header="Загрузить из файла" Style="{StaticResource SubMenuItemStyle}" Click="MIReadFile_Click"/>
             </MenuItem>
         </Menu>
 

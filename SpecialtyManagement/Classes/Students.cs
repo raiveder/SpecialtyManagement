@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows;
 
@@ -16,9 +17,17 @@ namespace SpecialtyManagement
             {
                 if (Patronymic == null)
                 {
-                    return Surname + " " + Name;
+                    return SurnameAndName;
                 }
                 return Surname + " " + Name + " " + Patronymic;
+            }
+        }
+
+        public string SurnameAndName
+        {
+            get
+            {
+                return Surname + " " + Name;
             }
         }
 

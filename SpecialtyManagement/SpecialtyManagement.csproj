@@ -105,6 +105,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Pages\ArrearsShowPage.xaml.cs">
+      <DependentUpon>ArrearsShowPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\GroupsShowPage.xaml.cs">
       <DependentUpon>GroupsShowPage.xaml</DependentUpon>
     </Compile>
@@ -168,6 +171,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Pages\ArrearsShowPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\GroupsShowPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

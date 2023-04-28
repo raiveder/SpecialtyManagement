@@ -13,6 +13,8 @@ namespace SpecialtyManagement
         public int IndexGroup { get; set; }
         public int IndexType { get; set; }
         public bool HasNote { get; set; }
+        public bool IsLastSemester { get; set; }
+        public bool IsCurrentSemester { get; set; }
     }
 
     public class Navigation
