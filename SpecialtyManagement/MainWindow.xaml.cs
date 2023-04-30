@@ -41,6 +41,7 @@ namespace SpecialtyManagement
         private void BtnArrears_Click(object sender, RoutedEventArgs e)
         {
             SelectButton((Button)sender);
+            Navigation.Frame.Navigate(new ArrearsShowPage());
         }
 
         private void BtnPerformance_Click(object sender, RoutedEventArgs e)

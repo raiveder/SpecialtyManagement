@@ -71,6 +71,7 @@
     <Compile Include="ArrearsLessons.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Classes\Arrears.cs" />
     <Compile Include="Classes\Lessons.cs" />
     <Compile Include="Classes\Setting.cs" />
     <Compile Include="Classes\Specialty.cs" />

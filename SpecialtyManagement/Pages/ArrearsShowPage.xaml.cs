@@ -17,6 +17,9 @@ namespace SpecialtyManagement.Pages
             UploadPage();
 
             RBCurrentSemester.IsChecked = true;
+            CBGroup.SelectedIndex= 0;
+            CBType.SelectedIndex= 0;
+            CBSort.SelectedIndex= 0;
         }
 
         public ArrearsShowPage(Filter filter)
@@ -51,6 +54,21 @@ namespace SpecialtyManagement.Pages
             CBGroup.ItemsSource = groups;
             CBGroup.SelectedValuePath = "Id";
             CBGroup.DisplayMemberPath = "Group";
+
+            List<TypesArrears> typesArrears = new List<TypesArrears>()
+            {
+                new TypesArrears()
+                {
+                    Id = 0,
+                    Type = "Все типы"
+                }
+            };
+
+            typesArrears.AddRange(Database.Entities.TypesArrears.ToList());
+
+            CBType.ItemsSource = typesArrears;
+            CBType.SelectedValuePath = "Id";
+            CBType.DisplayMemberPath = "Type";
         }
 
         private void TBoxFind_TextChanged(object sender, TextChangedEventArgs e)
@@ -63,8 +81,15 @@ namespace SpecialtyManagement.Pages
             SetFilter();
         }
 
-        private void RBFilter_Click(object sender, RoutedEventArgs e)
+        private void RBLastSemester_Checked(object sender, RoutedEventArgs e)
         {
+            RBCurrentSemester.IsChecked = false;
+            SetFilter();
+        }
+
+        private void RBCurrentSemester_Checked(object sender, RoutedEventArgs e)
+        {
+            RBLastSemester.IsChecked = false;
             SetFilter();
         }
 
@@ -96,6 +121,11 @@ namespace SpecialtyManagement.Pages
                 {
                     arrears = Database.Entities.Arrears.Where(x => x.StartYear == DateTime.Today.Year && x.SemesterNumber == 2).ToList();
                 }
+            }
+
+            if (CBType.SelectedIndex > 0)
+            {
+                arrears = arrears.Where(x => x.TypesArrears.Id == Convert.ToInt32(CBType.SelectedValue)).ToList();
             }
 
             if (CBGroup.SelectedIndex > 0)

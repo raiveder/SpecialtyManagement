@@ -41,11 +41,11 @@
         <StackPanel Margin="10" HorizontalAlignment="Right" VerticalAlignment="Center">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 0 20">
                 <TextBlock Name="TBLastSemester" Text="Прошлый семестр" Padding="0 0 10 0" VerticalAlignment="Center"/>
-                <RadioButton Name="RBLastSemester" Height="{Binding ActualHeight, ElementName=TBoxFind}" VerticalContentAlignment="Center" Click="RBFilter_Click"/>
+                <RadioButton Name="RBLastSemester" Height="{Binding ActualHeight, ElementName=TBoxFind}" VerticalContentAlignment="Center" Checked="RBLastSemester_Checked"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 0 20">
                 <TextBlock Text="Текущий семестр" Width="{Binding ActualWidth, ElementName=TBLastSemester}" VerticalAlignment="Center"/>
-                <RadioButton Name="RBCurrentSemester" Height="{Binding ActualHeight, ElementName=TBoxFind}" VerticalContentAlignment="Center" Click="RBFilter_Click"/>
+                <RadioButton Name="RBCurrentSemester" Height="{Binding ActualHeight, ElementName=TBoxFind}" VerticalContentAlignment="Center" Checked="RBCurrentSemester_Checked"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0 0 0 20">
                 <TextBlock Text="Тип" VerticalAlignment="Center" Margin="0 0 10 0"/>

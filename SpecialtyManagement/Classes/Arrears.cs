@@ -10,7 +10,7 @@ namespace SpecialtyManagement
         {
             get
             {
-                return Database.Entities.ArrearsLessons.Where(x => x.Id == Id).ToList().Count;
+                return Database.Entities.ArrearsLessons.Where(x => x.IdArrear == Id).ToList().Count;
             }
         }
 
@@ -20,12 +20,16 @@ namespace SpecialtyManagement
             {
                 string lessons = string.Empty;
 
-                foreach (ArrearsLessons item in Database.Entities.ArrearsLessons.Where(x => x.Id == Id))
+                foreach (ArrearsLessons item in Database.Entities.ArrearsLessons.Where(x => x.IdArrear == Id))
                 {
                     lessons += item.Lessons.ShortName + ", ";
                 }
 
-                return lessons.Substring(0, lessons.Length - 2);
+                if (lessons.Length > 0)
+                {
+                    return lessons.Substring(0, lessons.Length - 2);
+                }
+                return lessons;
             }
         }
     }

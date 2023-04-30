@@ -23,7 +23,7 @@ namespace SpecialtyManagement
         public int Id { get; set; }
         public int IdArrear { get; set; }
         public int IdLesson { get; set; }
-        public System.DateTime Date { get; set; }
+        public Nullable<System.DateTime> Date { get; set; }
     
         public virtual Arrears Arrears { get; set; }
         public virtual Lessons Lessons { get; set; }
