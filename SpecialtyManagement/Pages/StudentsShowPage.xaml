@@ -45,7 +45,7 @@
             </StackPanel>
         </StackPanel>
 
-        <DataGrid Grid.Row="1" Name="DGStudents" Margin="10 0" ColumnWidth="*" MouseLeftButtonUp="DGStudents_MouseLeftButtonUp" MouseRightButtonUp="DGStudents_MouseRightButtonUp">
+        <DataGrid Grid.Row="1" Name="DGStudents" Margin="10 0" ColumnWidth="*" CellStyle="{StaticResource DataGridTextCell}" MouseLeftButtonUp="DGStudents_MouseLeftButtonUp" MouseRightButtonUp="DGStudents_MouseRightButtonUp">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="№" Binding="{Binding SequenceNumber}" MinWidth="40" MaxWidth="40" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>
                 <DataGridTextColumn Header="Группа" Binding="{Binding Groups.Group}" MinWidth="80" MaxWidth="80" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>

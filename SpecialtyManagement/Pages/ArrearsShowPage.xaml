@@ -53,7 +53,7 @@
             </StackPanel>
         </StackPanel>
 
-        <DataGrid Grid.Row="1" Name="DGArrears" Margin="10 0" ColumnWidth="*" MouseLeftButtonUp="DGArrears_MouseLeftButtonUp" MouseRightButtonUp="DGArrears_MouseRightButtonUp">
+        <!--<DataGrid Grid.Row="1" Name="DGArrears" Margin="10 0" ColumnWidth="*" MouseLeftButtonUp="DGArrears_MouseLeftButtonUp" MouseRightButtonUp="DGArrears_MouseRightButtonUp">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="№" Binding="{Binding SequenceNumber}" MinWidth="40" MaxWidth="40" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>
                 <DataGridTextColumn Header="Группа" Binding="{Binding Students.Groups.Group}" MinWidth="80" MaxWidth="80" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>
@@ -67,21 +67,37 @@
                     <MenuItem Name="MIDelete" Header="Удалить" Click="MIDelete_Click"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
+        </DataGrid>-->
+
+        <DataGrid Grid.Row="1" Name="DGArrears" Margin="10 0" ColumnWidth="*" MouseLeftButtonUp="DGArrears_MouseLeftButtonUp" MouseRightButtonUp="DGArrears_MouseRightButtonUp">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="№" Binding="{Binding SequenceNumber}" MinWidth="40" MaxWidth="40" CellStyle="{StaticResource DataGridTextCell}" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>
+                <DataGridTextColumn Header="Группа" Binding="{Binding Students.Groups.Group}" MinWidth="80" CellStyle="{StaticResource DataGridTextCell}" MaxWidth="80" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>
+                <DataGridTextColumn Header="ФИ" Binding="{Binding Students.SurnameAndName}" MinWidth="150" CellStyle="{StaticResource DataGridTextCell}"/>
+                <DataGridTextColumn Header="Кол-во" Binding="{Binding CountArrears}" MinWidth="160" MaxWidth="160" CellStyle="{StaticResource DataGridTextCell}" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>
+                <DataGridTemplateColumn Header="Дисциплины" MinWidth="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <WrapPanel Name="WPLessons" Uid="{Binding Id}" Margin="5" Loaded="WPLessons_Loaded"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu Name="CMArrears" Closed="CMArrears_Closed">
+                    <MenuItem Name="MIChange" Header="Изменить" Click="MIChange_Click"/>
+                    <MenuItem Name="MIDelete" Header="Удалить" Click="MIDelete_Click"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
         </DataGrid>
 
-        <Menu Grid.Row="2" HorizontalAlignment="Left" Margin="10">
-            <MenuItem Header="Добавить" Style="{StaticResource MenuItemStyle}">
-                <MenuItem Name="MIAddArrear" Header="Добавить задолженность" Style="{StaticResource SubMenuItemStyle}" Click="MIAddArrear_Click"/>
-                <MenuItem Name="MIAddShedule" Header="Добавить график работы преподавателей" Style="{StaticResource SubMenuItemStyle}" Click="MIAddShedule_Click"/>
-            </MenuItem>
-        </Menu>
+        <Button Grid.Row="2" Name="BtnAdd" Content="Добавить" HorizontalAlignment="Left" Margin="10" Click="BtnAdd_Click"/>
 
-        <Menu Grid.Row="2" HorizontalAlignment="Left" Margin="10">
-            <MenuItem Header="Добавить" Style="{StaticResource MenuItemStyle}">
-                <MenuItem Name="MISheduleTeachers" Header="Добавить задолженность" Style="{StaticResource SubMenuItemStyle}" Click="MISheduleTeachers_Click"/>
-                <MenuItem Name="MISheduleRetakes" Header="Добавить график работы преподавателей" Style="{StaticResource SubMenuItemStyle}" Click="MISheduleRetakes_Click"/>
-                <MenuItem Name="MIIndividualSheduleRetakes" Header="Добавить график работы преподавателей" Style="{StaticResource SubMenuItemStyle}" Click="MIIndividualSheduleRetakes_Click"/>
-                <MenuItem Name="MIComissionRetakes" Header="Добавить график работы преподавателей" Style="{StaticResource SubMenuItemStyle}" Click="MIComissionRetakes_Click"/>
+        <Menu Grid.Row="2" HorizontalAlignment="Right" Margin="10">
+            <MenuItem Header="Документы" Style="{StaticResource MenuItemStyle}">
+                <MenuItem Name="MISheduleRetakes" Header="График пересдач" Style="{StaticResource SubMenuItemStyle}" Click="MISheduleRetakes_Click"/>
+                <MenuItem Name="MIIndividualSheduleRetakes" Header="Инд. график пересдачи" Style="{StaticResource SubMenuItemStyle}" Click="MIIndividualSheduleRetakes_Click"/>
+                <MenuItem Name="MIComissionRetakes" Header="Комиссионные пересдачи" Style="{StaticResource SubMenuItemStyle}" Click="MIComissionRetakes_Click"/>
             </MenuItem>
         </Menu>
     </Grid>

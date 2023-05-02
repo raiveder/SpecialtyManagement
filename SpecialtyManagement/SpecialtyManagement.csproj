@@ -130,6 +130,9 @@
     <Compile Include="Pages\TeahersShowPage.xaml.cs">
       <DependentUpon>TeahersShowPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ReasonsArrears.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Specialty.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

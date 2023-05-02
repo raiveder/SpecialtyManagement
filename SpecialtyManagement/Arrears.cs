@@ -22,12 +22,10 @@ namespace SpecialtyManagement
     
         public int Id { get; set; }
         public int IdStudent { get; set; }
-        public int IdType { get; set; }
         public int StartYear { get; set; }
         public int SemesterNumber { get; set; }
     
         public virtual Students Students { get; set; }
-        public virtual TypesArrears TypesArrears { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ArrearsLessons> ArrearsLessons { get; set; }
     }

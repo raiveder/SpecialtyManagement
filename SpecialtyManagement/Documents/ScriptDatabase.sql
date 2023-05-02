@@ -37,7 +37,7 @@ CREATE TABLE Students(
 [Birthday] DATE NOT NULL,
 [IdGroup] INT FOREIGN KEY REFERENCES Groups(Id) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
 [Note] NVARCHAR(MAX),
-[IsExpelled] BIT)
+[IsExpelled] BIT NOT NULL)
 
 CREATE TABLE TeachersSchedule(
 [Id] INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
@@ -47,22 +47,28 @@ CREATE TABLE TeachersSchedule(
 [StartYear] INT NOT NULL,
 [SemesterNumber] INT NOT NULL)
 
+CREATE TABLE Arrears(
+[Id] INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+[IdStudent] INT FOREIGN KEY REFERENCES Students(Id) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
+[StartYear] INT NOT NULL,
+[SemesterNumber] INT NOT NULL)
+
 CREATE TABLE TypesArrears(
 [Id] INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 [Type] NVARCHAR(13) NOT NULL)
 
-CREATE TABLE Arrears(
+CREATE TABLE ReasonsArrears(
 [Id] INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
-[IdStudent] INT FOREIGN KEY REFERENCES Students(Id) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
-[IdType] INT FOREIGN KEY REFERENCES TypesArrears(Id) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
-[StartYear] INT NOT NULL,
-[SemesterNumber] INT NOT NULL)
+[Type] NVARCHAR(50) NOT NULL)
 
 CREATE TABLE ArrearsLessons(
 [Id] INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 [IdArrear] INT FOREIGN KEY REFERENCES Arrears(Id) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
 [IdLesson] INT FOREIGN KEY REFERENCES Lessons(Id) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
-[Date] DATETIME)
+[IdType] INT FOREIGN KEY REFERENCES TypesArrears(Id) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
+[Date] DATETIME,
+[IsLiquidated] BIT NOT NULL,
+[Reason] INT FOREIGN KEY REFERENCES ReasonsArrears(Id))
 
 CREATE TABLE LiquidationsCompositions(
 [Id] INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
@@ -169,7 +175,7 @@ INSERT INTO Students VALUES
 ('Арзамасова', 'Дарья', 'Алексеевна', '2006/12/06', 13, 'пер. Пр. 04-01/1/15 от 16.01.2023 из гр. 11Б', 0),
 ('Богаткова', 'Анастасия', 'Андреевна', '2006/12/06', 13, NULL, 0),
 ('Брусова', 'Полина', 'Андреевна', '2006/07/21', 13, NULL, 0),
-('Глушенкова', 'Влада', 'Алексеевна', '2005/11/23', 13, NULL),
+('Глушенкова', 'Влада', 'Алексеевна', '2005/11/23', 13, NULL, 0),
 ('Головачёва', 'Екатерина', 'Михайловна', '2005/02/04', 13, NULL, 0),
 ('Гусев', 'Илья', 'Александрович', '2006/08/18', 13, NULL, 0),
 ('Гусенков', 'Никита', 'Алексеевич', '2006/10/12', 13, NULL, 0),
@@ -198,25 +204,31 @@ INSERT INTO TypesArrears VALUES
 ('Первичная'),
 ('Комиссионная')
 
+INSERT INTO ReasonsArrears VALUES
+('Уважительная причина'),
+('Отчислен'),
+('Академический отпуск')
+
 INSERT INTO Arrears VALUES
-(1, 1, 2022, 1),
-(2, 1, 2022, 1),
-(8, 1, 2022, 1),
-(5, 1, 2023, 2),
-(5, 2, 2023, 2),
-(12, 1, 2023, 2)
+(1, 2022, 1),
+(2, 2022, 1),
+(8, 2022, 1),
+(5, 2023, 2),
+(12, 2023, 2),
+(26, 2023, 2)
 
 INSERT INTO ArrearsLessons VALUES
-(1, 1, NULL),
-(1, 3, NULL),
-(2, 12, NULL),
-(3, 15, NULL),
-(3, 16, NULL),
-(3, 13, NULL),
-(4, 4, NULL),
-(5, 2, NULL),
-(5, 2, NULL),
-(5, 3, NULL),
-(5, 15, NULL),
-(5, 16, NULL),
-(6, 12, NULL)
+(1, 1, 1, NULL, 0, NULL),
+(1, 3, 1, NULL, 0, NULL),
+(2, 12, 1, NULL, 0, NULL),
+(3, 15, 1, NULL, 0, NULL),
+(3, 16, 1, NULL, 0, NULL),
+(3, 13, 1, NULL, 0, NULL),
+(4, 4, 1, NULL, 0, NULL),
+(4, 2, 2, NULL, 0, NULL),
+(4, 3, 2, NULL, 1, NULL),
+(4, 15, 2, NULL, 0, 1),
+(4, 16, 2, NULL, 0, 3),
+(5, 12, 2, NULL, 0, NULL),
+(6, 1, 1, NULL, 0, 2),
+(6, 2, 2, NULL, 0, 2)

@@ -11,7 +11,6 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdStudent" Type="int" Nullable="false" />
-          <Property Name="IdType" Type="int" Nullable="false" />
           <Property Name="StartYear" Type="int" Nullable="false" />
           <Property Name="SemesterNumber" Type="int" Nullable="false" />
         </EntityType>
@@ -22,7 +21,10 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdArrear" Type="int" Nullable="false" />
           <Property Name="IdLesson" Type="int" Nullable="false" />
+          <Property Name="IdType" Type="int" Nullable="false" />
           <Property Name="Date" Type="datetime" />
+          <Property Name="IsLiquidated" Type="bit" Nullable="false" />
+          <Property Name="Reason" Type="int" />
         </EntityType>
         <EntityType Name="DistributionLessons">
           <Key>
@@ -56,6 +58,13 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdArrearLesson" Type="int" Nullable="false" />
           <Property Name="IdTeacher" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ReasonsArrears">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Specialty">
           <Key>
@@ -113,7 +122,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Type" Type="nvarchar" MaxLength="3" Nullable="false" />
         </EntityType>
-        <Association Name="FK__Arrears__IdStude__3864608B">
+        <Association Name="FK__Arrears__IdStude__37A5467C">
           <End Role="Students" Type="Self.Students" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -127,21 +136,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Arrears__IdType__395884C4">
-          <End Role="TypesArrears" Type="Self.TypesArrears" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Arrears" Type="Self.Arrears" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TypesArrears">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Arrears">
-              <PropertyRef Name="IdType" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ArrearsLe__IdArr__3C34F16F">
+        <Association Name="FK__ArrearsLe__IdArr__3E52440B">
           <End Role="Arrears" Type="Self.Arrears" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -155,7 +150,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ArrearsLe__IdLes__3D2915A8">
+        <Association Name="FK__ArrearsLe__IdLes__3F466844">
           <End Role="Lessons" Type="Self.Lessons" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -169,7 +164,33 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Distribut__IdGro__1AD3FDA4">
+        <Association Name="FK__ArrearsLe__IdTyp__403A8C7D">
+          <End Role="TypesArrears" Type="Self.TypesArrears" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ArrearsLessons" Type="Self.ArrearsLessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TypesArrears">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArrearsLessons">
+              <PropertyRef Name="IdType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ArrearsLe__Reaso__412EB0B6">
+          <End Role="ReasonsArrears" Type="Self.ReasonsArrears" Multiplicity="0..1" />
+          <End Role="ArrearsLessons" Type="Self.ArrearsLessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReasonsArrears">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArrearsLessons">
+              <PropertyRef Name="Reason" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Distribut__IdGro__2F10007B">
           <End Role="Groups" Type="Self.Groups" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -183,7 +204,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Distribut__IdLes__19DFD96B">
+        <Association Name="FK__Distribut__IdLes__2E1BDC42">
           <End Role="Lessons" Type="Self.Lessons" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -197,7 +218,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Distribut__IdTea__18EBB532">
+        <Association Name="FK__Distribut__IdTea__2D27B809">
           <End Role="Teachers" Type="Self.Teachers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -211,7 +232,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Lessons__IdType__114A936A">
+        <Association Name="FK__Lessons__IdType__286302EC">
           <End Role="TypesLessons" Type="Self.TypesLessons" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -225,7 +246,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Liquidati__IdArr__40058253">
+        <Association Name="FK__Liquidati__IdArr__440B1D61">
           <End Role="ArrearsLessons" Type="Self.ArrearsLessons" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -239,7 +260,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Liquidati__IdTea__40F9A68C">
+        <Association Name="FK__Liquidati__IdTea__44FF419A">
           <End Role="Teachers" Type="Self.Teachers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -253,7 +274,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Students__IdGrou__1DB06A4F">
+        <Association Name="FK__Students__IdGrou__31EC6D26">
           <End Role="Groups" Type="Self.Groups" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -267,7 +288,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TeachersS__IdTea__2645B050">
+        <Association Name="FK__TeachersS__IdTea__34C8D9D1">
           <End Role="Teachers" Type="Self.Teachers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -288,57 +309,62 @@
           <EntitySet Name="Groups" EntityType="Self.Groups" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Lessons" EntityType="Self.Lessons" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LiquidationsCompositions" EntityType="Self.LiquidationsCompositions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReasonsArrears" EntityType="Self.ReasonsArrears" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Specialty" EntityType="Self.Specialty" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Teachers" EntityType="Self.Teachers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TeachersSchedule" EntityType="Self.TeachersSchedule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TypesArrears" EntityType="Self.TypesArrears" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TypesLessons" EntityType="Self.TypesLessons" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Arrears__IdStude__3864608B" Association="Self.FK__Arrears__IdStude__3864608B">
+          <AssociationSet Name="FK__Arrears__IdStude__37A5467C" Association="Self.FK__Arrears__IdStude__37A5467C">
             <End Role="Students" EntitySet="Students" />
             <End Role="Arrears" EntitySet="Arrears" />
           </AssociationSet>
-          <AssociationSet Name="FK__Arrears__IdType__395884C4" Association="Self.FK__Arrears__IdType__395884C4">
-            <End Role="TypesArrears" EntitySet="TypesArrears" />
-            <End Role="Arrears" EntitySet="Arrears" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ArrearsLe__IdArr__3C34F16F" Association="Self.FK__ArrearsLe__IdArr__3C34F16F">
+          <AssociationSet Name="FK__ArrearsLe__IdArr__3E52440B" Association="Self.FK__ArrearsLe__IdArr__3E52440B">
             <End Role="Arrears" EntitySet="Arrears" />
             <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
           </AssociationSet>
-          <AssociationSet Name="FK__ArrearsLe__IdLes__3D2915A8" Association="Self.FK__ArrearsLe__IdLes__3D2915A8">
+          <AssociationSet Name="FK__ArrearsLe__IdLes__3F466844" Association="Self.FK__ArrearsLe__IdLes__3F466844">
             <End Role="Lessons" EntitySet="Lessons" />
             <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
           </AssociationSet>
-          <AssociationSet Name="FK__Distribut__IdGro__1AD3FDA4" Association="Self.FK__Distribut__IdGro__1AD3FDA4">
+          <AssociationSet Name="FK__ArrearsLe__IdTyp__403A8C7D" Association="Self.FK__ArrearsLe__IdTyp__403A8C7D">
+            <End Role="TypesArrears" EntitySet="TypesArrears" />
+            <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ArrearsLe__Reaso__412EB0B6" Association="Self.FK__ArrearsLe__Reaso__412EB0B6">
+            <End Role="ReasonsArrears" EntitySet="ReasonsArrears" />
+            <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Distribut__IdGro__2F10007B" Association="Self.FK__Distribut__IdGro__2F10007B">
             <End Role="Groups" EntitySet="Groups" />
             <End Role="DistributionLessons" EntitySet="DistributionLessons" />
           </AssociationSet>
-          <AssociationSet Name="FK__Distribut__IdLes__19DFD96B" Association="Self.FK__Distribut__IdLes__19DFD96B">
+          <AssociationSet Name="FK__Distribut__IdLes__2E1BDC42" Association="Self.FK__Distribut__IdLes__2E1BDC42">
             <End Role="Lessons" EntitySet="Lessons" />
             <End Role="DistributionLessons" EntitySet="DistributionLessons" />
           </AssociationSet>
-          <AssociationSet Name="FK__Distribut__IdTea__18EBB532" Association="Self.FK__Distribut__IdTea__18EBB532">
+          <AssociationSet Name="FK__Distribut__IdTea__2D27B809" Association="Self.FK__Distribut__IdTea__2D27B809">
             <End Role="Teachers" EntitySet="Teachers" />
             <End Role="DistributionLessons" EntitySet="DistributionLessons" />
           </AssociationSet>
-          <AssociationSet Name="FK__Lessons__IdType__114A936A" Association="Self.FK__Lessons__IdType__114A936A">
+          <AssociationSet Name="FK__Lessons__IdType__286302EC" Association="Self.FK__Lessons__IdType__286302EC">
             <End Role="TypesLessons" EntitySet="TypesLessons" />
             <End Role="Lessons" EntitySet="Lessons" />
           </AssociationSet>
-          <AssociationSet Name="FK__Liquidati__IdArr__40058253" Association="Self.FK__Liquidati__IdArr__40058253">
+          <AssociationSet Name="FK__Liquidati__IdArr__440B1D61" Association="Self.FK__Liquidati__IdArr__440B1D61">
             <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
             <End Role="LiquidationsCompositions" EntitySet="LiquidationsCompositions" />
           </AssociationSet>
-          <AssociationSet Name="FK__Liquidati__IdTea__40F9A68C" Association="Self.FK__Liquidati__IdTea__40F9A68C">
+          <AssociationSet Name="FK__Liquidati__IdTea__44FF419A" Association="Self.FK__Liquidati__IdTea__44FF419A">
             <End Role="Teachers" EntitySet="Teachers" />
             <End Role="LiquidationsCompositions" EntitySet="LiquidationsCompositions" />
           </AssociationSet>
-          <AssociationSet Name="FK__Students__IdGrou__1DB06A4F" Association="Self.FK__Students__IdGrou__1DB06A4F">
+          <AssociationSet Name="FK__Students__IdGrou__31EC6D26" Association="Self.FK__Students__IdGrou__31EC6D26">
             <End Role="Groups" EntitySet="Groups" />
             <End Role="Students" EntitySet="Students" />
           </AssociationSet>
-          <AssociationSet Name="FK__TeachersS__IdTea__2645B050" Association="Self.FK__TeachersS__IdTea__2645B050">
+          <AssociationSet Name="FK__TeachersS__IdTea__34C8D9D1" Association="Self.FK__TeachersS__IdTea__34C8D9D1">
             <End Role="Teachers" EntitySet="Teachers" />
             <End Role="TeachersSchedule" EntitySet="TeachersSchedule" />
           </AssociationSet>
@@ -354,57 +380,62 @@
           <EntitySet Name="Groups" EntityType="SpecialtyManagementModel.Groups" />
           <EntitySet Name="Lessons" EntityType="SpecialtyManagementModel.Lessons" />
           <EntitySet Name="LiquidationsCompositions" EntityType="SpecialtyManagementModel.LiquidationsCompositions" />
+          <EntitySet Name="ReasonsArrears" EntityType="SpecialtyManagementModel.ReasonsArrears" />
           <EntitySet Name="Specialty" EntityType="SpecialtyManagementModel.Specialty" />
           <EntitySet Name="Students" EntityType="SpecialtyManagementModel.Students" />
           <EntitySet Name="Teachers" EntityType="SpecialtyManagementModel.Teachers" />
           <EntitySet Name="TeachersSchedule" EntityType="SpecialtyManagementModel.TeachersSchedule" />
           <EntitySet Name="TypesArrears" EntityType="SpecialtyManagementModel.TypesArrears" />
           <EntitySet Name="TypesLessons" EntityType="SpecialtyManagementModel.TypesLessons" />
-          <AssociationSet Name="FK__Arrears__IdStude__3864608B" Association="SpecialtyManagementModel.FK__Arrears__IdStude__3864608B">
+          <AssociationSet Name="FK__Arrears__IdStude__37A5467C" Association="SpecialtyManagementModel.FK__Arrears__IdStude__37A5467C">
             <End Role="Students" EntitySet="Students" />
             <End Role="Arrears" EntitySet="Arrears" />
           </AssociationSet>
-          <AssociationSet Name="FK__Arrears__IdType__395884C4" Association="SpecialtyManagementModel.FK__Arrears__IdType__395884C4">
-            <End Role="TypesArrears" EntitySet="TypesArrears" />
-            <End Role="Arrears" EntitySet="Arrears" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ArrearsLe__IdArr__3C34F16F" Association="SpecialtyManagementModel.FK__ArrearsLe__IdArr__3C34F16F">
+          <AssociationSet Name="FK__ArrearsLe__IdArr__3E52440B" Association="SpecialtyManagementModel.FK__ArrearsLe__IdArr__3E52440B">
             <End Role="Arrears" EntitySet="Arrears" />
             <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
           </AssociationSet>
-          <AssociationSet Name="FK__ArrearsLe__IdLes__3D2915A8" Association="SpecialtyManagementModel.FK__ArrearsLe__IdLes__3D2915A8">
+          <AssociationSet Name="FK__ArrearsLe__IdLes__3F466844" Association="SpecialtyManagementModel.FK__ArrearsLe__IdLes__3F466844">
             <End Role="Lessons" EntitySet="Lessons" />
             <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
           </AssociationSet>
-          <AssociationSet Name="FK__Liquidati__IdArr__40058253" Association="SpecialtyManagementModel.FK__Liquidati__IdArr__40058253">
+          <AssociationSet Name="FK__ArrearsLe__IdTyp__403A8C7D" Association="SpecialtyManagementModel.FK__ArrearsLe__IdTyp__403A8C7D">
+            <End Role="TypesArrears" EntitySet="TypesArrears" />
+            <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ArrearsLe__Reaso__412EB0B6" Association="SpecialtyManagementModel.FK__ArrearsLe__Reaso__412EB0B6">
+            <End Role="ReasonsArrears" EntitySet="ReasonsArrears" />
+            <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Liquidati__IdArr__440B1D61" Association="SpecialtyManagementModel.FK__Liquidati__IdArr__440B1D61">
             <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
             <End Role="LiquidationsCompositions" EntitySet="LiquidationsCompositions" />
           </AssociationSet>
-          <AssociationSet Name="FK__Distribut__IdGro__1AD3FDA4" Association="SpecialtyManagementModel.FK__Distribut__IdGro__1AD3FDA4">
+          <AssociationSet Name="FK__Distribut__IdGro__2F10007B" Association="SpecialtyManagementModel.FK__Distribut__IdGro__2F10007B">
             <End Role="Groups" EntitySet="Groups" />
             <End Role="DistributionLessons" EntitySet="DistributionLessons" />
           </AssociationSet>
-          <AssociationSet Name="FK__Distribut__IdLes__19DFD96B" Association="SpecialtyManagementModel.FK__Distribut__IdLes__19DFD96B">
+          <AssociationSet Name="FK__Distribut__IdLes__2E1BDC42" Association="SpecialtyManagementModel.FK__Distribut__IdLes__2E1BDC42">
             <End Role="Lessons" EntitySet="Lessons" />
             <End Role="DistributionLessons" EntitySet="DistributionLessons" />
           </AssociationSet>
-          <AssociationSet Name="FK__Distribut__IdTea__18EBB532" Association="SpecialtyManagementModel.FK__Distribut__IdTea__18EBB532">
+          <AssociationSet Name="FK__Distribut__IdTea__2D27B809" Association="SpecialtyManagementModel.FK__Distribut__IdTea__2D27B809">
             <End Role="Teachers" EntitySet="Teachers" />
             <End Role="DistributionLessons" EntitySet="DistributionLessons" />
           </AssociationSet>
-          <AssociationSet Name="FK__Students__IdGrou__1DB06A4F" Association="SpecialtyManagementModel.FK__Students__IdGrou__1DB06A4F">
+          <AssociationSet Name="FK__Students__IdGrou__31EC6D26" Association="SpecialtyManagementModel.FK__Students__IdGrou__31EC6D26">
             <End Role="Groups" EntitySet="Groups" />
             <End Role="Students" EntitySet="Students" />
           </AssociationSet>
-          <AssociationSet Name="FK__Lessons__IdType__114A936A" Association="SpecialtyManagementModel.FK__Lessons__IdType__114A936A">
+          <AssociationSet Name="FK__Lessons__IdType__286302EC" Association="SpecialtyManagementModel.FK__Lessons__IdType__286302EC">
             <End Role="TypesLessons" EntitySet="TypesLessons" />
             <End Role="Lessons" EntitySet="Lessons" />
           </AssociationSet>
-          <AssociationSet Name="FK__Liquidati__IdTea__40F9A68C" Association="SpecialtyManagementModel.FK__Liquidati__IdTea__40F9A68C">
+          <AssociationSet Name="FK__Liquidati__IdTea__44FF419A" Association="SpecialtyManagementModel.FK__Liquidati__IdTea__44FF419A">
             <End Role="Teachers" EntitySet="Teachers" />
             <End Role="LiquidationsCompositions" EntitySet="LiquidationsCompositions" />
           </AssociationSet>
-          <AssociationSet Name="FK__TeachersS__IdTea__2645B050" Association="SpecialtyManagementModel.FK__TeachersS__IdTea__2645B050">
+          <AssociationSet Name="FK__TeachersS__IdTea__34C8D9D1" Association="SpecialtyManagementModel.FK__TeachersS__IdTea__34C8D9D1">
             <End Role="Teachers" EntitySet="Teachers" />
             <End Role="TeachersSchedule" EntitySet="TeachersSchedule" />
           </AssociationSet>
@@ -415,12 +446,10 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdStudent" Type="Int32" Nullable="false" />
-          <Property Name="IdType" Type="Int32" Nullable="false" />
           <Property Name="StartYear" Type="Int32" Nullable="false" />
           <Property Name="SemesterNumber" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Students" Relationship="SpecialtyManagementModel.FK__Arrears__IdStude__3864608B" FromRole="Arrears" ToRole="Students" />
-          <NavigationProperty Name="TypesArrears" Relationship="SpecialtyManagementModel.FK__Arrears__IdType__395884C4" FromRole="Arrears" ToRole="TypesArrears" />
-          <NavigationProperty Name="ArrearsLessons" Relationship="SpecialtyManagementModel.FK__ArrearsLe__IdArr__3C34F16F" FromRole="Arrears" ToRole="ArrearsLessons" />
+          <NavigationProperty Name="Students" Relationship="SpecialtyManagementModel.FK__Arrears__IdStude__37A5467C" FromRole="Arrears" ToRole="Students" />
+          <NavigationProperty Name="ArrearsLessons" Relationship="SpecialtyManagementModel.FK__ArrearsLe__IdArr__3E52440B" FromRole="Arrears" ToRole="ArrearsLessons" />
         </EntityType>
         <EntityType Name="ArrearsLessons">
           <Key>
@@ -429,10 +458,15 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdArrear" Type="Int32" Nullable="false" />
           <Property Name="IdLesson" Type="Int32" Nullable="false" />
+          <Property Name="IdType" Type="Int32" Nullable="false" />
           <Property Name="Date" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Arrears" Relationship="SpecialtyManagementModel.FK__ArrearsLe__IdArr__3C34F16F" FromRole="ArrearsLessons" ToRole="Arrears" />
-          <NavigationProperty Name="Lessons" Relationship="SpecialtyManagementModel.FK__ArrearsLe__IdLes__3D2915A8" FromRole="ArrearsLessons" ToRole="Lessons" />
-          <NavigationProperty Name="LiquidationsCompositions" Relationship="SpecialtyManagementModel.FK__Liquidati__IdArr__40058253" FromRole="ArrearsLessons" ToRole="LiquidationsCompositions" />
+          <Property Name="IsLiquidated" Type="Boolean" Nullable="false" />
+          <Property Name="Reason" Type="Int32" />
+          <NavigationProperty Name="Arrears" Relationship="SpecialtyManagementModel.FK__ArrearsLe__IdArr__3E52440B" FromRole="ArrearsLessons" ToRole="Arrears" />
+          <NavigationProperty Name="Lessons" Relationship="SpecialtyManagementModel.FK__ArrearsLe__IdLes__3F466844" FromRole="ArrearsLessons" ToRole="Lessons" />
+          <NavigationProperty Name="TypesArrears" Relationship="SpecialtyManagementModel.FK__ArrearsLe__IdTyp__403A8C7D" FromRole="ArrearsLessons" ToRole="TypesArrears" />
+          <NavigationProperty Name="ReasonsArrears" Relationship="SpecialtyManagementModel.FK__ArrearsLe__Reaso__412EB0B6" FromRole="ArrearsLessons" ToRole="ReasonsArrears" />
+          <NavigationProperty Name="LiquidationsCompositions" Relationship="SpecialtyManagementModel.FK__Liquidati__IdArr__440B1D61" FromRole="ArrearsLessons" ToRole="LiquidationsCompositions" />
         </EntityType>
         <EntityType Name="DistributionLessons">
           <Key>
@@ -442,9 +476,9 @@
           <Property Name="IdTeacher" Type="Int32" Nullable="false" />
           <Property Name="IdLesson" Type="Int32" Nullable="false" />
           <Property Name="IdGroup" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Groups" Relationship="SpecialtyManagementModel.FK__Distribut__IdGro__1AD3FDA4" FromRole="DistributionLessons" ToRole="Groups" />
-          <NavigationProperty Name="Lessons" Relationship="SpecialtyManagementModel.FK__Distribut__IdLes__19DFD96B" FromRole="DistributionLessons" ToRole="Lessons" />
-          <NavigationProperty Name="Teachers" Relationship="SpecialtyManagementModel.FK__Distribut__IdTea__18EBB532" FromRole="DistributionLessons" ToRole="Teachers" />
+          <NavigationProperty Name="Groups" Relationship="SpecialtyManagementModel.FK__Distribut__IdGro__2F10007B" FromRole="DistributionLessons" ToRole="Groups" />
+          <NavigationProperty Name="Lessons" Relationship="SpecialtyManagementModel.FK__Distribut__IdLes__2E1BDC42" FromRole="DistributionLessons" ToRole="Lessons" />
+          <NavigationProperty Name="Teachers" Relationship="SpecialtyManagementModel.FK__Distribut__IdTea__2D27B809" FromRole="DistributionLessons" ToRole="Teachers" />
         </EntityType>
         <EntityType Name="Groups">
           <Key>
@@ -452,8 +486,8 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Group" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="DistributionLessons" Relationship="SpecialtyManagementModel.FK__Distribut__IdGro__1AD3FDA4" FromRole="Groups" ToRole="DistributionLessons" />
-          <NavigationProperty Name="Students" Relationship="SpecialtyManagementModel.FK__Students__IdGrou__1DB06A4F" FromRole="Groups" ToRole="Students" />
+          <NavigationProperty Name="DistributionLessons" Relationship="SpecialtyManagementModel.FK__Distribut__IdGro__2F10007B" FromRole="Groups" ToRole="DistributionLessons" />
+          <NavigationProperty Name="Students" Relationship="SpecialtyManagementModel.FK__Students__IdGrou__31EC6D26" FromRole="Groups" ToRole="Students" />
         </EntityType>
         <EntityType Name="Lessons">
           <Key>
@@ -463,9 +497,9 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="IdType" Type="Int32" Nullable="false" />
           <Property Name="Code" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ArrearsLessons" Relationship="SpecialtyManagementModel.FK__ArrearsLe__IdLes__3D2915A8" FromRole="Lessons" ToRole="ArrearsLessons" />
-          <NavigationProperty Name="DistributionLessons" Relationship="SpecialtyManagementModel.FK__Distribut__IdLes__19DFD96B" FromRole="Lessons" ToRole="DistributionLessons" />
-          <NavigationProperty Name="TypesLessons" Relationship="SpecialtyManagementModel.FK__Lessons__IdType__114A936A" FromRole="Lessons" ToRole="TypesLessons" />
+          <NavigationProperty Name="ArrearsLessons" Relationship="SpecialtyManagementModel.FK__ArrearsLe__IdLes__3F466844" FromRole="Lessons" ToRole="ArrearsLessons" />
+          <NavigationProperty Name="DistributionLessons" Relationship="SpecialtyManagementModel.FK__Distribut__IdLes__2E1BDC42" FromRole="Lessons" ToRole="DistributionLessons" />
+          <NavigationProperty Name="TypesLessons" Relationship="SpecialtyManagementModel.FK__Lessons__IdType__286302EC" FromRole="Lessons" ToRole="TypesLessons" />
         </EntityType>
         <EntityType Name="LiquidationsCompositions">
           <Key>
@@ -474,8 +508,16 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdArrearLesson" Type="Int32" Nullable="false" />
           <Property Name="IdTeacher" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ArrearsLessons" Relationship="SpecialtyManagementModel.FK__Liquidati__IdArr__40058253" FromRole="LiquidationsCompositions" ToRole="ArrearsLessons" />
-          <NavigationProperty Name="Teachers" Relationship="SpecialtyManagementModel.FK__Liquidati__IdTea__40F9A68C" FromRole="LiquidationsCompositions" ToRole="Teachers" />
+          <NavigationProperty Name="ArrearsLessons" Relationship="SpecialtyManagementModel.FK__Liquidati__IdArr__440B1D61" FromRole="LiquidationsCompositions" ToRole="ArrearsLessons" />
+          <NavigationProperty Name="Teachers" Relationship="SpecialtyManagementModel.FK__Liquidati__IdTea__44FF419A" FromRole="LiquidationsCompositions" ToRole="Teachers" />
+        </EntityType>
+        <EntityType Name="ReasonsArrears">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ArrearsLessons" Relationship="SpecialtyManagementModel.FK__ArrearsLe__Reaso__412EB0B6" FromRole="ReasonsArrears" ToRole="ArrearsLessons" />
         </EntityType>
         <EntityType Name="Specialty">
           <Key>
@@ -498,8 +540,8 @@
           <Property Name="IdGroup" Type="Int32" Nullable="false" />
           <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IsExpelled" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Arrears" Relationship="SpecialtyManagementModel.FK__Arrears__IdStude__3864608B" FromRole="Students" ToRole="Arrears" />
-          <NavigationProperty Name="Groups" Relationship="SpecialtyManagementModel.FK__Students__IdGrou__1DB06A4F" FromRole="Students" ToRole="Groups" />
+          <NavigationProperty Name="Arrears" Relationship="SpecialtyManagementModel.FK__Arrears__IdStude__37A5467C" FromRole="Students" ToRole="Arrears" />
+          <NavigationProperty Name="Groups" Relationship="SpecialtyManagementModel.FK__Students__IdGrou__31EC6D26" FromRole="Students" ToRole="Groups" />
         </EntityType>
         <EntityType Name="Teachers">
           <Key>
@@ -509,9 +551,9 @@
           <Property Name="Surname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Patronymic" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="DistributionLessons" Relationship="SpecialtyManagementModel.FK__Distribut__IdTea__18EBB532" FromRole="Teachers" ToRole="DistributionLessons" />
-          <NavigationProperty Name="LiquidationsCompositions" Relationship="SpecialtyManagementModel.FK__Liquidati__IdTea__40F9A68C" FromRole="Teachers" ToRole="LiquidationsCompositions" />
-          <NavigationProperty Name="TeachersSchedule" Relationship="SpecialtyManagementModel.FK__TeachersS__IdTea__2645B050" FromRole="Teachers" ToRole="TeachersSchedule" />
+          <NavigationProperty Name="DistributionLessons" Relationship="SpecialtyManagementModel.FK__Distribut__IdTea__2D27B809" FromRole="Teachers" ToRole="DistributionLessons" />
+          <NavigationProperty Name="LiquidationsCompositions" Relationship="SpecialtyManagementModel.FK__Liquidati__IdTea__44FF419A" FromRole="Teachers" ToRole="LiquidationsCompositions" />
+          <NavigationProperty Name="TeachersSchedule" Relationship="SpecialtyManagementModel.FK__TeachersS__IdTea__34C8D9D1" FromRole="Teachers" ToRole="TeachersSchedule" />
         </EntityType>
         <EntityType Name="TeachersSchedule">
           <Key>
@@ -523,7 +565,7 @@
           <Property Name="AudienceNumber" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="StartYear" Type="Int32" Nullable="false" />
           <Property Name="SemesterNumber" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Teachers" Relationship="SpecialtyManagementModel.FK__TeachersS__IdTea__2645B050" FromRole="TeachersSchedule" ToRole="Teachers" />
+          <NavigationProperty Name="Teachers" Relationship="SpecialtyManagementModel.FK__TeachersS__IdTea__34C8D9D1" FromRole="TeachersSchedule" ToRole="Teachers" />
         </EntityType>
         <EntityType Name="TypesArrears">
           <Key>
@@ -531,7 +573,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Type" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Arrears" Relationship="SpecialtyManagementModel.FK__Arrears__IdType__395884C4" FromRole="TypesArrears" ToRole="Arrears" />
+          <NavigationProperty Name="ArrearsLessons" Relationship="SpecialtyManagementModel.FK__ArrearsLe__IdTyp__403A8C7D" FromRole="TypesArrears" ToRole="ArrearsLessons" />
         </EntityType>
         <EntityType Name="TypesLessons">
           <Key>
@@ -539,9 +581,9 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Type" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Lessons" Relationship="SpecialtyManagementModel.FK__Lessons__IdType__114A936A" FromRole="TypesLessons" ToRole="Lessons" />
+          <NavigationProperty Name="Lessons" Relationship="SpecialtyManagementModel.FK__Lessons__IdType__286302EC" FromRole="TypesLessons" ToRole="Lessons" />
         </EntityType>
-        <Association Name="FK__Arrears__IdStude__3864608B">
+        <Association Name="FK__Arrears__IdStude__37A5467C">
           <End Type="SpecialtyManagementModel.Students" Role="Students" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -555,21 +597,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Arrears__IdType__395884C4">
-          <End Type="SpecialtyManagementModel.TypesArrears" Role="TypesArrears" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="SpecialtyManagementModel.Arrears" Role="Arrears" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TypesArrears">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Arrears">
-              <PropertyRef Name="IdType" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ArrearsLe__IdArr__3C34F16F">
+        <Association Name="FK__ArrearsLe__IdArr__3E52440B">
           <End Type="SpecialtyManagementModel.Arrears" Role="Arrears" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -583,7 +611,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ArrearsLe__IdLes__3D2915A8">
+        <Association Name="FK__ArrearsLe__IdLes__3F466844">
           <End Type="SpecialtyManagementModel.Lessons" Role="Lessons" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -597,7 +625,33 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Liquidati__IdArr__40058253">
+        <Association Name="FK__ArrearsLe__IdTyp__403A8C7D">
+          <End Type="SpecialtyManagementModel.TypesArrears" Role="TypesArrears" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="SpecialtyManagementModel.ArrearsLessons" Role="ArrearsLessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TypesArrears">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArrearsLessons">
+              <PropertyRef Name="IdType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ArrearsLe__Reaso__412EB0B6">
+          <End Type="SpecialtyManagementModel.ReasonsArrears" Role="ReasonsArrears" Multiplicity="0..1" />
+          <End Type="SpecialtyManagementModel.ArrearsLessons" Role="ArrearsLessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReasonsArrears">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArrearsLessons">
+              <PropertyRef Name="Reason" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Liquidati__IdArr__440B1D61">
           <End Type="SpecialtyManagementModel.ArrearsLessons" Role="ArrearsLessons" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -611,7 +665,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Distribut__IdGro__1AD3FDA4">
+        <Association Name="FK__Distribut__IdGro__2F10007B">
           <End Type="SpecialtyManagementModel.Groups" Role="Groups" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -625,7 +679,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Distribut__IdLes__19DFD96B">
+        <Association Name="FK__Distribut__IdLes__2E1BDC42">
           <End Type="SpecialtyManagementModel.Lessons" Role="Lessons" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -639,7 +693,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Distribut__IdTea__18EBB532">
+        <Association Name="FK__Distribut__IdTea__2D27B809">
           <End Type="SpecialtyManagementModel.Teachers" Role="Teachers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -653,7 +707,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Students__IdGrou__1DB06A4F">
+        <Association Name="FK__Students__IdGrou__31EC6D26">
           <End Type="SpecialtyManagementModel.Groups" Role="Groups" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -667,7 +721,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Lessons__IdType__114A936A">
+        <Association Name="FK__Lessons__IdType__286302EC">
           <End Type="SpecialtyManagementModel.TypesLessons" Role="TypesLessons" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -681,7 +735,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Liquidati__IdTea__40F9A68C">
+        <Association Name="FK__Liquidati__IdTea__44FF419A">
           <End Type="SpecialtyManagementModel.Teachers" Role="Teachers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -695,7 +749,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TeachersS__IdTea__2645B050">
+        <Association Name="FK__TeachersS__IdTea__34C8D9D1">
           <End Type="SpecialtyManagementModel.Teachers" Role="Teachers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -720,7 +774,6 @@
               <MappingFragment StoreEntitySet="Arrears">
                 <ScalarProperty Name="SemesterNumber" ColumnName="SemesterNumber" />
                 <ScalarProperty Name="StartYear" ColumnName="StartYear" />
-                <ScalarProperty Name="IdType" ColumnName="IdType" />
                 <ScalarProperty Name="IdStudent" ColumnName="IdStudent" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -729,7 +782,10 @@
           <EntitySetMapping Name="ArrearsLessons">
             <EntityTypeMapping TypeName="SpecialtyManagementModel.ArrearsLessons">
               <MappingFragment StoreEntitySet="ArrearsLessons">
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="IsLiquidated" ColumnName="IsLiquidated" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="IdType" ColumnName="IdType" />
                 <ScalarProperty Name="IdLesson" ColumnName="IdLesson" />
                 <ScalarProperty Name="IdArrear" ColumnName="IdArrear" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -769,6 +825,14 @@
               <MappingFragment StoreEntitySet="LiquidationsCompositions">
                 <ScalarProperty Name="IdTeacher" ColumnName="IdTeacher" />
                 <ScalarProperty Name="IdArrearLesson" ColumnName="IdArrearLesson" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReasonsArrears">
+            <EntityTypeMapping TypeName="SpecialtyManagementModel.ReasonsArrears">
+              <MappingFragment StoreEntitySet="ReasonsArrears">
+                <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

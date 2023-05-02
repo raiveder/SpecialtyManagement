@@ -31,6 +31,7 @@ namespace SpecialtyManagement
         public virtual DbSet<Groups> Groups { get; set; }
         public virtual DbSet<Lessons> Lessons { get; set; }
         public virtual DbSet<LiquidationsCompositions> LiquidationsCompositions { get; set; }
+        public virtual DbSet<ReasonsArrears> ReasonsArrears { get; set; }
         public virtual DbSet<Specialty> Specialty { get; set; }
         public virtual DbSet<Students> Students { get; set; }
         public virtual DbSet<Teachers> Teachers { get; set; }

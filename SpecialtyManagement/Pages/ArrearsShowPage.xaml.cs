@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace SpecialtyManagement.Pages
 {
@@ -12,14 +13,16 @@ namespace SpecialtyManagement.Pages
     /// </summary>
     public partial class ArrearsShowPage : Page
     {
+        private List<int> _idArrearsWithoutLessons = new List<int>();
+
         public ArrearsShowPage()
         {
             UploadPage();
 
             RBCurrentSemester.IsChecked = true;
-            CBGroup.SelectedIndex= 0;
-            CBType.SelectedIndex= 0;
-            CBSort.SelectedIndex= 0;
+            CBGroup.SelectedIndex = 0;
+            CBType.SelectedIndex = 0;
+            CBSort.SelectedIndex = 0;
         }
 
         public ArrearsShowPage(Filter filter)
@@ -125,7 +128,20 @@ namespace SpecialtyManagement.Pages
 
             if (CBType.SelectedIndex > 0)
             {
-                arrears = arrears.Where(x => x.TypesArrears.Id == Convert.ToInt32(CBType.SelectedValue)).ToList();
+                List<Arrears> arrearsToRemove = new List<Arrears>();
+
+                foreach (Arrears item in arrears) // Поиск задолженностей, у которых нет дисциплин для данного типа.
+                {
+                    if (Database.Entities.ArrearsLessons.Where(x => x.IdArrear == item.Id && x.IdType == (int)CBType.SelectedValue).Count() == 0)
+                    {
+                        arrearsToRemove.Add(item);
+                    }
+                }
+
+                foreach (Arrears item in arrearsToRemove)
+                {
+                    arrears.Remove(item);
+                }
             }
 
             if (CBGroup.SelectedIndex > 0)
@@ -173,20 +189,79 @@ namespace SpecialtyManagement.Pages
 
             DGArrears.ItemsSource = arrears;
 
-            if (arrears.Count == 0)
+            if (DGArrears.Items.Count == 0)
             {
                 MessageBox.Show("Подходящих фильтру задолженностей не найдено", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
+        private void WPLessons_Loaded(object sender, RoutedEventArgs e)
+        {
+            WrapPanel panel = sender as WrapPanel;
+
+            int id = Convert.ToInt32(panel.Uid);
+
+            List<ArrearsLessons> arrears = Database.Entities.ArrearsLessons.Where(x => x.IdArrear == id).ToList();
+
+            if (CBType.SelectedIndex > 0)
+            {
+                arrears = arrears.Where(x => x.IdArrear == id && x.IdType == (int)CBType.SelectedValue).ToList();
+            }
+
+            foreach (ArrearsLessons item in arrears)
+            {
+                TextBlock tb = new TextBlock()
+                {
+                    Text = item.Lessons.ShortName
+                };
+
+                if (!item.IsLiquidated)
+                {
+                    if (item.IdType == 2)
+                    {
+                        tb.Foreground = Brushes.Red;
+                    }
+
+                    switch (item.Reason)
+                    {
+                        case 1:
+                            tb.Foreground = Brushes.Green;
+                            break;
+                        case 2:
+                            tb.Foreground = Brushes.PaleVioletRed;
+                            break;
+                        case 3:
+                            tb.Foreground = Brushes.Brown;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else
+                {
+                    tb.Foreground = Brushes.Blue;
+                }
+
+                tb.Text += ", ";
+
+                panel.Children.Add(tb);
+            }
+
+            if (panel.Children.Count > 0) // Удаление последней запятой.
+            {
+                TextBlock lastBlock = panel.Children[panel.Children.Count - 1] as TextBlock;
+                lastBlock.Text = lastBlock.Text.Substring(0, lastBlock.Text.Length - 2);
+            }
+        }
+
         private void DGArrears_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            e.Handled = true;
+            CMArrears.IsOpen = true;
         }
 
         private void DGArrears_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            CMArrears.IsOpen = true;
+            e.Handled = true;
         }
 
         private void MIChange_Click(object sender, RoutedEventArgs e)
@@ -200,11 +275,6 @@ namespace SpecialtyManagement.Pages
         }
 
         private void CMArrears_Closed(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void MISheduleTeachers_Click(object sender, RoutedEventArgs e)
         {
 
         }
@@ -224,12 +294,7 @@ namespace SpecialtyManagement.Pages
 
         }
 
-        private void MIAddArrear_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void MIAddShedule_Click(object sender, RoutedEventArgs e)
+        private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
 
         }

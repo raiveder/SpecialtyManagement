@@ -12,27 +12,18 @@ namespace SpecialtyManagement
     using System;
     using System.Collections.Generic;
     
-    public partial class ArrearsLessons
+    public partial class ReasonsArrears
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ArrearsLessons()
+        public ReasonsArrears()
         {
-            this.LiquidationsCompositions = new HashSet<LiquidationsCompositions>();
+            this.ArrearsLessons = new HashSet<ArrearsLessons>();
         }
     
         public int Id { get; set; }
-        public int IdArrear { get; set; }
-        public int IdLesson { get; set; }
-        public int IdType { get; set; }
-        public Nullable<System.DateTime> Date { get; set; }
-        public bool IsLiquidated { get; set; }
-        public Nullable<int> Reason { get; set; }
+        public string Type { get; set; }
     
-        public virtual Arrears Arrears { get; set; }
-        public virtual Lessons Lessons { get; set; }
-        public virtual TypesArrears TypesArrears { get; set; }
-        public virtual ReasonsArrears ReasonsArrears { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<LiquidationsCompositions> LiquidationsCompositions { get; set; }
+        public virtual ICollection<ArrearsLessons> ArrearsLessons { get; set; }
     }
 }
