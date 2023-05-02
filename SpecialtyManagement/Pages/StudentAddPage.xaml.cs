@@ -69,7 +69,8 @@ namespace SpecialtyManagement.Pages
                         Patronymic = TBoxPatronymic.Text.Length == 0 ? null : TBoxPatronymic.Text,
                         IdGroup = (int)CBGroups.SelectedValue,
                         Birthday = DPBirthday.SelectedDate.Value,
-                        Note = TBoxNote.Text.Length == 0 ? null : TBoxNote.Text
+                        Note = TBoxNote.Text.Length == 0 ? null : TBoxNote.Text,
+                        IsExpelled = false
                     });
 
                     isUpdate = false;

@@ -121,10 +121,18 @@ namespace SpecialtyManagement.Pages
                     break;
             }
 
+            List<Students> expelledStudents = new List<Students>();
+            expelledStudents.AddRange(students.Where(x => x.IsExpelled == true));
+            students.RemoveAll(x => x.IsExpelled == true);
+            students.AddRange(expelledStudents);
+
             int number = 1;
             foreach (Students item in students)
             {
-                item.SequenceNumber = number++;
+                if (!item.IsExpelled)
+                {
+                    item.SequenceNumber = number++;
+                }
             }
 
             DGStudents.ItemsSource = students;
@@ -191,47 +199,23 @@ namespace SpecialtyManagement.Pages
 
         private void MIChange_Click(object sender, RoutedEventArgs e)
         {
-            if (DGStudents.SelectedItems.Count == 1)
+            Filter filter = new Filter()
             {
-                Filter filter = new Filter()
-                {
-                    FindText = TBoxFind.Text,
-                    IndexGroup = CBGroup.SelectedIndex,
-                    IndexSort = CBSort.SelectedIndex,
-                    HasNote = (bool)ChBNote.IsChecked
-                };
+                FindText = TBoxFind.Text,
+                IndexGroup = CBGroup.SelectedIndex,
+                IndexSort = CBSort.SelectedIndex,
+                HasNote = (bool)ChBNote.IsChecked
+            };
 
-                Navigation.Frame.Navigate(new StudentAddPage(filter, DGStudents.SelectedItem as Students));
-            }
-            else
-            {
-                MessageBox.Show("Выберите одного студента", "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
+            Navigation.Frame.Navigate(new StudentAddPage(filter, DGStudents.SelectedItem as Students));
         }
 
         private void MIExpel_Click(object sender, RoutedEventArgs e)
         {
-            List<Students> students = new List<Students>();
-            List<ExpelledStudents> ecpelledStudents = new List<ExpelledStudents>();
-
             foreach (Students item in DGStudents.SelectedItems)
             {
-                students.Add(item);
-
-                ecpelledStudents.Add(new ExpelledStudents
-                {
-                    Surname = item.Surname,
-                    Name = item.Name,
-                    Patronymic = item.Patronymic,
-                    IdGroup = item.IdGroup,
-                    Birthday = item.Birthday,
-                    Note = item.Note
-                });
+                item.IsExpelled = true;
             }
-
-
-            Database.Entities.Students.RemoveRange(students);
-            Database.Entities.ExpelledStudents.AddRange(ecpelledStudents);
 
             try
             {
@@ -250,8 +234,58 @@ namespace SpecialtyManagement.Pages
             }
         }
 
+        private void MIRestore_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void DGStudents_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            if (DGStudents.SelectedItems.Count == 0)
+            {
+                return;
+            }
+
+            MIChange.Visibility = Visibility.Visible;
+            MIExpel.Visibility = Visibility.Visible;
+            MIRestore.Visibility = Visibility.Visible;
+
+            if (DGStudents.SelectedItems.Count > 1)
+            {
+                MIChange.Visibility = Visibility.Collapsed;
+            }
+
+            List<Students> students = new List<Students>();
+            foreach (Students item in DGStudents.SelectedItems)
+            {
+                students.Add(item);
+            }
+
+            if (students.FirstOrDefault(x => x.IsExpelled) != null)
+            {
+                MIExpel.Visibility = Visibility.Collapsed;
+            }
+            if (students.FirstOrDefault(x => !x.IsExpelled) != null)
+            {
+                MIRestore.Visibility = Visibility.Collapsed;
+            }
+
+            if (MIChange.Visibility == Visibility.Collapsed && MIExpel.Visibility == Visibility.Collapsed &&
+                MIRestore.Visibility == Visibility.Collapsed)
+            {
+
+                MessageBox.Show
+                (
+                    "К выбранным студентам нельзя применить общие операции. Попробуйте редактировать " +
+                    "каждого студента отдельно или выбрать их по общему признаку (например, только отчисленных)",
+                    "Студенты",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning
+                );
+
+                return;
+            }
+
             CMStudents.IsOpen = true;
         }
 
@@ -263,11 +297,6 @@ namespace SpecialtyManagement.Pages
         private void CMStudents_Closed(object sender, RoutedEventArgs e)
         {
             DGStudents.SelectedItems.Clear();
-        }
-
-        private void BtnCertification_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

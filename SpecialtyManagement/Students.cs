@@ -18,7 +18,6 @@ namespace SpecialtyManagement
         public Students()
         {
             this.Arrears = new HashSet<Arrears>();
-            this.StudentsPerformance = new HashSet<StudentsPerformance>();
         }
     
         public int Id { get; set; }
@@ -28,11 +27,10 @@ namespace SpecialtyManagement
         public System.DateTime Birthday { get; set; }
         public int IdGroup { get; set; }
         public string Note { get; set; }
+        public bool IsExpelled { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Arrears> Arrears { get; set; }
         public virtual Groups Groups { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<StudentsPerformance> StudentsPerformance { get; set; }
     }
 }

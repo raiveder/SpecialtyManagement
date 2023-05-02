@@ -57,17 +57,16 @@
                 <ContextMenu Name="CMStudents" Closed="CMStudents_Closed">
                     <MenuItem Name="MIChange" Header="Изменить" Click="MIChange_Click"/>
                     <MenuItem Name="MIExpel" Header="Отчислить" Click="MIExpel_Click"/>
+                    <MenuItem Name="MIRestore" Header="Восстановить" Click="MIRestore_Click"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>
 
-        <Menu Grid.Row="2" HorizontalAlignment="Left" Margin="10">
+        <Menu Grid.Row="2" Margin="10">
             <MenuItem Header="Добавить" Style="{StaticResource MenuItemStyle}">
                 <MenuItem Name="MIAdd" Header="Добавить студента" Style="{StaticResource SubMenuItemStyle}" Click="MIAdd_Click"/>
                 <MenuItem Name="MIReadFile" Header="Загрузить из файла" Style="{StaticResource SubMenuItemStyle}" Click="MIReadFile_Click"/>
             </MenuItem>
         </Menu>
-
-        <Button Grid.Row="2" Name="BtnCertification" Content="Аттестация" HorizontalAlignment="Right" Margin="10" Click="BtnCertification_Click"/>
     </Grid>
 </Page>

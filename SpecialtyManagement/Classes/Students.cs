@@ -9,7 +9,7 @@ namespace SpecialtyManagement
 {
     public partial class Students
     {
-        public int SequenceNumber { get; set; }
+        public int? SequenceNumber { get; set; }
 
         public string FullName
         {
