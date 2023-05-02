@@ -239,6 +239,13 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model1.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="Documents\График преподавателей.docx" />
+    <None Include="Documents\Индивидуальный график академ задолж.docx" />
+    <None Include="Documents\Комиссионные пересдачи.docx" />
+    <None Include="Documents\Ликвидация академических задолженностей.docx" />
+    <None Include="Documents\Промежуточная аттестация.docx" />
+    <None Include="Documents\Студенты с задолженностями.docx" />
+    <None Include="Documents\Студенты.docx" />
     <None Include="Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </None>
@@ -258,6 +265,7 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Documents\ScriptDatabase.sql" />
     <Content Include="Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model1.edmx</DependentUpon>
