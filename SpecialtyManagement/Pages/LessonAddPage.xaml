@@ -28,7 +28,7 @@
             <TextBlock Text="Код" Margin="0 0 0 5"/>
             <TextBox Name="TBoxCode" Width="300" HorizontalAlignment="Left" Margin="0 0 0 20"/>
             <TextBlock Text="Наименование" Margin="0 0 0 5"/>
-            <TextBox Name="TBoxName" Width="300" HorizontalAlignment="Left"/>
+            <TextBox Name="TBoxName" Width="300" HorizontalAlignment="Left" TextWrapping="Wrap"/>
         </StackPanel>
 
         <TextBlock Grid.Row="1" Grid.Column="1" Text="Преподаватели" Margin="10"/>
