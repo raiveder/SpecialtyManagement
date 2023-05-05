@@ -18,6 +18,8 @@
         <TextBlock Text="Настройки" FontSize="30" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
 
         <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Наименование отделения" Margin="0 0 0 5"/>
+            <TextBox Name="TBoxDepartament" Width="300" HorizontalAlignment="Left" Margin="0 0 0 20" TextWrapping="Wrap"/>
             <TextBlock Text="Код специальности" Margin="0 0 0 5"/>
             <TextBox Name="TBoxCode" Width="300" HorizontalAlignment="Left" Margin="0 0 0 20"/>
             <TextBlock Text="Наименование специальности" Margin="0 0 0 5"/>

@@ -1,5 +1,4 @@
-﻿using SpecialtyManagement.Classes;
-using System;
+﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -18,6 +17,7 @@ namespace SpecialtyManagement.Pages
         {
             InitializeComponent();
 
+            TBoxDepartament.Text = _specialty.Departament;
             TBoxCode.Text = _specialty.Code;
             TBoxName.Text = _specialty.Name;
             TBoxHead.Text = _specialty.Head;
@@ -27,6 +27,7 @@ namespace SpecialtyManagement.Pages
         {
             if (CheckFillData())
             {
+                _specialty.Departament = TBoxDepartament.Text;
                 _specialty.Code = TBoxCode.Text;
                 _specialty.Name = TBoxName.Text;
                 _specialty.Head = TBoxHead.Text;
@@ -50,7 +51,12 @@ namespace SpecialtyManagement.Pages
         /// <returns>True - если все данные заполнены корректно, в противном случае - false.</returns>
         private bool CheckFillData()
         {
-            if (TBoxCode.Text.Length == 0)
+            if (TBoxDepartament.Text.Length == 0)
+            {
+                MessageBox.Show("Введите наименование отделения", "Настройки", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            else if (TBoxCode.Text.Length == 0)
             {
                 MessageBox.Show("Введите код специальности", "Настройки", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;

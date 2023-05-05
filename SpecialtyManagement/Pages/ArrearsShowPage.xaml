@@ -9,28 +9,44 @@
       Title="ArrearsShowPage">
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.31*"/>
+            <ColumnDefinition Width="0.38*"/>
+            <ColumnDefinition Width="0.31*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="160"/>
+            <RowDefinition Height="200"/>
             <RowDefinition/>
             <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Margin="10" VerticalAlignment="Center">
+        <StackPanel Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel Orientation="Horizontal" Margin="0 0 0 20">
-                <TextBlock Text="Поиск" Width="{Binding ActualWidth, ElementName=TBSort}" VerticalAlignment="Center"/>
+                <TextBlock Text="Поиск" Width="{Binding ActualWidth, ElementName=TBGroup}" VerticalAlignment="Center"/>
                 <TextBox Name="TBoxFind" Width="200" Height="{Binding ActualHeight, ElementName=CBSort}" VerticalAlignment="Center" TextChanged="TBoxFind_TextChanged"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0 0 0 20">
-                <TextBlock Text="Группа" Width="{Binding ActualWidth, ElementName=TBSort}" VerticalAlignment="Center"/>
+                <TextBlock Name="TBGroup" Text="Группа" VerticalAlignment="Center" Padding="0 0 10 0"/>
                 <ComboBox Name="CBGroup" Width="200" VerticalAlignment="Center" SelectedValuePath="Id" DisplayMemberPath="Group" SelectionChanged="CBFilter_SelectionChanged"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Name="TBSort" Text="Сортировка" Padding="0 0 10 0" VerticalAlignment="Center"/>
+                <TextBlock Text="Тип" Width="{Binding ActualWidth, ElementName=TBGroup}" VerticalAlignment="Center"/>
+                <ComboBox Name="CBType" Width="200" VerticalAlignment="Center" SelectedValuePath="Id" DisplayMemberPath="Group" SelectionChanged="CBFilter_SelectionChanged"/>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel HorizontalAlignment="Center" Margin="0 0 0 20">
+                <RadioButton Name="RBLastSemester" Content="Прошлый семестр" Height="{Binding ActualHeight, ElementName=TBoxFind}" HorizontalAlignment="Left" Margin="0 0 0 20" Checked="RBLastSemester_Checked"/>
+                <RadioButton Name="RBCurrentSemester" Content="Текущий семестр" Height="{Binding ActualHeight, ElementName=TBoxFind}" HorizontalAlignment="Left" Checked="RBCurrentSemester_Checked"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Name="TBSort" Text="Сортировка" Margin="0 0 10 0" VerticalAlignment="Center"/>
                 <ComboBox Name="CBSort" Width="200" VerticalAlignment="Center" SelectionChanged="CBFilter_SelectionChanged">
                     <ComboBoxItem>По умолчанию</ComboBoxItem>
                     <ComboBoxItem>ФИО ↑</ComboBoxItem>
+                    <ComboBoxItem>Группа ↑</ComboBoxItem>
                     <ComboBoxItem>Кол-во задолженностей ↑</ComboBoxItem>
-                    <ComboBoxItem>Дата рождения ↑</ComboBoxItem>
                     <ComboBoxItem>ФИО ↓</ComboBoxItem>
                     <ComboBoxItem>Группа ↓</ComboBoxItem>
                     <ComboBoxItem>Кол-во задолженностей ↓</ComboBoxItem>
@@ -38,38 +54,36 @@
             </StackPanel>
         </StackPanel>
 
-        <StackPanel Margin="10" HorizontalAlignment="Right" VerticalAlignment="Center">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 0 20">
-                <TextBlock Name="TBLastSemester" Text="Прошлый семестр" Padding="0 0 10 0" VerticalAlignment="Center"/>
-                <RadioButton Name="RBLastSemester" Height="{Binding ActualHeight, ElementName=TBoxFind}" VerticalContentAlignment="Center" Checked="RBLastSemester_Checked"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 0 20">
-                <TextBlock Text="Текущий семестр" Width="{Binding ActualWidth, ElementName=TBLastSemester}" VerticalAlignment="Center"/>
-                <RadioButton Name="RBCurrentSemester" Height="{Binding ActualHeight, ElementName=TBoxFind}" VerticalContentAlignment="Center" Checked="RBCurrentSemester_Checked"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0 0 0 20">
-                <TextBlock Text="Тип" VerticalAlignment="Center" Margin="0 0 10 0"/>
-                <ComboBox Name="CBType" Width="200" VerticalAlignment="Center" SelectedValuePath="Id" DisplayMemberPath="Group" SelectionChanged="CBFilter_SelectionChanged"/>
+        <StackPanel Grid.Column="2" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
+                    <Ellipse Fill="Blue" Width="{StaticResource FontSize}" Height="{StaticResource FontSize}" Margin="0 0 10 0"/>
+                    <TextBlock Text="Ликвидирована" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
+                    <Ellipse Fill="Black" Width="{StaticResource FontSize}" Height="{StaticResource FontSize}" Margin="0 0 10 0"/>
+                    <TextBlock Text="Академическая" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
+                    <Ellipse Fill="Red" Width="{StaticResource FontSize}" Height="{StaticResource FontSize}" Margin="0 0 10 0"/>
+                    <TextBlock Text="Комиссионная" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
+                    <Ellipse Fill="Green" Width="{StaticResource FontSize}" Height="{StaticResource FontSize}" Margin="0 0 10 0"/>
+                    <TextBlock Text="Уважительная причина" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
+                    <Ellipse Fill="Brown" Width="{StaticResource FontSize}" Height="{StaticResource FontSize}" Margin="0 0 10 0"/>
+                    <TextBlock Text="Академический отпуск" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Ellipse Fill="PaleVioletRed" Width="{StaticResource FontSize}" Height="{StaticResource FontSize}" Margin="0 0 10 0"/>
+                    <TextBlock Text="Отчислен" VerticalAlignment="Center"/>
+                </StackPanel>
             </StackPanel>
         </StackPanel>
 
-        <!--<DataGrid Grid.Row="1" Name="DGArrears" Margin="10 0" ColumnWidth="*" MouseLeftButtonUp="DGArrears_MouseLeftButtonUp" MouseRightButtonUp="DGArrears_MouseRightButtonUp">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="№" Binding="{Binding SequenceNumber}" MinWidth="40" MaxWidth="40" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>
-                <DataGridTextColumn Header="Группа" Binding="{Binding Students.Groups.Group}" MinWidth="80" MaxWidth="80" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>
-                <DataGridTextColumn Header="ФИ" Binding="{Binding Students.SurnameAndName}" MinWidth="150"/>
-                <DataGridTextColumn Header="Кол-во" Binding="{Binding CountArrears}" MinWidth="160" MaxWidth="160" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>
-                <DataGridTextColumn Header="Дисциплины" Binding="{Binding LessonsString}" MinWidth="150"/>
-            </DataGrid.Columns>
-            <DataGrid.ContextMenu>
-                <ContextMenu Name="CMArrears" Closed="CMArrears_Closed">
-                    <MenuItem Name="MIChange" Header="Изменить" Click="MIChange_Click"/>
-                    <MenuItem Name="MIDelete" Header="Удалить" Click="MIDelete_Click"/>
-                </ContextMenu>
-            </DataGrid.ContextMenu>
-        </DataGrid>-->
-
-        <DataGrid Grid.Row="1" Name="DGArrears" Margin="10 0" ColumnWidth="*" MouseLeftButtonUp="DGArrears_MouseLeftButtonUp" MouseRightButtonUp="DGArrears_MouseRightButtonUp">
+        <DataGrid Grid.Row="1" Grid.ColumnSpan="3" Name="DGArrears" Margin="10 0" ColumnWidth="*" MouseLeftButtonUp="DGArrears_MouseLeftButtonUp" MouseRightButtonUp="DGArrears_MouseRightButtonUp">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="№" Binding="{Binding SequenceNumber}" MinWidth="40" MaxWidth="40" CellStyle="{StaticResource DataGridTextCell}" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>
                 <DataGridTextColumn Header="Группа" Binding="{Binding Students.Groups.Group}" MinWidth="80" CellStyle="{StaticResource DataGridTextCell}" MaxWidth="80" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>
@@ -93,11 +107,11 @@
 
         <Button Grid.Row="2" Name="BtnAdd" Content="Добавить" HorizontalAlignment="Left" Margin="10" Click="BtnAdd_Click"/>
 
-        <Menu Grid.Row="2" HorizontalAlignment="Right" Margin="10">
+        <Menu Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" Margin="10">
             <MenuItem Header="Документы" Style="{StaticResource MenuItemStyle}">
-                <MenuItem Name="MISheduleRetakes" Header="График пересдач" Style="{StaticResource SubMenuItemStyle}" Click="MISheduleRetakes_Click"/>
-                <MenuItem Name="MIIndividualSheduleRetakes" Header="Инд. график пересдачи" Style="{StaticResource SubMenuItemStyle}" Click="MIIndividualSheduleRetakes_Click"/>
-                <MenuItem Name="MIComissionRetakes" Header="Комиссионные пересдачи" Style="{StaticResource SubMenuItemStyle}" Click="MIComissionRetakes_Click"/>
+                <MenuItem Name="MISheduleRetakes" Header="Ликвидация первичных задолженностей" Style="{StaticResource SubMenuItemStyle}" Click="MISheduleRetakes_Click"/>
+                <MenuItem Name="MIIndividualSheduleRetakes" Header="Ликвидация комиссионных задолженностей" Style="{StaticResource SubMenuItemStyle}" Click="MIIndividualSheduleRetakes_Click"/>
+                <MenuItem Name="MIComissionRetakes" Header="Служебная записка по ком. задолженностям" Style="{StaticResource SubMenuItemStyle}" Click="MIComissionRetakes_Click" Cursor=""/>
             </MenuItem>
         </Menu>
     </Grid>

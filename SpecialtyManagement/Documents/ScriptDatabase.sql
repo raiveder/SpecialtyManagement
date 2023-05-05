@@ -39,14 +39,6 @@ CREATE TABLE Students(
 [Note] NVARCHAR(MAX),
 [IsExpelled] BIT NOT NULL)
 
-CREATE TABLE TeachersSchedule(
-[Id] INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
-[IdTeacher] INT FOREIGN KEY REFERENCES Teachers(Id) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
-[Date] DATETIME NOT NULL,
-[AudienceNumber] NVARCHAR(15) NOT NULL,
-[StartYear] INT NOT NULL,
-[SemesterNumber] INT NOT NULL)
-
 CREATE TABLE Arrears(
 [Id] INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 [IdStudent] INT FOREIGN KEY REFERENCES Students(Id) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
@@ -59,16 +51,15 @@ CREATE TABLE TypesArrears(
 
 CREATE TABLE ReasonsArrears(
 [Id] INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
-[Type] NVARCHAR(50) NOT NULL)
+[Reason] NVARCHAR(50) NOT NULL)
 
 CREATE TABLE ArrearsLessons(
 [Id] INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 [IdArrear] INT FOREIGN KEY REFERENCES Arrears(Id) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
 [IdLesson] INT FOREIGN KEY REFERENCES Lessons(Id) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
 [IdType] INT FOREIGN KEY REFERENCES TypesArrears(Id) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
-[Date] DATETIME,
 [IsLiquidated] BIT NOT NULL,
-[Reason] INT FOREIGN KEY REFERENCES ReasonsArrears(Id))
+[IdReason] INT FOREIGN KEY REFERENCES ReasonsArrears(Id))
 
 CREATE TABLE LiquidationsCompositions(
 [Id] INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
@@ -77,12 +68,13 @@ CREATE TABLE LiquidationsCompositions(
 
 CREATE TABLE Specialty(
 [Id] INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+[Departament] NVARCHAR(100) NOT NULL,
 Code NVARCHAR(10) NOT NULL,
 [Name] NVARCHAR(100) NOT NULL,
 [Head] NVARCHAR(100) NOT NULL)
 
 INSERT INTO Specialty VALUES
-('09.02.07','Информационные системы и программирование', 'Крылова Лариса Ивановна')
+('09.02.07', 'Информатика и вычислительная техника', 'Информационные системы и программирование', 'Крылова Лариса Ивановна')
 
 INSERT INTO Groups VALUES
 ('11П'),
@@ -213,22 +205,22 @@ INSERT INTO Arrears VALUES
 (1, 2022, 1),
 (2, 2022, 1),
 (8, 2022, 1),
-(5, 2023, 2),
-(12, 2023, 2),
-(26, 2023, 2)
+(5, 2022, 2),
+(12, 2022, 2),
+(26, 2022, 2)
 
 INSERT INTO ArrearsLessons VALUES
-(1, 1, 1, NULL, 0, NULL),
-(1, 3, 1, NULL, 0, NULL),
-(2, 12, 1, NULL, 0, NULL),
-(3, 15, 1, NULL, 0, NULL),
-(3, 16, 1, NULL, 0, NULL),
-(3, 13, 1, NULL, 0, NULL),
-(4, 4, 1, NULL, 0, NULL),
-(4, 2, 2, NULL, 0, NULL),
-(4, 3, 2, NULL, 1, NULL),
-(4, 15, 2, NULL, 0, 1),
-(4, 16, 2, NULL, 0, 3),
-(5, 12, 2, NULL, 0, NULL),
-(6, 1, 1, NULL, 0, 2),
-(6, 2, 2, NULL, 0, 2)
+(1, 1, 1,0, NULL),
+(1, 3, 1, 0, NULL),
+(2, 12, 1, 0, NULL),
+(3, 15, 1, 0, NULL),
+(3, 16, 1, 0, NULL),
+(3, 13, 1, 0, NULL),
+(4, 4, 1, 0, NULL),
+(4, 2, 2, 0, NULL),
+(4, 3, 2, 1, NULL),
+(4, 15, 2, 0, 1),
+(4, 16, 2, 0, 3),
+(5, 12, 2, 0, NULL),
+(6, 1, 1, 0, 2),
+(6, 2, 2, 0, 2)

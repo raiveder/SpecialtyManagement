@@ -236,7 +236,26 @@ namespace SpecialtyManagement.Pages
 
         private void MIRestore_Click(object sender, RoutedEventArgs e)
         {
+            foreach (Students item in DGStudents.SelectedItems)
+            {
+                item.IsExpelled = false;
+            }
 
+            try
+            {
+                Database.Entities.SaveChanges();
+                SetFilter();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show
+                (
+                    "При восстановлении " + (DGStudents.SelectedItems.Count == 1 ? "студента" : "студентов") + " возникла ошибка",
+                    "Студенты",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning
+                );
+            }
         }
 
         private void DGStudents_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)

@@ -13,8 +13,6 @@ namespace SpecialtyManagement.Pages
     /// </summary>
     public partial class ArrearsShowPage : Page
     {
-        private List<int> _idArrearsWithoutLessons = new List<int>();
-
         public ArrearsShowPage()
         {
             UploadPage();
@@ -29,11 +27,21 @@ namespace SpecialtyManagement.Pages
         {
             UploadPage();
 
+            if (filter.IsCurrentSemester)
+            {
+                RBLastSemester.IsChecked = false;
+                RBCurrentSemester.IsChecked = true;
+            }
+            else
+            {
+                RBLastSemester.IsChecked = true;
+                RBCurrentSemester.IsChecked = false;
+            }
+
             TBoxFind.Text = filter.FindText;
             CBGroup.SelectedIndex = filter.IndexGroup;
+            CBType.SelectedIndex = filter.IndexType;
             CBSort.SelectedIndex = filter.IndexSort;
-            RBLastSemester.IsChecked = filter.IsLastSemester;
-            RBCurrentSemester.IsChecked = filter.IsCurrentSemester;
         }
 
         /// <summary>
@@ -101,30 +109,9 @@ namespace SpecialtyManagement.Pages
         /// </summary>
         private void SetFilter()
         {
-            List<Arrears> arrears = new List<Arrears>();
+            Arrears.GetYearAndSemester(out int year, out int semesterNumber, (bool)RBCurrentSemester.IsChecked);
 
-            if ((bool)RBLastSemester.IsChecked)
-            {
-                if (DateTime.Today >= new DateTime(DateTime.Today.Year, 9, 1) && DateTime.Today <= new DateTime(DateTime.Today.Year, 12, 31))
-                {
-                    arrears = Database.Entities.Arrears.Where(x => x.StartYear == DateTime.Today.Year && x.SemesterNumber == 2).ToList();
-                }
-                else
-                {
-                    arrears = Database.Entities.Arrears.Where(x => x.StartYear == DateTime.Today.Year - 1 && x.SemesterNumber == 1).ToList();
-                }
-            }
-            else
-            {
-                if (DateTime.Today >= new DateTime(DateTime.Today.Year, 9, 1) && DateTime.Today <= new DateTime(DateTime.Today.Year, 12, 31))
-                {
-                    arrears = Database.Entities.Arrears.Where(x => x.StartYear == DateTime.Today.Year && x.SemesterNumber == 1).ToList();
-                }
-                else
-                {
-                    arrears = Database.Entities.Arrears.Where(x => x.StartYear == DateTime.Today.Year && x.SemesterNumber == 2).ToList();
-                }
-            }
+            List<Arrears> arrears = Database.Entities.Arrears.Where(x => x.StartYear == year && x.SemesterNumber == semesterNumber).ToList();
 
             if (CBType.SelectedIndex > 0)
             {
@@ -132,15 +119,28 @@ namespace SpecialtyManagement.Pages
 
                 foreach (Arrears item in arrears) // Поиск задолженностей, у которых нет дисциплин для данного типа.
                 {
-                    if (Database.Entities.ArrearsLessons.Where(x => x.IdArrear == item.Id && x.IdType == (int)CBType.SelectedValue).Count() == 0)
+                    int countLessons = Database.Entities.ArrearsLessons.Where(x => x.IdArrear == item.Id && x.IdType == (int)CBType.SelectedValue).Count();
+
+                    if (countLessons == 0)
                     {
                         arrearsToRemove.Add(item);
+                    }
+                    else
+                    {
+                        item.CountArrears = countLessons;
                     }
                 }
 
                 foreach (Arrears item in arrearsToRemove)
                 {
                     arrears.Remove(item);
+                }
+            }
+            else
+            {
+                foreach (Arrears item in arrears)
+                {
+                    item.CountArrears = Database.Entities.ArrearsLessons.Where(x => x.IdArrear == item.Id).Count();
                 }
             }
 
@@ -195,7 +195,7 @@ namespace SpecialtyManagement.Pages
             }
         }
 
-        private void WPLessons_Loaded(object sender, RoutedEventArgs e)
+        private void WPLessons_Loaded(object sender, RoutedEventArgs e) // Отрисовка дисциплин, по которым у студента есть задолженности.
         {
             WrapPanel panel = sender as WrapPanel;
 
@@ -222,7 +222,7 @@ namespace SpecialtyManagement.Pages
                         tb.Foreground = Brushes.Red;
                     }
 
-                    switch (item.Reason)
+                    switch (item.IdReason)
                     {
                         case 1:
                             tb.Foreground = Brushes.Green;
@@ -256,6 +256,19 @@ namespace SpecialtyManagement.Pages
 
         private void DGArrears_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            if (DGArrears.SelectedItems.Count == 0)
+            {
+                return;
+            }
+
+            MIChange.Visibility = Visibility.Visible;
+            MIDelete.Visibility = Visibility.Visible;
+
+            if (DGArrears.SelectedItems.Count > 1)
+            {
+                MIChange.Visibility = Visibility.Collapsed;
+            }
+
             CMArrears.IsOpen = true;
         }
 
@@ -266,17 +279,59 @@ namespace SpecialtyManagement.Pages
 
         private void MIChange_Click(object sender, RoutedEventArgs e)
         {
+            Filter filter = new Filter()
+            {
+                FindText = TBoxFind.Text,
+                IndexType = CBType.SelectedIndex,
+                IndexGroup = CBGroup.SelectedIndex,
+                IsCurrentSemester = (bool)RBCurrentSemester.IsChecked,
+                IndexSort = CBSort.SelectedIndex
+            };
 
+            Navigation.Frame.Navigate(new ArrearAddPage(filter, DGArrears.SelectedItem as Arrears));
         }
 
         private void MIDelete_Click(object sender, RoutedEventArgs e)
         {
+            foreach (Arrears item in DGArrears.SelectedItems)
+            {
+                Database.Entities.Arrears.Remove(item);
+            }
 
+            try
+            {
+                Database.Entities.SaveChanges();
+                SetFilter();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show
+                (
+                    "При удалении " + (DGArrears.SelectedItems.Count == 1 ? "задолженности" : "задолженностей") + " возникла ошибка",
+                    "Задолженности",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning
+                );
+            }
         }
 
         private void CMArrears_Closed(object sender, RoutedEventArgs e)
         {
+            DGArrears.SelectedItems.Clear();
+        }
 
+        private void BtnAdd_Click(object sender, RoutedEventArgs e)
+        {
+            Filter filter = new Filter()
+            {
+                FindText = TBoxFind.Text,
+                IndexType = CBType.SelectedIndex,
+                IndexGroup = CBGroup.SelectedIndex,
+                IsCurrentSemester = (bool)RBCurrentSemester.IsChecked,
+                IndexSort = CBSort.SelectedIndex
+            };
+
+            Navigation.Frame.Navigate(new ArrearAddPage(filter));
         }
 
         private void MISheduleRetakes_Click(object sender, RoutedEventArgs e)
@@ -290,11 +345,6 @@ namespace SpecialtyManagement.Pages
         }
 
         private void MIComissionRetakes_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
 
         }

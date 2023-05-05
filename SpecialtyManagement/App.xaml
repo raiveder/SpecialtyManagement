@@ -10,6 +10,8 @@
         <SolidColorBrush x:Key="ColorPrimary" Color="#EEEEFB"/>
         <SolidColorBrush x:Key="ColorSecondary" Color="#BDBDFF"/>
         <SolidColorBrush x:Key="ColorAccent" Color="#7F47D9"/>
+        <SolidColorBrush x:Key="ColorBorder" Color="#FFACACAC"/>
+        <SolidColorBrush x:Key="ColorBorderMouseOver" Color="#FF7EB4EA"/>
         <FontFamily x:Key="Font">Arial</FontFamily>
         <CornerRadius x:Key="CornerRadius">10</CornerRadius>
         <system:Double x:Key="FontSize">20</system:Double>
@@ -43,7 +45,7 @@
                                 CornerRadius="{StaticResource CornerRadius}"
                                 Padding="{TemplateBinding Padding}"
                                 HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                                VerticalAlignment="{TemplateBinding HorizontalAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalAlignment}"
                                 MinWidth="{TemplateBinding MinWidth}"
                                 SnapsToDevicePixels="true">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -65,21 +67,27 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="CheckBox">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="#FFACACAC"
+                        <Border x:Name="Border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{StaticResource ColorBorder}"
                                 BorderThickness="1"
                                 Width="{TemplateBinding Height}"
                                 Height="{TemplateBinding Height}"
                                 VerticalAlignment="Center"
                                 Cursor="Hand"
                                 SnapsToDevicePixels="true">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
+                            <TextBlock x:Name="TextBlock"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontSize="{TemplateBinding FontSize}"/>
                         </Border>
                         <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource ColorBorderMouseOver}"/>
+                            </Trigger>
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter Property="Background" Value="{StaticResource ColorAccent}"/>
-                                <Setter Property="Content" Value="✓"/>
+                                <Setter TargetName="TextBlock" Property="Text" Value="✓"/>
                                 <Setter Property="Foreground" Value="White"/>
                             </Trigger>
                             <Trigger Property="IsChecked" Value="False">
@@ -222,7 +230,7 @@
         </Style>
         <!--Цвет ComboBox-->
         <SolidColorBrush x:Key="ComboBox.Static.Background" Color="{Binding Source={StaticResource ColorPrimary}, Path=Color}"/>
-        <SolidColorBrush x:Key="ComboBox.Static.Border" Color="#FFACACAC"/>
+        <SolidColorBrush x:Key="ComboBox.Static.Border" Color="{Binding Source={StaticResource ColorBorder},Path=Color}"/>
         <SolidColorBrush x:Key="ComboBox.Static.Glyph" Color="#FF606060"/>
         <!--Цвет кнопки ComboBox с Editable=true-->
         <SolidColorBrush x:Key="ComboBox.Static.Editable.Background" Color="{Binding Source={StaticResource ColorPrimary}, Path=Color}"/>
@@ -231,14 +239,14 @@
         <SolidColorBrush x:Key="ComboBox.Static.Editable.Button.Border" Color="Transparent"/>
         <!--Цвет при наведении на ComboBox-->
         <SolidColorBrush x:Key="ComboBox.MouseOver.Background" Color="{Binding Source={StaticResource ColorSecondary}, Path=Color}"/>
-        <SolidColorBrush x:Key="ComboBox.MouseOver.Border" Color="#FF7EB4EA"/>
+        <SolidColorBrush x:Key="ComboBox.MouseOver.Border" Color="{Binding Source={StaticResource ColorBorderMouseOver}, Path=Color}"/>
         <SolidColorBrush x:Key="ComboBox.MouseOver.Glyph" Color="#FF000000"/>
         <!--Цвет при наведении на ComboBox с Editable=true-->
         <SolidColorBrush x:Key="ComboBox.MouseOver.Editable.Background" Color="{Binding Source={StaticResource ColorPrimary}, Path=Color}"/>
-        <SolidColorBrush x:Key="ComboBox.MouseOver.Editable.Border" Color="#FF7EB4EA"/>
+        <SolidColorBrush x:Key="ComboBox.MouseOver.Editable.Border" Color="{Binding Source={StaticResource ColorBorderMouseOver}, Path=Color}"/>
         <!--Цвет кнопки при наведении на ComboBox с Editable=true-->
         <SolidColorBrush x:Key="ComboBox.MouseOver.Editable.Button.Background" Color="{Binding Source={StaticResource ColorPrimary}, Path=Color}"/>
-        <SolidColorBrush x:Key="ComboBox.MouseOver.Editable.Button.Border" Color="#FF7EB4EA"/>
+        <SolidColorBrush x:Key="ComboBox.MouseOver.Editable.Button.Border" Color="{Binding Source={StaticResource ColorBorderMouseOver}, Path=Color}"/>
         <LinearGradientBrush x:Key="ComboBox.Pressed.Background" EndPoint="0,1" StartPoint="0,0">
             <GradientStop Color="#FFDAECFC" Offset="0.0"/>
             <GradientStop Color="#FFC4E0FC" Offset="1.0"/>
@@ -577,7 +585,7 @@
                                        IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}"
                                        Placement="{DynamicResource {x:Static SystemParameters.MenuPopupAnimation}}">
                                     <Border Background="{StaticResource ColorPrimary}"
-                                            BorderBrush="#FFACACAC"
+                                            BorderBrush="{StaticResource ColorBorder}"
                                             BorderThickness="1"
                                             SnapsToDevicePixels="true">
                                         <ItemsPresenter/>

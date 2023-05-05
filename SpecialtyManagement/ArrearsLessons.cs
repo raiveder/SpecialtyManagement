@@ -24,14 +24,13 @@ namespace SpecialtyManagement
         public int IdArrear { get; set; }
         public int IdLesson { get; set; }
         public int IdType { get; set; }
-        public Nullable<System.DateTime> Date { get; set; }
         public bool IsLiquidated { get; set; }
-        public Nullable<int> Reason { get; set; }
+        public Nullable<int> IdReason { get; set; }
     
         public virtual Arrears Arrears { get; set; }
         public virtual Lessons Lessons { get; set; }
-        public virtual TypesArrears TypesArrears { get; set; }
         public virtual ReasonsArrears ReasonsArrears { get; set; }
+        public virtual TypesArrears TypesArrears { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LiquidationsCompositions> LiquidationsCompositions { get; set; }
     }

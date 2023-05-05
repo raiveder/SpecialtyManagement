@@ -35,7 +35,6 @@ namespace SpecialtyManagement
         public virtual DbSet<Specialty> Specialty { get; set; }
         public virtual DbSet<Students> Students { get; set; }
         public virtual DbSet<Teachers> Teachers { get; set; }
-        public virtual DbSet<TeachersSchedule> TeachersSchedule { get; set; }
         public virtual DbSet<TypesArrears> TypesArrears { get; set; }
         public virtual DbSet<TypesLessons> TypesLessons { get; set; }
     }
