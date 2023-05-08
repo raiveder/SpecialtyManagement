@@ -14,6 +14,7 @@
                 }
                 return Surname + " " + Name + " " + Patronymic;
             }
+            set { }
         }
 
         public string ShortName
@@ -26,6 +27,7 @@
                 }
                 return Surname + " " + Name[0] + ". " + Patronymic[0] + ".";
             }
+            set { }
         }
     }
 }

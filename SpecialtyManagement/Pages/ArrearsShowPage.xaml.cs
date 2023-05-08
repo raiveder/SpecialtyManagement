@@ -115,26 +115,7 @@ namespace SpecialtyManagement.Pages
 
             if (CBType.SelectedIndex > 0)
             {
-                List<Arrears> arrearsToRemove = new List<Arrears>();
-
-                foreach (Arrears item in arrears) // Поиск задолженностей, у которых нет дисциплин для данного типа.
-                {
-                    int countLessons = Database.Entities.ArrearsLessons.Where(x => x.IdArrear == item.Id && x.IdType == (int)CBType.SelectedValue).Count();
-
-                    if (countLessons == 0)
-                    {
-                        arrearsToRemove.Add(item);
-                    }
-                    else
-                    {
-                        item.CountArrears = countLessons;
-                    }
-                }
-
-                foreach (Arrears item in arrearsToRemove)
-                {
-                    arrears.Remove(item);
-                }
+                DeleteArrearsNotMatchByType(arrears, (int)CBType.SelectedValue);
             }
             else
             {
@@ -195,10 +176,38 @@ namespace SpecialtyManagement.Pages
             }
         }
 
-        private void WPLessons_Loaded(object sender, RoutedEventArgs e) // Отрисовка дисциплин, по которым у студента есть задолженности.
+        /// <summary>
+        /// Удаляет задолженности, которые не соответствуют выбранному типу, из списка.
+        /// </summary>
+        /// <param name="arrears">список задолженностей.</param>
+        /// <param name="idType">индекс типа задолженности.</param>
+        private void DeleteArrearsNotMatchByType(List<Arrears> arrears, int idType)
+        {
+            List<Arrears> arrearsToRemove = new List<Arrears>();
+
+            foreach (Arrears item in arrears)
+            {
+                int countLessons = Database.Entities.ArrearsLessons.Where(x => x.IdArrear == item.Id && x.IdType == idType).Count();
+
+                if (countLessons == 0)
+                {
+                    arrearsToRemove.Add(item);
+                }
+                else
+                {
+                    item.CountArrears = countLessons;
+                }
+            }
+
+            foreach (Arrears item in arrearsToRemove)
+            {
+                arrears.Remove(item);
+            }
+        }
+
+        private void WPLessons_Loaded(object sender, RoutedEventArgs e)
         {
             WrapPanel panel = sender as WrapPanel;
-
             int id = Convert.ToInt32(panel.Uid);
 
             List<ArrearsLessons> arrears = Database.Entities.ArrearsLessons.Where(x => x.IdArrear == id).ToList();
@@ -219,19 +228,19 @@ namespace SpecialtyManagement.Pages
                 {
                     if (item.IdType == 2)
                     {
-                        tb.Foreground = Brushes.Red;
+                        tb.Foreground = Brushes.Red; // Комиссионная задолженность.
                     }
 
                     switch (item.IdReason)
                     {
                         case 1:
-                            tb.Foreground = Brushes.Green;
+                            tb.Foreground = Brushes.Green; // Задолженность, не сданная по уважительной причине.
                             break;
                         case 2:
-                            tb.Foreground = Brushes.PaleVioletRed;
+                            tb.Foreground = Brushes.PaleVioletRed; // Задолженность, не сданная по причине академического отпуска.
                             break;
                         case 3:
-                            tb.Foreground = Brushes.Brown;
+                            tb.Foreground = Brushes.Brown; // Задолженность, не сданная по причине отчисления.
                             break;
                         default:
                             break;
@@ -239,7 +248,7 @@ namespace SpecialtyManagement.Pages
                 }
                 else
                 {
-                    tb.Foreground = Brushes.Blue;
+                    tb.Foreground = Brushes.Blue; // Ликвидированная задолженность.
                 }
 
                 tb.Text += ", ";
@@ -334,17 +343,12 @@ namespace SpecialtyManagement.Pages
             Navigation.Frame.Navigate(new ArrearAddPage(filter));
         }
 
-        private void MISheduleRetakes_Click(object sender, RoutedEventArgs e)
+        private void MIPrimaryArrears_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void MIIndividualSheduleRetakes_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void MIComissionRetakes_Click(object sender, RoutedEventArgs e)
+        private void MIComissionArrears_Click(object sender, RoutedEventArgs e)
         {
 
         }

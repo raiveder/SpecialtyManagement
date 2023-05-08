@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows;
 
 namespace SpecialtyManagement.Windows
@@ -10,22 +9,15 @@ namespace SpecialtyManagement.Windows
     public partial class ChoiceGroupWindow : Window
     {
         private Groups _group;
-        private List<Students> _students;
 
         public string Text { get; set; }
 
-        public ChoiceGroupWindow(Groups group)
+        public ChoiceGroupWindow(Groups group, string text)
         {
             UploadWindow();
 
+            Text = text;
             _group = group;
-        }
-
-        public ChoiceGroupWindow(List<Students> students)
-        {
-            UploadWindow();
-
-            _students = students;
         }
 
         /// <summary>
@@ -46,19 +38,8 @@ namespace SpecialtyManagement.Windows
             if (CBGroups.SelectedIndex != -1)
             {
                 Groups tempGroup = CBGroups.SelectedItem as Groups;
-
-                if (_students != null)
-                {
-                    foreach (Students item in _students)
-                    {
-                        item.IdGroup = tempGroup.Id;
-                    }
-                }
-                else if (_group != null)
-                {
-                    _group.Id = tempGroup.Id;
-                    _group.Group = tempGroup.Group;
-                }
+                _group.Id = tempGroup.Id;
+                _group.Group = tempGroup.Group;
 
                 DialogResult = true;
                 Close();

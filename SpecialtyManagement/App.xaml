@@ -159,14 +159,19 @@
             <Setter Property="FontFamily" Value="{StaticResource Font}"/>
             <Setter Property="FontSize" Value="{StaticResource FontSize}"/>
             <Setter Property="Background" Value="{StaticResource ColorPrimary}"/>
+            <Style.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="MinWidth" Value="10"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                </Style>
+                <Style TargetType="DatePickerTextBox">
+                    <Setter Property="FontFamily" Value="{StaticResource Font}"/>
+                    <Setter Property="FontSize" Value="{StaticResource FontSize}"/>
+                    <Setter Property="Background" Value="{StaticResource ColorPrimary}"/>
+                </Style>
+            </Style.Resources>
         </Style>
 
-        <Style TargetType="DatePickerTextBox">
-            <Setter Property="FontFamily" Value="{StaticResource Font}"/>
-            <Setter Property="FontSize" Value="{StaticResource FontSize}"/>
-            <Setter Property="Background" Value="{StaticResource ColorPrimary}"/>
-        </Style>
-        
         <Style TargetType="ListView">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
@@ -628,7 +633,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style x:Key="TextBlockAligmentCenter" TargetType="TextBlock">
             <Setter Property="FontFamily" Value="{StaticResource Font}"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>

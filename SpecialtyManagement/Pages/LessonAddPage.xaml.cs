@@ -66,28 +66,40 @@ namespace SpecialtyManagement.Pages
 
         private void LBTeachers_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Teachers teacher = LBTeachers.SelectedItem as Teachers;
-
-            if (!_teachers.Contains(teacher))
+            if (LBTeachers.SelectedIndex != -1)
             {
+                Teachers teacher = LBTeachers.SelectedItem as Teachers;
+
                 Groups group = new Groups();
-                ChoiceGroupWindow window = new ChoiceGroupWindow(group)
-                {
-                    Text = teacher.FullName
-                };
+                ChoiceGroupWindow window = new ChoiceGroupWindow(group, teacher.FullName);
                 window.ShowDialog();
 
                 if ((bool)window.DialogResult)
                 {
-                    _teachers.Add(teacher);
-                    _groups.Add(group);
+                    bool checkContainsGroup = false;
+                    foreach (Groups item in _groups)
+                    {
+                        if (item.Id == group.Id)
+                        {
+                            checkContainsGroup = true;
+                            break;
+                        }
+                    }
 
-                    List<Teachers> tempTeachers = new List<Teachers>();
-                    tempTeachers.AddRange(_teachers);
+                    if (!(_teachers.Contains(teacher) && checkContainsGroup))
+                    {
+                        _teachers.Add(teacher);
+                        _groups.Add(group);
 
-                    _indexGroup = 0;
-                    LVTeachers.ItemsSource = tempTeachers;
+                        UpdateListView();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Дисциплину уже ведёт выбранный преподаватель у группы " + group.Group, "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
                 }
+
+                LBTeachers.SelectedIndex = -1;
             }
         }
 
@@ -106,6 +118,14 @@ namespace SpecialtyManagement.Pages
             _teachers.RemoveAt(index);
             _groups.RemoveAt(index);
 
+            UpdateListView();
+        }
+
+        /// <summary>
+        /// Обновляет визуальное отображение ListView с дисциплинами.
+        /// </summary>
+        private void UpdateListView()
+        {
             List<Teachers> tempTeachers = new List<Teachers>();
             tempTeachers.AddRange(_teachers);
 

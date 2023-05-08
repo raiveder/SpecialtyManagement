@@ -20,6 +20,7 @@ namespace SpecialtyManagement.Classes
 
                 return "Специальность не указана";
             }
+            set { }
         }
 
         public string HeadOfSpecialty
@@ -35,6 +36,7 @@ namespace SpecialtyManagement.Classes
 
                 return "Зав. специальностью не указан";
             }
+            set { }
         }
 
         public void UpdateSettings()

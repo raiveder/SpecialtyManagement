@@ -26,6 +26,7 @@ namespace SpecialtyManagement
                 }
                 return lessons;
             }
+            set { }
         }
 
         /// <summary>

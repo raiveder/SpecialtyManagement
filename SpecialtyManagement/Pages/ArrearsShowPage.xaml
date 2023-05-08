@@ -57,16 +57,16 @@
         <StackPanel Grid.Column="2" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
-                    <Ellipse Fill="Blue" Width="{StaticResource FontSize}" Height="{StaticResource FontSize}" Margin="0 0 10 0"/>
-                    <TextBlock Text="Ликвидирована" VerticalAlignment="Center"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
                     <Ellipse Fill="Black" Width="{StaticResource FontSize}" Height="{StaticResource FontSize}" Margin="0 0 10 0"/>
-                    <TextBlock Text="Академическая" VerticalAlignment="Center"/>
+                    <TextBlock Text="Первичная" VerticalAlignment="Center"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
                     <Ellipse Fill="Red" Width="{StaticResource FontSize}" Height="{StaticResource FontSize}" Margin="0 0 10 0"/>
                     <TextBlock Text="Комиссионная" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
+                    <Ellipse Fill="Blue" Width="{StaticResource FontSize}" Height="{StaticResource FontSize}" Margin="0 0 10 0"/>
+                    <TextBlock Text="Ликвидирована" VerticalAlignment="Center"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
                     <Ellipse Fill="Green" Width="{StaticResource FontSize}" Height="{StaticResource FontSize}" Margin="0 0 10 0"/>
@@ -109,9 +109,8 @@
 
         <Menu Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" Margin="10">
             <MenuItem Header="Документы" Style="{StaticResource MenuItemStyle}">
-                <MenuItem Name="MISheduleRetakes" Header="Ликвидация первичных задолженностей" Style="{StaticResource SubMenuItemStyle}" Click="MISheduleRetakes_Click"/>
-                <MenuItem Name="MIIndividualSheduleRetakes" Header="Ликвидация комиссионных задолженностей" Style="{StaticResource SubMenuItemStyle}" Click="MIIndividualSheduleRetakes_Click"/>
-                <MenuItem Name="MIComissionRetakes" Header="Служебная записка по ком. задолженностям" Style="{StaticResource SubMenuItemStyle}" Click="MIComissionRetakes_Click" Cursor=""/>
+                <MenuItem Name="MIPrimaryArrears" Header="Первичные задолженности" Style="{StaticResource SubMenuItemStyle}" Click="MIPrimaryArrears_Click"/>
+                <MenuItem Name="MIComissionArrears" Header="Комиссионные задолженности" Style="{StaticResource SubMenuItemStyle}" Click="MIComissionArrears_Click"/>
             </MenuItem>
         </Menu>
     </Grid>

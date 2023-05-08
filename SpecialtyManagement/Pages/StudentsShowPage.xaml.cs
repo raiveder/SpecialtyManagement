@@ -121,18 +121,10 @@ namespace SpecialtyManagement.Pages
                     break;
             }
 
-            List<Students> expelledStudents = new List<Students>();
-            expelledStudents.AddRange(students.Where(x => x.IsExpelled == true));
-            students.RemoveAll(x => x.IsExpelled == true);
-            students.AddRange(expelledStudents);
-
             int number = 1;
             foreach (Students item in students)
             {
-                if (!item.IsExpelled)
-                {
-                    item.SequenceNumber = number++;
-                }
+                item.SequenceNumber = number++;
             }
 
             DGStudents.ItemsSource = students;
@@ -168,22 +160,24 @@ namespace SpecialtyManagement.Pages
             {
                 List<Students> students = Students.GetStudentsFromFile(ofd.FileName);
 
-                if (students.Count != 0)
+                if (students.Count > 0)
                 {
-                    ChoiceGroupWindow window = new ChoiceGroupWindow(students)
-                    {
-                        Text = "Добавление студентов"
-                    };
+                    Groups group = new Groups();
+                    ChoiceGroupWindow window = new ChoiceGroupWindow(group, "Добавление студентов");
                     window.ShowDialog();
 
                     if ((bool)window.DialogResult)
                     {
+                        foreach (Students item in students)
+                        {
+                            item.IdGroup = group.Id;
+                        }
+
                         Database.Entities.Students.AddRange(students);
 
                         try
                         {
                             Database.Entities.SaveChanges();
-
                             CBGroup.SelectedValue = students[0].IdGroup;
 
                             MessageBox.Show("Студенты успешно добавлены", "Студенты", MessageBoxButton.OK, MessageBoxImage.Information);

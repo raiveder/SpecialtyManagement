@@ -17,7 +17,7 @@
 
         <TextBlock Name="TBHeader" Text="Добавление студента" FontSize="30" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10" Grid.RowSpan="3">
             <TextBlock Text="Фамилия" Margin="0 0 0 5"/>
             <TextBox Name="TBoxSurname" Width="300" Height="{Binding ActualHeight, ElementName=DPBirthday}" HorizontalAlignment="Left" Margin="0 0 0 20"/>
             <TextBlock Text="Имя" Margin="0 0 0 5"/>
@@ -29,10 +29,10 @@
             <TextBlock Text="Дата рождения" Margin="0 0 0 5"/>
             <DatePicker Name="DPBirthday" Width="300" HorizontalAlignment="Left" Margin="0 0 0 20"/>
             <TextBlock Text="Примечание" Margin="0 0 0 5"/>
-            <TextBox Name="TBoxNote" Width="300" Height="{Binding ActualHeight, ElementName=DPBirthday}" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+            <TextBox Name="TBoxNote" Width="300" HorizontalAlignment="Left" TextWrapping="Wrap"/>
         </StackPanel>
 
-        <Button Grid.Row="2" Name="BtnBack" Content="Назад" HorizontalAlignment="Left" Click="BtnBack_Click" Margin="10"/>
-        <Button Grid.Row="2" Name="BtnAdd" Content="Добавить" HorizontalAlignment="Right" Click="BtnAdd_Click" Margin="10"/>
+        <Button Grid.Row="2" Name="BtnBack" Content="Назад" MinWidth="200" HorizontalAlignment="Left" Click="BtnBack_Click" Margin="10"/>
+        <Button Grid.Row="2" Name="BtnAdd" Content="Добавить" MinWidth="200" HorizontalAlignment="Right" Click="BtnAdd_Click" Margin="10" Cursor="Hand"/>
     </Grid>
 </Page>

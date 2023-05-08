@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Windows;
 
@@ -21,6 +20,7 @@ namespace SpecialtyManagement
                 }
                 return Surname + " " + Name + " " + Patronymic;
             }
+            set { }
         }
 
         public string SurnameAndName
@@ -29,6 +29,7 @@ namespace SpecialtyManagement
             {
                 return Surname + " " + Name;
             }
+            set { }
         }
 
         /// <summary>
