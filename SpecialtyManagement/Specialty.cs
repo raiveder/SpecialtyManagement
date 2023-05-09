@@ -15,8 +15,8 @@ namespace SpecialtyManagement
     public partial class Specialty
     {
         public int Id { get; set; }
-        public string Departament { get; set; }
         public string Code { get; set; }
+        public string Departament { get; set; }
         public string Name { get; set; }
         public string Head { get; set; }
     }

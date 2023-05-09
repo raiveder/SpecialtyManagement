@@ -13,6 +13,7 @@
           <Property Name="IdStudent" Type="int" Nullable="false" />
           <Property Name="StartYear" Type="int" Nullable="false" />
           <Property Name="SemesterNumber" Type="int" Nullable="false" />
+          <Property Name="SemesterSequenceNumber" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ArrearsLessons">
           <Key>
@@ -70,8 +71,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Departament" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Code" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Departament" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Head" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
@@ -413,6 +414,7 @@
           <Property Name="IdStudent" Type="Int32" Nullable="false" />
           <Property Name="StartYear" Type="Int32" Nullable="false" />
           <Property Name="SemesterNumber" Type="Int32" Nullable="false" />
+          <Property Name="SemesterSequenceNumber" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Students" Relationship="SpecialtyManagementModel.FK__Arrears__IdStude__34C8D9D1" FromRole="Arrears" ToRole="Students" />
           <NavigationProperty Name="ArrearsLessons" Relationship="SpecialtyManagementModel.FK__ArrearsLe__IdArr__3B75D760" FromRole="Arrears" ToRole="ArrearsLessons" />
         </EntityType>
@@ -488,8 +490,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Departament" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Code" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Departament" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Head" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
@@ -710,6 +712,7 @@
           <EntitySetMapping Name="Arrears">
             <EntityTypeMapping TypeName="SpecialtyManagementModel.Arrears">
               <MappingFragment StoreEntitySet="Arrears">
+                <ScalarProperty Name="SemesterSequenceNumber" ColumnName="SemesterSequenceNumber" />
                 <ScalarProperty Name="SemesterNumber" ColumnName="SemesterNumber" />
                 <ScalarProperty Name="StartYear" ColumnName="StartYear" />
                 <ScalarProperty Name="IdStudent" ColumnName="IdStudent" />
@@ -779,8 +782,8 @@
               <MappingFragment StoreEntitySet="Specialty">
                 <ScalarProperty Name="Head" ColumnName="Head" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="Departament" ColumnName="Departament" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

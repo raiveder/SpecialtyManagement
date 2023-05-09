@@ -24,6 +24,7 @@ namespace SpecialtyManagement
         public int IdStudent { get; set; }
         public int StartYear { get; set; }
         public int SemesterNumber { get; set; }
+        public int SemesterSequenceNumber { get; set; }
     
         public virtual Students Students { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

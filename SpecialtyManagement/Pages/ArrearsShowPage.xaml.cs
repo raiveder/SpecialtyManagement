@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Word = Microsoft.Office.Interop.Word;
 
 namespace SpecialtyManagement.Pages
 {
@@ -345,7 +346,160 @@ namespace SpecialtyManagement.Pages
 
         private void MIPrimaryArrears_Click(object sender, RoutedEventArgs e)
         {
+            Word.Application app = new Word.Application();
+            Word.Document document = new Word.Document();
+            document.PageSetup.LeftMargin = app.CentimetersToPoints(1.25F);
+            document.PageSetup.RightMargin = app.CentimetersToPoints(0.75F);
+            document.PageSetup.TopMargin = app.CentimetersToPoints(0.5F);
+            document.PageSetup.BottomMargin = app.CentimetersToPoints(0.25F);
 
+            List<Arrears> arrears = new List<Arrears>();
+            foreach (Arrears item in DGArrears.Items)
+            {
+                arrears.Add(item);
+            }
+
+            List<Students> students = Database.Entities.Students.ToList();
+            students.RemoveRange(0, 10);
+
+            for (int i = 0; i < 5; i++)
+            {
+                Word.Paragraph paragraphHeader = document.Paragraphs.Add();
+                Word.Range rangeHeader = paragraphHeader.Range;
+                rangeHeader.Text = "Протокол";
+                rangeHeader.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                rangeHeader.Font.Size = 24;
+                rangeHeader.Bold = 1;
+                rangeHeader.Paragraphs.Space1();
+                if (i == 0)
+                {
+                    paragraphHeader.TabHangingIndent(1);
+                    paragraphHeader.TabIndent(-1);
+                }
+                else
+                {
+                    rangeHeader.ParagraphFormat.RightIndent = 0;
+                }
+                rangeHeader.InsertParagraphAfter();
+
+                paragraphHeader = document.Paragraphs.Add();
+                rangeHeader = paragraphHeader.Range;
+                rangeHeader.Text = "ознакомления с графиком ликвидации задолженностей по итогам";
+                rangeHeader.InsertParagraphAfter();
+
+                paragraphHeader = document.Paragraphs.Add();
+                rangeHeader = paragraphHeader.Range;
+                rangeHeader.Text = $"промежуточной аттестации за {i} семестр 2021-2022 учебного года в группе";
+                rangeHeader.InsertParagraphAfter();
+
+                paragraphHeader = document.Paragraphs.Add();
+                rangeHeader = paragraphHeader.Range;
+                rangeHeader.Text = "21П,";
+                rangeHeader.Font.Size = 18;
+                rangeHeader.Bold = 1;
+                rangeHeader.InsertParagraphAfter();
+
+                paragraphHeader = document.Paragraphs.Add();
+                rangeHeader = paragraphHeader.Range;
+                rangeHeader.Text = $"специальность {Database.Entities.Specialty.FirstOrDefault().FullName}";
+                paragraphHeader.SpaceAfter = 16;
+                rangeHeader.InsertParagraphAfter();
+
+                paragraphHeader = document.Paragraphs.Add();
+                rangeHeader = paragraphHeader.Range;
+                rangeHeader.Text = "Список обучающихся, имеющих задолженности, и перечень учебных дисциплин";
+                rangeHeader.Underline = Word.WdUnderline.wdUnderlineSingle;
+                rangeHeader.InsertParagraphAfter();
+                paragraphHeader.SpaceAfter = 0;
+
+                Word.Paragraph paragraphStudents = document.Paragraphs.Add();
+                Word.Range rangeStudents = paragraphStudents.Range;
+                Word.Table tableStudents = document.Tables.Add(rangeStudents, students.Count + 1, 3);
+                tableStudents.Borders.InsideLineStyle = Word.WdLineStyle.wdLineStyleSingle;
+                tableStudents.Borders.OutsideLineStyle = Word.WdLineStyle.wdLineStyleSingle;
+                tableStudents.Range.Cells.VerticalAlignment = Word.WdCellVerticalAlignment.wdCellAlignVerticalCenter;
+
+                tableStudents.Cell(1, 1).Range.Text = "Фамилия";
+                tableStudents.Cell(1, 2).Range.Text = "Имя";
+                tableStudents.Cell(1, 3).Range.Text = "Дата рождения";
+
+                tableStudents.Rows[1].Range.Bold = 1;
+                tableStudents.Rows[1].Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
+
+                for (int j = 0; j < students.Count; j++)
+                {
+                    tableStudents.Cell(j + 2, 1).Range.Text = students[j].Surname;
+                    tableStudents.Cell(j + 2, 2).Range.Text = students[j].Name;
+                    tableStudents.Cell(j + 2, 3).Range.Text = students[j].Birthday.ToString("d");
+                }
+
+                Word.Paragraph paragraphShedule = document.Paragraphs.Add();
+                Word.Range rangeShedule = paragraphShedule.Range;
+                rangeShedule.Text = "График работы преподавателей";
+                rangeShedule.Font.Size = 16;
+                rangeShedule.Bold = 1;
+                rangeShedule.Paragraphs.Space1();
+                paragraphShedule.SpaceBefore = 36;
+                rangeShedule.InsertParagraphAfter();
+                paragraphShedule.SpaceBefore = 0;
+
+                paragraphShedule = document.Paragraphs.Add();
+                rangeShedule = paragraphShedule.Range;
+                rangeShedule.Text = "с обучающимися, имеющими задолженности";
+                rangeShedule.Font.Size = 16;
+                paragraphShedule.SpaceAfter = 18;
+                rangeShedule.InsertParagraphAfter();
+                paragraphShedule.SpaceAfter = 0;
+
+                Word.Paragraph paragraphTeachers = document.Paragraphs.Add();
+                Word.Range rangeTeachers = paragraphTeachers.Range;
+                Word.Table tableTeachers = document.Tables.Add(rangeTeachers, students.Count + 1, 3);
+                tableTeachers.Borders.InsideLineStyle = Word.WdLineStyle.wdLineStyleSingle;
+                tableTeachers.Borders.OutsideLineStyle = Word.WdLineStyle.wdLineStyleSingle;
+                tableTeachers.Range.Cells.VerticalAlignment = Word.WdCellVerticalAlignment.wdCellAlignVerticalCenter;
+
+                tableTeachers.Cell(1, 1).Range.Text = "Имя";
+                tableTeachers.Cell(1, 2).Range.Text = "Фамилия";
+                tableTeachers.Cell(1, 3).Range.Text = "Дата рождения";
+
+                tableTeachers.Rows[1].Range.Bold = 1;
+                tableTeachers.Rows[1].Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
+
+                for (int j = 0; j < students.Count; j++)
+                {
+
+                    tableTeachers.Cell(j + 2, 1).Range.Text = students[j].Name;
+                    tableTeachers.Cell(j + 2, 2).Range.Text = students[j].Surname;
+                    tableTeachers.Cell(j + 2, 3).Range.Text = students[j].Birthday.ToString("d");
+                }
+
+                for (int j = 0; j < 5; j++)
+                {
+                    Word.Paragraph paragraphLines = document.Paragraphs.Add();
+                    Word.Range rangeLines = paragraphLines.Range;
+                    if (j == 0)
+                    {
+                        rangeLines.Text = "Число, подпись обучающихся:     ___________________________";
+                        paragraphLines.SpaceBefore = 16;
+                    }
+                    else
+                    {
+                        rangeLines.Text = "___________________________";
+                        paragraphLines.SpaceBefore = 16;
+                    }
+                    rangeLines.ParagraphFormat.RightIndent = app.CentimetersToPoints(4);
+                    rangeLines.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphRight;
+                    rangeLines.InsertParagraphAfter();
+                    paragraphLines.SpaceBefore = 0;
+                }
+
+                if (i != 4)
+                {
+                    document.Words.Last.InsertBreak(Word.WdBreakType.wdPageBreak);
+                }
+            }
+
+            app.Visible = true;
         }
 
         private void MIComissionArrears_Click(object sender, RoutedEventArgs e)

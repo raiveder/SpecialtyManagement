@@ -11,11 +11,11 @@
         <EntityTypeShape EntityType="SpecialtyManagementModel.Groups" Width="1.5" PointX="0.75" PointY="3.375" />
         <EntityTypeShape EntityType="SpecialtyManagementModel.Lessons" Width="1.5" PointX="0.75" PointY="6.375" />
         <EntityTypeShape EntityType="SpecialtyManagementModel.LiquidationsCompositions" Width="1.5" PointX="9.75" PointY="6.375" />
-        <EntityTypeShape EntityType="SpecialtyManagementModel.ReasonsArrears" Width="1.5" PointX="5.25" PointY="3.375" />
+        <EntityTypeShape EntityType="SpecialtyManagementModel.ReasonsArrears" Width="1.5" PointX="5.25" PointY="9.75" />
         <EntityTypeShape EntityType="SpecialtyManagementModel.Specialty" Width="1.5" PointX="7.75" PointY="0.75" />
         <EntityTypeShape EntityType="SpecialtyManagementModel.Students" Width="1.5" PointX="3" PointY="5.875" />
         <EntityTypeShape EntityType="SpecialtyManagementModel.Teachers" Width="1.5" PointX="0.75" PointY="12.5" />
-        <EntityTypeShape EntityType="SpecialtyManagementModel.TypesArrears" Width="1.5" PointX="5.25" PointY="9.75" />
+        <EntityTypeShape EntityType="SpecialtyManagementModel.TypesArrears" Width="1.5" PointX="5.25" PointY="3.375" />
         <EntityTypeShape EntityType="SpecialtyManagementModel.TypesLessons" Width="1.5" PointX="1.5" PointY="9.75" />
         <AssociationConnector Association="SpecialtyManagementModel.FK__Arrears__IdStude__34C8D9D1" />
         <AssociationConnector Association="SpecialtyManagementModel.FK__ArrearsLe__IdArr__3B75D760" />

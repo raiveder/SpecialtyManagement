@@ -43,7 +43,8 @@ CREATE TABLE Arrears(
 [Id] INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 [IdStudent] INT FOREIGN KEY REFERENCES Students(Id) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
 [StartYear] INT NOT NULL,
-[SemesterNumber] INT NOT NULL)
+[SemesterNumber] INT NOT NULL,
+[SemesterSequenceNumber] INT NOT NULL)
 
 CREATE TABLE TypesArrears(
 [Id] INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
@@ -68,8 +69,8 @@ CREATE TABLE LiquidationsCompositions(
 
 CREATE TABLE Specialty(
 [Id] INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
-[Departament] NVARCHAR(100) NOT NULL,
 Code NVARCHAR(10) NOT NULL,
+[Departament] NVARCHAR(100) NOT NULL,
 [Name] NVARCHAR(100) NOT NULL,
 [Head] NVARCHAR(100) NOT NULL)
 
@@ -206,12 +207,12 @@ INSERT INTO ReasonsArrears VALUES
 ('Академический отпуск')
 
 INSERT INTO Arrears VALUES
-(1, 2022, 1),
-(2, 2022, 1),
-(8, 2022, 1),
-(5, 2022, 2),
-(12, 2022, 2),
-(26, 2022, 2)
+(1, 2022, 1, 7),
+(2, 2022, 1, 7),
+(8, 2022, 1, 7),
+(5, 2022, 2, 8),
+(12, 2022, 2, 8),
+(26, 2022, 2, 8)
 
 INSERT INTO ArrearsLessons VALUES
 (1, 1, 1,0, NULL),
