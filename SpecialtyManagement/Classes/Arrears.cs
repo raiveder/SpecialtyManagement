@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace SpecialtyManagement
 {
@@ -9,24 +8,23 @@ namespace SpecialtyManagement
 
         public int CountArrears { get; set; }
 
-        public string LessonsString
+        public string SemesterSequenceNumberRoman
         {
             get
             {
-                string lessons = string.Empty;
-
-                foreach (ArrearsLessons item in Database.Entities.ArrearsLessons.Where(x => x.IdArrear == Id))
+                switch (SemesterSequenceNumber)
                 {
-                    lessons += item.Lessons.ShortName + ", ";
+                    case 1: return "I";
+                    case 2: return "II";
+                    case 3: return "III";
+                    case 4: return "IV";
+                    case 5: return "V";
+                    case 6: return "VI";
+                    case 7: return "VII";
+                    case 8: return "VIII";
+                    default: return "0";
                 }
-
-                if (lessons.Length > 0)
-                {
-                    return lessons.Substring(0, lessons.Length - 2);
-                }
-                return lessons;
             }
-            set { }
         }
 
         /// <summary>

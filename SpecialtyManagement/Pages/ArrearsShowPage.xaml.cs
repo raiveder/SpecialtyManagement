@@ -346,11 +346,13 @@ namespace SpecialtyManagement.Pages
 
         private void MIPrimaryArrears_Click(object sender, RoutedEventArgs e)
         {
+            List<Groups> groups = GetGroupsWithArrears(1);
+
             Word.Application app = new Word.Application();
             Word.Document document = new Word.Document();
             document.PageSetup.LeftMargin = app.CentimetersToPoints(1.25F);
-            document.PageSetup.RightMargin = app.CentimetersToPoints(0.75F);
             document.PageSetup.TopMargin = app.CentimetersToPoints(0.5F);
+            document.PageSetup.RightMargin = app.CentimetersToPoints(0.75F);
             document.PageSetup.BottomMargin = app.CentimetersToPoints(0.25F);
 
             List<Arrears> arrears = new List<Arrears>();
@@ -359,10 +361,7 @@ namespace SpecialtyManagement.Pages
                 arrears.Add(item);
             }
 
-            List<Students> students = Database.Entities.Students.ToList();
-            students.RemoveRange(0, 10);
-
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < groups.Count; i++)
             {
                 Word.Paragraph paragraphHeader = document.Paragraphs.Add();
                 Word.Range rangeHeader = paragraphHeader.Range;
@@ -387,14 +386,14 @@ namespace SpecialtyManagement.Pages
                 rangeHeader.Text = "ознакомления с графиком ликвидации задолженностей по итогам";
                 rangeHeader.InsertParagraphAfter();
 
-                paragraphHeader = document.Paragraphs.Add();
+                paragraphHeader = document.Paragraphs.Add(); // Подумать.
                 rangeHeader = paragraphHeader.Range;
-                rangeHeader.Text = $"промежуточной аттестации за {i} семестр 2021-2022 учебного года в группе";
+                rangeHeader.Text = $"промежуточной аттестации за {arrears[i].SemesterSequenceNumberRoman} семестр {arrears[i].StartYear}-{arrears[i].StartYear + 1} учебного года в группе";
                 rangeHeader.InsertParagraphAfter();
 
                 paragraphHeader = document.Paragraphs.Add();
                 rangeHeader = paragraphHeader.Range;
-                rangeHeader.Text = "21П,";
+                rangeHeader.Text = $"{groups[i].Group},";
                 rangeHeader.Font.Size = 18;
                 rangeHeader.Bold = 1;
                 rangeHeader.InsertParagraphAfter();
@@ -480,13 +479,12 @@ namespace SpecialtyManagement.Pages
                     if (j == 0)
                     {
                         rangeLines.Text = "Число, подпись обучающихся:     ___________________________";
-                        paragraphLines.SpaceBefore = 16;
                     }
                     else
                     {
                         rangeLines.Text = "___________________________";
-                        paragraphLines.SpaceBefore = 16;
                     }
+                    paragraphLines.SpaceBefore = 16;
                     rangeLines.ParagraphFormat.RightIndent = app.CentimetersToPoints(4);
                     rangeLines.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphRight;
                     rangeLines.InsertParagraphAfter();
@@ -505,6 +503,33 @@ namespace SpecialtyManagement.Pages
         private void MIComissionArrears_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        /// <summary>
+        /// Возвращает список групп, у студентов которых есть задолженности.
+        /// </summary>
+        /// <param name="typeArrears">тип задолженности.</param>
+        /// <returns>Список групп, у студентов которых есть задолженности определённого типа.</returns>
+        private List<Groups> GetGroupsWithArrears(int typeArrears)
+        {
+            List<Groups> groups = new List<Groups>();
+
+            foreach (Arrears arrear in DGArrears.Items)
+            {
+                if (!groups.Contains(arrear.Students.Groups))
+                {
+                    foreach (ArrearsLessons arrearlesson in Database.Entities.ArrearsLessons.Where(x => x.IdArrear == arrear.Id))
+                    {
+                        if (arrearlesson.IdType == typeArrears)
+                        {
+                            groups.Add(arrear.Students.Groups);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return groups;
         }
     }
 }
