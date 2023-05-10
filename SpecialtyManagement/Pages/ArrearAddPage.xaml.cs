@@ -13,10 +13,10 @@ namespace SpecialtyManagement.Pages
     {
         private Filter _filter;
         private Arrears _arrear;
-        private List<Lessons> _lessons = new List<Lessons>(); // Список дисциплин, по которым у студента есть задолженности.
+        private List<Lessons> _lessons = new List<Lessons>();    // Список дисциплин, по которым у студента есть задолженности.
         private List<bool> _isPrimaryArrears = new List<bool>(); // Список типов задолженностей (true - первичная, false - комиссионная).
-        private List<bool> _isLiquidated = new List<bool>(); // Список статусов задолженностей (true - ликвидирована, false - нет).
-        private List<int?> _reasonsArrears = new List<int?>(); // Список индексов причин неликвидированности задолженностей.
+        private List<bool> _isLiquidated = new List<bool>();     // Список статусов задолженностей (true - ликвидирована, false - нет).
+        private List<int?> _reasonsArrears = new List<int?>();   // Список индексов причин неликвидированности задолженностей.
 
         public ArrearAddPage(Filter filter)
         {
@@ -235,6 +235,8 @@ namespace SpecialtyManagement.Pages
             {
                 bool isUpdate;
                 Arrears.GetYearAndSemester(out int year, out int semesterNumber, (bool)RBCurrentSemester.IsChecked);
+                int semesterSequenceNumber = Convert.ToInt32((CBStudents.SelectedItem as Students).Groups.Group[0].ToString()) * 2;
+                int temp = Convert.ToInt32((CBStudents.SelectedItem as Students).Groups.Group[0].ToString());
 
                 if (_arrear == null)
                 {
@@ -242,11 +244,11 @@ namespace SpecialtyManagement.Pages
                     {
                         IdStudent = (int)CBStudents.SelectedValue,
                         StartYear = year,
-                        SemesterNumber = semesterNumber
+                        SemesterNumber = semesterNumber,
+                        SemesterSequenceNumber = (bool)RBCurrentSemester.IsChecked ? semesterSequenceNumber : semesterSequenceNumber - 1
                     };
 
                     Database.Entities.Arrears.Add(_arrear);
-
                     isUpdate = false;
                 }
                 else
@@ -254,6 +256,7 @@ namespace SpecialtyManagement.Pages
                     _arrear.IdStudent = (int)CBStudents.SelectedValue;
                     _arrear.StartYear = year;
                     _arrear.SemesterNumber = semesterNumber;
+                    _arrear.SemesterSequenceNumber = (bool)RBCurrentSemester.IsChecked ? semesterSequenceNumber : semesterSequenceNumber - 1;
 
                     isUpdate = true;
                 }

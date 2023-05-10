@@ -213,6 +213,7 @@ namespace SpecialtyManagement.Pages
         {
             WrapPanel panel = sender as WrapPanel;
             int id = Convert.ToInt32(panel.Uid);
+            panel.Children.Clear();
 
             List<ArrearsLessons> arrears = Database.Entities.ArrearsLessons.Where(x => x.IdArrear == id).ToList();
 
