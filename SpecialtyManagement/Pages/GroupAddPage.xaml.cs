@@ -96,6 +96,11 @@ namespace SpecialtyManagement.Pages
                 MessageBox.Show("Введите группу студента", "Группы", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
+            else if (!int.TryParse(TBoxGroup.Text[0].ToString(), out int result))
+            {
+                MessageBox.Show("Первый символ группы должен быть числом, так как он указыват на номер курса", "Группы", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
 
             return true;
         }

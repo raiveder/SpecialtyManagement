@@ -236,7 +236,6 @@ namespace SpecialtyManagement.Pages
                 bool isUpdate;
                 Arrears.GetYearAndSemester(out int year, out int semesterNumber, (bool)RBCurrentSemester.IsChecked);
                 int semesterSequenceNumber = Convert.ToInt32((CBStudents.SelectedItem as Students).Groups.Group[0].ToString()) * 2;
-                int temp = Convert.ToInt32((CBStudents.SelectedItem as Students).Groups.Group[0].ToString());
 
                 if (_arrear == null)
                 {
@@ -298,6 +297,8 @@ namespace SpecialtyManagement.Pages
         /// <returns>True - если все данные заполнены корректно, в противном случае - false.</returns>
         private bool CheckFillData()
         {
+            Arrears.GetYearAndSemester(out int year, out int semesterNumber, (bool)RBCurrentSemester.IsChecked);
+
             if (CBStudents.SelectedIndex == -1)
             {
                 MessageBox.Show("Выберите студента", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -306,6 +307,12 @@ namespace SpecialtyManagement.Pages
             else if (LVLessons.Items.Count == 0)
             {
                 MessageBox.Show("Выберите дисциплины, по которым студент имеет задолженности", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            else if (_arrear == null && Database.Entities.Arrears.FirstOrDefault(x => x.IdStudent == (int)CBStudents.SelectedValue &&
+            x.StartYear == year && x.SemesterNumber == semesterNumber) != null)
+            {
+                MessageBox.Show("Данная задолженность уже есть в базе данных", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
 
