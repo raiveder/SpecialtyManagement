@@ -521,7 +521,7 @@ namespace SpecialtyManagement.Pages
                         rangeLines.Text = "___________________________";
                     }
                     paragraphLines.SpaceBefore = 16;
-                    rangeLines.ParagraphFormat.RightIndent = app.CentimetersToPoints(4);
+                    rangeLines.ParagraphFormat.RightIndent = app.CentimetersToPoints(3);
                     rangeLines.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphRight;
                     rangeLines.InsertParagraphAfter();
                     paragraphLines.SpaceBefore = 0;
