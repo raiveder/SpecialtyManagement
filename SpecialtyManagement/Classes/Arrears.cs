@@ -100,7 +100,7 @@ namespace SpecialtyManagement
         /// Удаляет задолженности, которые не соответствуют выбранному типу, из списка.
         /// </summary>
         /// <param name="arrears">список задолженностей.</param>
-        /// <param name="idType">индекс типа задолженности.</param>
+        /// <param name="idType">типа задолженности.</param>
         public static void DeleteArrearsNotMatchByType(List<Arrears> arrears, int idType)
         {
             List<Arrears> arrearsToRemove = new List<Arrears>();

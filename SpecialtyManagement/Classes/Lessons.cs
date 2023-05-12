@@ -6,13 +6,23 @@
 
         public string ShortName
         {
-            get => TypesLessons.Type + " " + Code;
+            get
+            {
+                if (Code.Contains("."))
+                {
+                    return TypesLessons.Type + " " + Code;
+                }
+                else
+                {
+                    return TypesLessons.Type + "." + Code;
+                }
+            }
             set { }
         }
 
         public string FullName
         {
-            get => TypesLessons.Type + " " + Code + " " + Name;
+            get => ShortName + " " + Name;
             set { }
         }
     }
