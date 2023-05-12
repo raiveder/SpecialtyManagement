@@ -76,17 +76,17 @@ namespace SpecialtyManagement.Pages
 
                 if ((bool)window.DialogResult)
                 {
-                    bool checkContainsGroup = false;
-                    foreach (Groups item in _groups)
+                    bool checkContains = false;
+                    for (int i = 0; i < _teachers.Count; i++)
                     {
-                        if (item.Id == group.Id)
+                        if (_teachers[i].FullName == teacher.FullName && _groups[i].Id == group.Id)
                         {
-                            checkContainsGroup = true;
+                            checkContains = true;
                             break;
                         }
                     }
 
-                    if (!(_teachers.Contains(teacher) && checkContainsGroup))
+                    if (!checkContains)
                     {
                         _teachers.Add(teacher);
                         _groups.Add(group);
@@ -110,13 +110,22 @@ namespace SpecialtyManagement.Pages
 
         private void TBDelete_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            int id = Convert.ToInt32((sender as TextBlock).Uid);
+            TextBlock tb = sender as TextBlock;
+            int idTeacher = Convert.ToInt32(tb.Uid);
+            StackPanel spParent = tb.Parent as StackPanel;
+            TextBlock tbGroup = spParent.Children[1] as TextBlock;
+            string groupString = tbGroup.Text.Substring(1, tbGroup.Text.Length - 2);
+            Teachers teacher = Database.Entities.Teachers.FirstOrDefault(x => x.Id == idTeacher);
 
-            Teachers teacher = Database.Entities.Teachers.FirstOrDefault(x => x.Id == id);
-            int index = _teachers.IndexOf(teacher);
-
-            _teachers.RemoveAt(index);
-            _groups.RemoveAt(index);
+            for (int i = 0; i < _teachers.Count; i++)
+            {
+                if (_teachers[i] == teacher && _groups[i].Group == groupString)
+                {
+                    _teachers.RemoveAt(i);
+                    _groups.RemoveAt(i);
+                    break;
+                }
+            }
 
             UpdateListView();
         }

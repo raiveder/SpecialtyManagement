@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SpecialtyManagement
 {
@@ -92,6 +94,84 @@ namespace SpecialtyManagement
                     return false;
                 }
             }
+        }
+
+        /// <summary>
+        /// Удаляет задолженности, которые не соответствуют выбранному типу, из списка.
+        /// </summary>
+        /// <param name="arrears">список задолженностей.</param>
+        /// <param name="idType">индекс типа задолженности.</param>
+        public static void DeleteArrearsNotMatchByType(List<Arrears> arrears, int idType)
+        {
+            List<Arrears> arrearsToRemove = new List<Arrears>();
+
+            foreach (Arrears item in arrears)
+            {
+                int countLessons = Database.Entities.ArrearsLessons.Where(x => x.IdArrear == item.Id && x.IdType == idType).Count();
+
+                if (countLessons == 0)
+                {
+                    arrearsToRemove.Add(item);
+                }
+                else
+                {
+                    item.CountArrears = countLessons;
+                }
+            }
+
+            foreach (Arrears item in arrearsToRemove)
+            {
+                arrears.Remove(item);
+            }
+        }
+
+        /// <summary>
+        /// Возвращает список групп, у студентов которых есть задолженности.
+        /// </summary>
+        /// <param name="typeArrears">тип задолженности.</param>
+        /// <returns>Список групп, у студентов которых есть задолженности определённого типа.</returns>
+        public static List<Groups> GetGroupsWithArrears(List<Arrears> arrears, int typeArrears)
+        {
+            List<Groups> groups = new List<Groups>();
+
+            List<Arrears> tempArrears = new List<Arrears>();
+            tempArrears.AddRange(arrears);
+
+            DeleteArrearsNotMatchByType(tempArrears, typeArrears);
+
+            foreach (Arrears arrear in tempArrears)
+            {
+                if (!groups.Contains(arrear.Students.Groups))
+                {
+                    groups.Add(arrear.Students.Groups);
+                }
+            }
+
+            return groups;
+        }
+
+        /// <summary>
+        /// Возвращает список дисциплин, по которым у студента есть задолженность.
+        /// </summary>
+        /// <param name="arrear">задолженность.</param>
+        /// <param name="idType">тип задолженности.</param>
+        /// <returns>Список дисциплин, по которым у студента есть задолженность определённого типа.</returns>
+        public static List<Lessons> GetLessonsForArrearsByType(Arrears arrear, int? idType)
+        {
+            List<ArrearsLessons> arrearLessons = Database.Entities.ArrearsLessons.Where(x => x.IdArrear == arrear.Id).ToList();
+
+            if (idType != null)
+            {
+                arrearLessons = arrearLessons.Where(x => x.IdType == idType).ToList();
+            }
+
+            List<Lessons> lessons = new List<Lessons>();
+            foreach (ArrearsLessons item in arrearLessons)
+            {
+                lessons.Add(item.Lessons);
+            }
+
+            return lessons;
         }
     }
 }

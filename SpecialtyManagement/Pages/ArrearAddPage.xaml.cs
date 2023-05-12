@@ -23,6 +23,7 @@ namespace SpecialtyManagement.Pages
             UploadPage(filter);
 
             RBCurrentSemester.IsChecked = true;
+            CBGroups.SelectedIndex = 0;
         }
 
         public ArrearAddPage(Filter filter, Arrears arrear)
@@ -33,6 +34,7 @@ namespace SpecialtyManagement.Pages
             BtnAdd.Content = "Сохранить";
 
             _arrear = arrear;
+            CBGroups.SelectedValue = _arrear.Students.IdGroup;
             CBStudents.SelectedValue = _arrear.Students.Id;
 
             Arrears.GetYearAndSemester(out int year, out int semester, true);
@@ -73,6 +75,42 @@ namespace SpecialtyManagement.Pages
             LBLessons.ItemsSource = Database.Entities.Lessons.ToList();
             LBLessons.SelectedValuePath = "Id";
             LBLessons.DisplayMemberPath = "FullName";
+
+            List<Groups> groups = new List<Groups>()
+            {
+                new Groups()
+                {
+                    Id = 0,
+                    Group = "Все группы"
+                }
+            };
+            groups.AddRange(Database.Entities.Groups.ToList());
+
+            CBGroups.ItemsSource = groups;
+            CBGroups.SelectedValuePath = "Id";
+            CBGroups.DisplayMemberPath = "Group";
+        }
+
+        private void CBGroups_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if ((int)CBGroups.SelectedValue > 0)
+            {
+                CBStudents.ItemsSource = Database.Entities.Students.Where(x => x.IdGroup == (int)CBGroups.SelectedValue).ToList();
+            }
+            else
+            {
+                CBStudents.ItemsSource = Database.Entities.Students.ToList();
+            }
+
+            if (CBStudents.Items.Count == 0)
+            {
+                MessageBox.Show("В выбранной группе нет студентов", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CBStudents.IsEnabled = false;
+            }
+            else
+            {
+                CBStudents.IsEnabled = true;
+            }
         }
 
         private void RBCurrentSemester_Checked(object sender, RoutedEventArgs e)

@@ -73,17 +73,17 @@ namespace SpecialtyManagement.Pages
 
                 if ((bool)window.DialogResult)
                 {
-                    bool checkContainsGroup = false;
-                    foreach (Groups item in _groups)
+                    bool checkContains = false;
+                    for (int i = 0; i < _lessons.Count; i++)
                     {
-                        if (item.Id == group.Id)
+                        if (_lessons[i].FullName == lesson.FullName && _groups[i].Id == group.Id)
                         {
-                            checkContainsGroup = true;
+                            checkContains = true;
                             break;
                         }
                     }
 
-                    if (!(_lessons.Contains(lesson) && checkContainsGroup))
+                    if (!checkContains)
                     {
                         _lessons.Add(lesson);
                         _groups.Add(group);
@@ -107,13 +107,22 @@ namespace SpecialtyManagement.Pages
 
         private void TBDeleteLesson_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            int id = Convert.ToInt32((sender as TextBlock).Uid);
+            TextBlock tb = sender as TextBlock;
+            int idLesson = Convert.ToInt32(tb.Uid);
+            StackPanel spParent = tb.Parent as StackPanel;
+            TextBlock tbGroup = spParent.Children[1] as TextBlock;
+            string groupString = tbGroup.Text.Substring(1, tbGroup.Text.Length - 2);
+            Lessons lesson = Database.Entities.Lessons.FirstOrDefault(x => x.Id == idLesson);
 
-            Lessons lesson = Database.Entities.Lessons.FirstOrDefault(x => x.Id == id);
-            int index = _lessons.IndexOf(lesson);
-
-            _lessons.RemoveAt(index);
-            _groups.RemoveAt(index);
+            for (int i = 0; i < _lessons.Count; i++)
+            {
+                if (_lessons[i] == lesson && _groups[i].Group == groupString)
+                {
+                    _lessons.RemoveAt(i);
+                    _groups.RemoveAt(i);
+                    break;
+                }
+            }
 
             UpdateListView();
         }
@@ -124,7 +133,13 @@ namespace SpecialtyManagement.Pages
         private void UpdateListView()
         {
             List<Lessons> tempLessons = new List<Lessons>();
-            tempLessons.AddRange(_lessons);
+            int indexNumber = 0;
+
+            foreach (Lessons item in _lessons)
+            {
+                item.SequenceNumber = indexNumber++;
+                tempLessons.Add(item);
+            }
 
             _indexGroup = 0;
             LVLessons.ItemsSource = tempLessons;

@@ -106,6 +106,9 @@
     <Compile Include="Pages\ArrearAddPage.xaml.cs">
       <DependentUpon>ArrearAddPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\ArrearsPrimaryCreateDocumentPage.xaml.cs">
+      <DependentUpon>ArrearsPrimaryCreateDocumentPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\ArrearsShowPage.xaml.cs">
       <DependentUpon>ArrearsShowPage.xaml</DependentUpon>
     </Compile>
@@ -170,6 +173,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Pages\ArrearAddPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ArrearsPrimaryCreateDocumentPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
