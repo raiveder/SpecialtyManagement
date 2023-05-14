@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpecialtyManagement.Windows;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -20,6 +21,13 @@ namespace SpecialtyManagement.Pages
         private Filter _filter;
         private List<Arrears> _arrears; // Список задолженностей.
         private List<List<Teachers>> _teachers = new List<List<Teachers>>(); // Список учителей.
+
+
+
+        // Переделать _teachers на 3-х мерный список и изменить метод GetAllTeachersForGroupWithLessons().
+
+
+
         private List<Lessons> _lessons = new List<Lessons>(); // Список дисциплин.
         private List<string> _typesLessons = new List<string>(); // Список типов дисциплин для отображения (учебные дисциплины или ПМ).
         private List<string> _dates = new List<string>(); // Список дат.
@@ -56,18 +64,44 @@ namespace SpecialtyManagement.Pages
                     for (int i = 0; i < lessons.Count; i++)
                     {
                         int idLesson = lessons[i].Id;
-                        DistributionLessons distributionLessons = Database.Entities.DistributionLessons.FirstOrDefault(x => x.IdLesson == idLesson &&
-                        x.Groups.Id == arrear.Students.IdGroup);
-                        if (distributionLessons == null)
-                        {
-                            string currentGroupString = arrear.Students.Groups.Group;
-                            string lastGroupString = Convert.ToInt32(currentGroupString[0].ToString()) - 1 + currentGroupString.Substring(1, currentGroupString.Length - 2);
-                            Groups lastGroup = Database.Entities.Groups.FirstOrDefault(x => x.Group.Substring(0, 2) == lastGroupString);
-                            distributionLessons = Database.Entities.DistributionLessons.FirstOrDefault(x => x.IdLesson == idLesson &&
-                            x.Groups.Id == lastGroup.Id);
-                        }
+                        Teachers teacher = new Teachers();
 
-                        Teachers teacher = Database.Entities.Teachers.FirstOrDefault(x => x.Id == distributionLessons.IdTeacher);
+                        try
+                        {
+                            DistributionLessons distributionLessons = Database.Entities.DistributionLessons.FirstOrDefault(x => x.IdLesson == idLesson &&
+                            x.Groups.Id == arrear.Students.IdGroup);
+                            if (distributionLessons == null)
+                            {
+                                string currentGroupString = arrear.Students.Groups.Group;
+                                string lastGroupString = Convert.ToInt32(currentGroupString[0].ToString()) - 1 + currentGroupString.Substring(1, currentGroupString.Length - 2);
+                                Groups lastGroup = Database.Entities.Groups.FirstOrDefault(x => x.Group.Substring(0, 2) == lastGroupString);
+                                distributionLessons = Database.Entities.DistributionLessons.FirstOrDefault(x => x.IdLesson == idLesson &&
+                                x.Groups.Id == lastGroup.Id);
+                            }
+
+                            teacher = Database.Entities.Teachers.FirstOrDefault(x => x.Id == distributionLessons.IdTeacher);
+                        }
+                        catch (Exception)
+                        {
+                            MessageBox.Show("Для дисциплины \"" + lessons[i].FullName + "\" не был найден преподаватель. Выберите его вручную", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            ChoiceElementWindow window = new ChoiceElementWindow(teacher, "Выбор преподавателя");
+
+                            while (true)
+                            {
+                                window.ShowDialog();
+
+                                if ((bool)window.DialogResult)
+                                {
+                                    Teachers tempTeacher = Database.Entities.Teachers.FirstOrDefault(x => x.Id == teacher.Id);
+                                    teacher = tempTeacher;
+                                    break;
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Для продолжения работы выберите преподавателя дисциплины \"" + lessons[i].FullName + "\"", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                }
+                            }
+                        }
 
                         if (!IsTeacherContains(teacher))
                         {
@@ -667,26 +701,6 @@ namespace SpecialtyManagement.Pages
         }
 
         /// <summary>
-        /// Получает максимальную длинну полного имени человека.
-        /// </summary>
-        /// <param name="teachers">список преподавателей.</param>
-        /// <returns>Максимальная длинна полного имени человека.</returns>
-        private int GetMaxLengthFullName(List<Teachers> teachers)
-        {
-            int length = 0;
-
-            foreach (Teachers item in teachers)
-            {
-                if (item.FullName.Length > length)
-                {
-                    length = item.FullName.Length;
-                }
-            }
-
-            return length;
-        }
-
-        /// <summary>
         /// Получает максимальную длинну фамилии и имени человека.
         /// </summary>
         /// <param name="students">список студентов.</param>
@@ -711,7 +725,7 @@ namespace SpecialtyManagement.Pages
         /// </summary>
         /// <param name="lessons">список дисциплин.</param>
         /// <returns>Строка с дисциплинами.</returns>
-        private string GetLessonsInString(List<Lessons> lessons)
+        public static string GetLessonsInString(List<Lessons> lessons)
         {
             string lessonsString = string.Empty;
 
@@ -723,11 +737,11 @@ namespace SpecialtyManagement.Pages
             return lessonsString.Substring(0, lessonsString.Length - 2);
         }
 
-        private string GetAudienceInString(string text)
+        public static string GetAudienceInString(string text)
         {
             if (int.TryParse(text, out int result))
             {
-                return "ауд." + result;
+                return "ауд. " + result;
             }
             else
             {
@@ -796,6 +810,26 @@ namespace SpecialtyManagement.Pages
                 result += item.FullName + ",\n";
             }
             return result.Substring(0, result.Length - 2);
+        }
+
+        /// <summary>
+        /// Получает количество символов максимальной длины полного имени человека.
+        /// </summary>
+        /// <param name="teachers">список преподавателей.</param>
+        /// <returns>Количество символов.</returns>
+        private int GetMaxLengthFullName(List<Teachers> teachers)
+        {
+            int length = 0;
+
+            foreach (Teachers item in teachers)
+            {
+                if (item.FullName.Length > length)
+                {
+                    length = item.FullName.Length;
+                }
+            }
+
+            return length;
         }
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)

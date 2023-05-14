@@ -1,4 +1,6 @@
-﻿namespace SpecialtyManagement
+﻿using System.Collections.Generic;
+
+namespace SpecialtyManagement
 {
     public partial class Teachers
     {

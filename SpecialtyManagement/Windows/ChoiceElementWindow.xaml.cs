@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Xml.Linq;
 
 namespace SpecialtyManagement.Windows
 {
@@ -12,6 +11,7 @@ namespace SpecialtyManagement.Windows
     {
         private Groups _group;
         private Lessons _lesson;
+        private Teachers _teacher;
 
         public string Text { get; set; }
 
@@ -27,6 +27,20 @@ namespace SpecialtyManagement.Windows
             CBItems.ItemsSource = Database.Entities.Groups.ToList();
             CBItems.SelectedValuePath = "Id";
             CBItems.DisplayMemberPath = "Group";
+        }
+
+        public ChoiceElementWindow(Teachers teacher, string text)
+        {
+            InitializeComponent();
+            DataContext = this;
+
+            Text = text;
+            _teacher = teacher;
+            TBName.Text = "Преподаватель";
+
+            CBItems.ItemsSource = Database.Entities.Teachers.ToList();
+            CBItems.SelectedValuePath = "Id";
+            CBItems.DisplayMemberPath = "FullName";
         }
 
         public ChoiceElementWindow(Lessons lesson, string text, List<Lessons> lessonsSource)
@@ -61,6 +75,14 @@ namespace SpecialtyManagement.Windows
                     _lesson.Code = lessons.Code;
                     _lesson.TypesLessons = lessons.TypesLessons;
                 }
+                else if (_teacher != null)
+                {
+                    Teachers teacher = CBItems.SelectedItem as Teachers;
+                    _teacher.Id = teacher.Id;
+                    _teacher.Surname = teacher.Surname;
+                    _teacher.Name = teacher.Name;
+                    _teacher.Patronymic = teacher.Patronymic;
+                }
 
                 DialogResult = true;
             }
@@ -73,6 +95,10 @@ namespace SpecialtyManagement.Windows
                 else if (_lesson != null)
                 {
                     MessageBox.Show("Выберите дисциплину", "Выбор дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                else if (_lesson != null)
+                {
+                    MessageBox.Show("Выберите преподавателя", "Выбор преподавателя", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
         }
