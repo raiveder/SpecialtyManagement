@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace SpecialtyManagement.Pages
 {
@@ -33,7 +32,7 @@ namespace SpecialtyManagement.Pages
 
             _lesson = lesson;
 
-            CBType.SelectedValue = _lesson.IdType;
+            CBTypes.SelectedValue = _lesson.IdType;
             TBoxCode.Text = _lesson.Code;
             TBoxName.Text = _lesson.Name;
 
@@ -59,9 +58,9 @@ namespace SpecialtyManagement.Pages
             LBTeachers.SelectedValuePath = "Id";
             LBTeachers.DisplayMemberPath = "FullName";
 
-            CBType.ItemsSource = Database.Entities.TypesLessons.ToList();
-            CBType.SelectedValuePath = "Id";
-            CBType.DisplayMemberPath = "Type";
+            CBTypes.ItemsSource = Database.Entities.TypesLessons.ToList();
+            CBTypes.SelectedValuePath = "Id";
+            CBTypes.DisplayMemberPath = "Type";
         }
 
         private void LBTeachers_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -71,7 +70,7 @@ namespace SpecialtyManagement.Pages
                 Teachers teacher = LBTeachers.SelectedItem as Teachers;
 
                 Groups group = new Groups();
-                ChoiceGroupWindow window = new ChoiceGroupWindow(group, teacher.FullName);
+                ChoiceElementWindow window = new ChoiceElementWindow(group, teacher.FullName);
                 window.ShowDialog();
 
                 if ((bool)window.DialogResult)
@@ -108,9 +107,9 @@ namespace SpecialtyManagement.Pages
             (sender as TextBlock).Text = "(" + _groups[_indexGroup++].Group + ")";
         }
 
-        private void TBDelete_MouseDown(object sender, MouseButtonEventArgs e)
+        private void BtnDeleteTeacher_Click(object sender, RoutedEventArgs e)
         {
-            TextBlock tb = sender as TextBlock;
+            Button tb = sender as Button;
             int idTeacher = Convert.ToInt32(tb.Uid);
             StackPanel spParent = tb.Parent as StackPanel;
             TextBlock tbGroup = spParent.Children[1] as TextBlock;
@@ -152,7 +151,7 @@ namespace SpecialtyManagement.Pages
                 {
                     _lesson = new Lessons()
                     {
-                        IdType = (int)CBType.SelectedValue,
+                        IdType = (int)CBTypes.SelectedValue,
                         Code = TBoxCode.Text,
                         Name = TBoxName.Text
                     };
@@ -163,7 +162,7 @@ namespace SpecialtyManagement.Pages
                 }
                 else
                 {
-                    _lesson.IdType = (int)CBType.SelectedValue;
+                    _lesson.IdType = (int)CBTypes.SelectedValue;
                     _lesson.Code = TBoxCode.Text;
                     _lesson.Name = TBoxName.Text;
 
@@ -208,7 +207,7 @@ namespace SpecialtyManagement.Pages
         /// <returns>True - если все данные заполнены корректно, в противном случае - false.</returns>
         private bool CheckFillData()
         {
-            if (CBType.SelectedIndex == -1)
+            if (CBTypes.SelectedIndex == -1)
             {
                 MessageBox.Show("Выберите тип дисциплины", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
@@ -223,10 +222,16 @@ namespace SpecialtyManagement.Pages
                 MessageBox.Show("Введите наименование дисциплины", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
-            else if (_lesson == null && Database.Entities.Lessons.FirstOrDefault(x => x.IdType == (int)CBType.SelectedValue &&
+            else if (_lesson == null && Database.Entities.Lessons.FirstOrDefault(x => x.IdType == (int)CBTypes.SelectedValue &&
             x.Code == TBoxCode.Text && x.Name == TBoxName.Text) != null)
             {
-                MessageBox.Show("Данная дисциплина уже есть в базе данных", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Данная дисциплина уже есть в базе данных, для изменения списка преподавателей отредактируйте её", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            else if (_lesson != null && Database.Entities.Lessons.FirstOrDefault(x => x.Id != _lesson.Id && x.IdType == (int)CBTypes.SelectedValue &&
+            x.Code == TBoxCode.Text && x.Name == TBoxName.Text) != null)
+            {
+                MessageBox.Show("Другая такая же дисциплина уже есть в базе данных", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
 

@@ -64,9 +64,6 @@
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem" BasedOn="{StaticResource ListViewItemNotStyle}"/>
-            </ListView.ItemContainerStyle>
         </ListView>
 
         <Button Grid.Row="3" Name="BtnBack" Content="Назад" HorizontalAlignment="Left" Margin="10" Click="BtnBack_Click"/>

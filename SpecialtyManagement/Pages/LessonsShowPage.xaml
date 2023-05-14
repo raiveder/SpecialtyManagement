@@ -42,6 +42,7 @@
             </DataGrid.ContextMenu>
         </DataGrid>
 
-        <Button Grid.Row="2" Name="BtnAdd" Content="Добавить" Margin="10" Click="BtnAdd_Click"/>
+        <Button Grid.Row="2" Name="BtnTypesLessons" Content="Типы дисциплин" HorizontalAlignment="Left" Margin="10" Click="BtnTypesLessons_Click"/>
+        <Button Grid.Row="2" Name="BtnAdd" Content="Добавить" HorizontalAlignment="Right" Margin="10" Click="BtnAdd_Click"/>
     </Grid>
 </Page>

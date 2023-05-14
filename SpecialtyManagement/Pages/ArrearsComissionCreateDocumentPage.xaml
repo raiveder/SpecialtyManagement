@@ -1,0 +1,93 @@
+﻿<Page x:Class="SpecialtyManagement.Pages.ArrearsComissionCreateDocumentPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SpecialtyManagement.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="730" d:DesignWidth="960"
+      Title="ArrearsComissionCreateDocumentPage">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition/>
+            <RowDefinition Height="70"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.ColumnSpan="2" Name="TBHeader" FontSize="30" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center">
+            <Run Text="Формирование служебной записки и графиков ликвидации"/>
+            <LineBreak/>
+            <Run Text="для комиссионных задолженностей"/>
+        </TextBlock>
+
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="От кого" Margin="0 0 0 5"/>
+            <TextBox Name="TBoxSender" Width="200"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Кому" Margin="0 0 0 5"/>
+            <TextBox Name="TBoxRecipient" Width="200"/>
+        </StackPanel>
+
+        <ListView Grid.Row="2" Grid.ColumnSpan="2" Name="ListView" Margin="10 0">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0 10" MaxWidth="1200">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.ColumnSpan="4" Name="BrdLesson" CornerRadius="{StaticResource CornerRadius}" Background="{StaticResource ColorSecondary}" Padding="20" Margin="0 0 0 10">
+                            <TextBlock Name="TBLesson" Text="{Binding FullName}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <Button Grid.Column="3" Name="BtnDelete" Content="✕" Uid="{Binding SequenceNumber}" MinWidth="0" VerticalAlignment="Center" Padding="5 2" Margin="20 0 20 10" Click="BtnDelete_Click"/>
+                        
+                        <StackPanel Grid.Row="1">
+                            <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+                                <TextBlock Text="Дата" Width="{Binding ActualWidth, ElementName=TBAudience}" VerticalAlignment="Center"/>
+                                <DatePicker Name="DPDate" Uid="{Binding SequenceNumber}" Width="{Binding ActualWidth, ElementName=TBoxAudience}" VerticalAlignment="Center" Loaded="DPDate_Loaded" SelectedDateChanged="DPDate_SelectedDateChanged"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+                                <TextBlock Text="Время" Width="{Binding ActualWidth, ElementName=TBAudience}" VerticalAlignment="Center"/>
+                                <TextBox Name="TBoxTime" Uid="{Binding SequenceNumber}" Width="{Binding ActualWidth, ElementName=TBoxAudience}" VerticalAlignment="Center" Loaded="TBoxTime_Loaded" LostKeyboardFocus="TBoxTime_LostKeyboardFocus"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Name="TBAudience" Text="Аудитория" FontSize="20" VerticalAlignment="Center" Padding="0 0 10 0"/>
+                                <TextBox Name="TBoxAudience" Uid="{Binding SequenceNumber}" Width="150" VerticalAlignment="Center" Loaded="TBoxAudience_Loaded" LostKeyboardFocus="TBoxAudience_LostKeyboardFocus"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="1" Grid.Column="2">
+                            <TextBlock Text="Студенты:"/>
+                            <StackPanel Name="SPStudents" Uid="{Binding SequenceNumber}" Margin="0 10" Loaded="SPStudents_Loaded"/>
+                            <Button Name="BtnChangeStudents" Content="Изменить" Uid="{Binding SequenceNumber}" MinWidth="0" HorizontalAlignment="Left" Padding="5" Click="BtnChangeStudents_Click"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Grid.Column="1">
+                            <TextBlock Text="Преподаватели:"/>
+                            <StackPanel Name="SPTeachers" Uid="{Binding SequenceNumber}" Margin="0 10" Loaded="SPTeachers_Loaded"/>
+                            <Button Name="BtnChangeTeachers" Content="Изменить" Uid="{Binding SequenceNumber}" MinWidth="0" HorizontalAlignment="Left" Padding="5" Click="BtnChangeTeachers_Click"/>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Button Grid.Row="3" Name="BtnBack" Content="Назад" HorizontalAlignment="Left" Margin="10" Click="BtnBack_Click"/>
+        <Button Grid.Row="3" Grid.ColumnSpan="2" Name="BtnAdd" Content="Добавить дисциплину" Margin="10" Click="BtnAdd_Click"/>
+        <Button Grid.Row="3" Grid.Column="1" Name="BtnGenerate" Content="Сформировать документ" HorizontalAlignment="Right" Margin="10" Click="BtnGenerate_Click"/>
+    </Grid>
+</Page>

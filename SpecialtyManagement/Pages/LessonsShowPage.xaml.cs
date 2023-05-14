@@ -1,18 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SpecialtyManagement.Pages
 {
@@ -70,6 +61,9 @@ namespace SpecialtyManagement.Pages
             SetFilter();
         }
 
+        /// <summary>
+        /// Устанавливает фильтр для вывода данных.
+        /// </summary>
         private void SetFilter()
         {
             List<Lessons> lessons = Database.Entities.Lessons.ToList();
@@ -108,6 +102,17 @@ namespace SpecialtyManagement.Pages
             };
 
             Navigation.Frame.Navigate(new LessonAddPage(filter));
+        }
+
+        private void BtnTypesLessons_Click(object sender, RoutedEventArgs e)
+        {
+            Filter filter = new Filter()
+            {
+                FindText = TBoxFind.Text,
+                IndexType = CBType.SelectedIndex
+            };
+
+            Navigation.Frame.Navigate(new LessonsTypesShowPage(filter));
         }
 
         private void MIChange_Click(object sender, RoutedEventArgs e)

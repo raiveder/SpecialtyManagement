@@ -24,7 +24,7 @@
 
         <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Text="Тип" Margin="0 0 0 5"/>
-            <ComboBox Name="CBType" Width="300" HorizontalAlignment="Left" Margin="0 0 0 20"/>
+            <ComboBox Name="CBTypes" Width="300" HorizontalAlignment="Left" Margin="0 0 0 20"/>
             <TextBlock Text="Код" Margin="0 0 0 5"/>
             <TextBox Name="TBoxCode" Width="300" HorizontalAlignment="Left" Margin="0 0 0 20"/>
             <TextBlock Text="Наименование" Margin="0 0 0 5"/>
@@ -48,14 +48,11 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding ShortName}" Margin="0 0 2 0"/>
                             <TextBlock Name="TBGroup" Margin="0 0 5 0" Loaded="TBGroup_Loaded"/>
-                            <TextBlock Name="TBDelete" Uid="{Binding Id}" Text="✕" Style="{StaticResource TextBlockMouseOverStyle}" MouseDown="TBDelete_MouseDown"/>
+                            <Button Name="BtnDeleteTeacher" Uid="{Binding Id}" Content="✕" MinWidth="0" Padding="5 2" Click="BtnDeleteTeacher_Click"/>
                         </StackPanel>
                     </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem" BasedOn="{StaticResource ListViewItemNotStyle}"/>
-            </ListView.ItemContainerStyle>
         </ListView>
 
         <Button Grid.Row="3" Name="BtnBack" Content="Назад" HorizontalAlignment="Left" Margin="10" Click="BtnBack_Click"/>

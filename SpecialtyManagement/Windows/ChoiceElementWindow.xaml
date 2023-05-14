@@ -1,4 +1,4 @@
-﻿<Window x:Class="SpecialtyManagement.Windows.ChoiceGroupWindow"
+﻿<Window x:Class="SpecialtyManagement.Windows.ChoiceElementWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,17 +10,19 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition Height="0.5*"/>
-            <RowDefinition Height="70"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <!--<RowDefinition Height="0.5*"/>
+            <RowDefinition Height="70"/>-->
         </Grid.RowDefinitions>
 
         <StackPanel VerticalAlignment="Center" Margin="10">
-            <TextBlock Text="{Binding Text}" FontSize="30" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+            <TextBlock Text="{Binding Text}" FontSize="30" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
         </StackPanel>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-            <TextBlock Text="Группа" VerticalAlignment="Center" Margin="10"/>
-            <ComboBox Name="CBGroups" Width="100" VerticalAlignment="Center"/>
+            <TextBlock Name="TBName" VerticalAlignment="Center" Margin="10"/>
+            <ComboBox Name="CBItems" MinWidth="100" MaxWidth="500" VerticalAlignment="Center"/>
         </StackPanel>
 
         <Button Grid.Row="2" Name="BtnAccept" Content="Применить" Margin="10" Click="BtnAccept_Click"/>

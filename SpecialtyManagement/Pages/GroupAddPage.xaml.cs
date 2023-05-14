@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -98,7 +99,17 @@ namespace SpecialtyManagement.Pages
             }
             else if (!int.TryParse(TBoxGroup.Text[0].ToString(), out int result))
             {
-                MessageBox.Show("Первый символ группы должен быть числом, так как он указыват на номер курса", "Группы", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Первый символ группы должен быть числом, так как он указывает на номер курса", "Группы", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            else if (_group == null && Database.Entities.Groups.FirstOrDefault(x => x.Group == TBoxGroup.Text) != null)
+            {
+                MessageBox.Show("Данная группа уже есть в базе данных", "Группы", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            else if (_group != null && Database.Entities.Groups.FirstOrDefault(x => x.Id != _group.Id && x.Group == TBoxGroup.Text) != null)
+            {
+                MessageBox.Show("Другая такая же группа уже есть в базе данных", "Группы", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
 

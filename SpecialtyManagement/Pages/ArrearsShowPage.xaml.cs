@@ -260,16 +260,7 @@ namespace SpecialtyManagement.Pages
 
         private void MIChange_Click(object sender, RoutedEventArgs e)
         {
-            Filter filter = new Filter()
-            {
-                FindText = TBoxFind.Text,
-                IndexType = CBType.SelectedIndex,
-                IndexGroup = CBGroup.SelectedIndex,
-                IsCurrentSemester = (bool)RBCurrentSemester.IsChecked,
-                IndexSort = CBSort.SelectedIndex
-            };
-
-            Navigation.Frame.Navigate(new ArrearAddPage(filter, DGArrears.SelectedItem as Arrears));
+            Navigation.Frame.Navigate(new ArrearAddPage(GetFilter(), DGArrears.SelectedItem as Arrears));
         }
 
         private void MIDelete_Click(object sender, RoutedEventArgs e)
@@ -303,38 +294,20 @@ namespace SpecialtyManagement.Pages
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
-            Filter filter = new Filter()
-            {
-                FindText = TBoxFind.Text,
-                IndexType = CBType.SelectedIndex,
-                IndexGroup = CBGroup.SelectedIndex,
-                IsCurrentSemester = (bool)RBCurrentSemester.IsChecked,
-                IndexSort = CBSort.SelectedIndex
-            };
-
-            Navigation.Frame.Navigate(new ArrearAddPage(filter));
+            Navigation.Frame.Navigate(new ArrearAddPage(GetFilter()));
         }
 
         private void MIPrimaryArrears_Click(object sender, RoutedEventArgs e)
         {
             if (DGArrears.Items.Count != 0)
             {
-                Filter filter = new Filter()
-                {
-                    FindText = TBoxFind.Text,
-                    IndexType = CBType.SelectedIndex,
-                    IndexGroup = CBGroup.SelectedIndex,
-                    IsCurrentSemester = (bool)RBCurrentSemester.IsChecked,
-                    IndexSort = CBSort.SelectedIndex
-                };
-
                 List<Arrears> arrears = new List<Arrears>();
                 foreach (Arrears item in DGArrears.Items)
                 {
                     arrears.Add(item);
                 }
 
-                Navigation.Frame.Navigate(new ArrearsPrimaryCreateDocumentPage(filter, arrears));
+                Navigation.Frame.Navigate(new ArrearsPrimaryCreateDocumentPage(GetFilter(), arrears));
             }
             else
             {
@@ -344,7 +317,36 @@ namespace SpecialtyManagement.Pages
 
         private void MIComissionArrears_Click(object sender, RoutedEventArgs e)
         {
+            if (DGArrears.Items.Count != 0)
+            {
+                List<Arrears> arrears = new List<Arrears>();
+                foreach (Arrears item in DGArrears.Items)
+                {
+                    arrears.Add(item);
+                }
 
+                Navigation.Frame.Navigate(new ArrearsComissionCreateDocumentPage(GetFilter(), arrears));
+            }
+            else
+            {
+                MessageBox.Show("Список задолженностей для формирования документов пуст", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        /// <summary>
+        /// Возвращает текущие данные фильтра.
+        /// </summary>
+        /// <returns>Текущий фильтр.</returns>
+        private Filter GetFilter()
+        {
+            return new Filter()
+            {
+                FindText = TBoxFind.Text,
+                IndexType = CBType.SelectedIndex,
+                IndexGroup = CBGroup.SelectedIndex,
+                IsCurrentSemester = (bool)RBCurrentSemester.IsChecked,
+                IndexSort = CBSort.SelectedIndex
+            };
         }
     }
 }

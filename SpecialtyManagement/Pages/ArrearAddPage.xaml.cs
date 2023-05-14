@@ -350,8 +350,19 @@ namespace SpecialtyManagement.Pages
             else if (_arrear == null && Database.Entities.Arrears.FirstOrDefault(x => x.IdStudent == (int)CBStudents.SelectedValue &&
             x.StartYear == year && x.SemesterNumber == semesterNumber) != null)
             {
-                MessageBox.Show("Данная задолженность уже есть в базе данных", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Данная задолженность уже есть в базе данных. Для изменения её статуса списка дисциплин отредактируйте её", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
+            }
+            else if (_arrear != null)
+            {
+                Arrears arrear = Database.Entities.Arrears.FirstOrDefault(x => x.IdStudent == (int)CBStudents.SelectedValue &&
+                x.StartYear == year && x.SemesterNumber == semesterNumber);
+                if (arrear != null && _arrear.Id != arrear.Id)
+                {
+                    MessageBox.Show("Данная задолженность уже есть в базе данных", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return false;
+                }
+
             }
 
             return true;

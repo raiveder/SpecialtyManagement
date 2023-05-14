@@ -15,7 +15,7 @@ namespace SpecialtyManagement.Pages
     /// </summary>
     public partial class ArrearsPrimaryCreateDocumentPage : Page
     {
-        private const int IdTypeArrear = 1;
+        private const int IdTypeArrear = 1; // Id первичной задолженности.
         private int _idPM;
         private Filter _filter;
         private List<Arrears> _arrears; // Список задолженностей.
@@ -43,8 +43,7 @@ namespace SpecialtyManagement.Pages
             else
             {
                 MessageBox.Show("Отсутствует тип дисциплины \"ПМ\". Добавьте его, прежде чем формировать протокол", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
-                // Навигация на добавление типа дисциплин.
-                _idPM = 0;
+                Navigation.Frame.Navigate(new ArrearsShowPage());
             }
 
             foreach (Arrears arrear in _arrears)
@@ -183,6 +182,12 @@ namespace SpecialtyManagement.Pages
             return false;
         }
 
+        private void TBTypeLessons_Loaded(object sender, RoutedEventArgs e)
+        {
+            TextBlock tb = sender as TextBlock;
+            tb.Text = _typesLessons[GetIndexTeacher(tb.DataContext as List<Teachers>)];
+        }
+
         private void TBTeachers_Loaded(object sender, RoutedEventArgs e)
         {
             TextBlock tb = sender as TextBlock;
@@ -202,10 +207,10 @@ namespace SpecialtyManagement.Pages
             }
         }
 
-        private void TBTypeLessons_Loaded(object sender, RoutedEventArgs e)
+        private void DPDate_Loaded(object sender, RoutedEventArgs e)
         {
-            TextBlock tb = sender as TextBlock;
-            tb.Text = _typesLessons[GetIndexTeacher(tb.DataContext as List<Teachers>)];
+            DatePicker datePicker = sender as DatePicker;
+            datePicker.DisplayDateStart = DateTime.Now.AddDays(1);
         }
 
         private void DPDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
@@ -222,22 +227,6 @@ namespace SpecialtyManagement.Pages
             {
                 _dates[GetIndexTeacher(datePicker.DataContext as List<Teachers>)] = date.ToString("d");
             }
-        }
-
-        private void DPDate_CalendarClosed(object sender, RoutedEventArgs e)
-        {
-            //DatePicker datePicker = sender as DatePicker;
-            //DateTime date = datePicker.SelectedDate.Value;
-            //
-            //if (date < DateTime.Today)
-            //{
-            //    MessageBox.Show("Дата назначения пересдачи не может быть ранее, чем сегодня", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
-            //    datePicker.Focus();
-            //}
-            //else
-            //{
-            //    _dates[GetIndexTeacher(datePicker.DataContext as List<Teachers>)] = date.ToString("d");
-            //}
         }
 
         private void TBoxTime_GotKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
@@ -275,7 +264,7 @@ namespace SpecialtyManagement.Pages
             }
         }
 
-        private void TBoxAudience_TextChanged(object sender, TextChangedEventArgs e)
+        private void TBoxAudience_LostKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
         {
             TextBox box = sender as TextBox;
             _audiences[GetIndexTeacher(box.DataContext as List<Teachers>)] = box.Text;
@@ -677,6 +666,11 @@ namespace SpecialtyManagement.Pages
             return lessons;
         }
 
+        /// <summary>
+        /// Получает максимальную длинну полного имени человека.
+        /// </summary>
+        /// <param name="teachers">список преподавателей.</param>
+        /// <returns>Максимальная длинна полного имени человека.</returns>
         private int GetMaxLengthFullName(List<Teachers> teachers)
         {
             int length = 0;
@@ -692,13 +686,18 @@ namespace SpecialtyManagement.Pages
             return length;
         }
 
+        /// <summary>
+        /// Получает максимальную длинну фамилии и имени человека.
+        /// </summary>
+        /// <param name="students">список студентов.</param>
+        /// <returns>Максимальная длинна фамилии и имени человека.</returns>
         private int GetMaxLengthSurnameAndName(List<Students> students)
         {
             int length = 0;
 
             foreach (Students item in students)
             {
-                if (item.FullName.Length > length)
+                if (item.SurnameAndName.Length > length)
                 {
                     length = item.SurnameAndName.Length;
                 }

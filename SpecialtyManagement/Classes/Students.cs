@@ -10,6 +10,28 @@ namespace SpecialtyManagement
     {
         public int? SequenceNumber { get; set; }
 
+        public string SurnameAndName
+        {
+            get
+            {
+                return Surname + " " + Name;
+            }
+            set { }
+        }
+
+        public string ShortName
+        {
+            get
+            {
+                if (Patronymic == null)
+                {
+                    return Surname + " " + Name[0] + ".";
+                }
+                return Surname + " " + Name[0] + ". " + Patronymic[0] + ".";
+            }
+            set { }
+        }
+
         public string FullName
         {
             get
@@ -18,16 +40,7 @@ namespace SpecialtyManagement
                 {
                     return SurnameAndName;
                 }
-                return Surname + " " + Name + " " + Patronymic;
-            }
-            set { }
-        }
-
-        public string SurnameAndName
-        {
-            get
-            {
-                return Surname + " " + Name;
+                return SurnameAndName + " " + Patronymic;
             }
             set { }
         }

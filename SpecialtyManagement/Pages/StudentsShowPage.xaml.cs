@@ -163,7 +163,7 @@ namespace SpecialtyManagement.Pages
                 if (students.Count > 0)
                 {
                     Groups group = new Groups();
-                    ChoiceGroupWindow window = new ChoiceGroupWindow(group, "Добавление студентов");
+                    ChoiceElementWindow window = new ChoiceElementWindow(group, "Добавление студентов");
                     window.ShowDialog();
 
                     if ((bool)window.DialogResult)

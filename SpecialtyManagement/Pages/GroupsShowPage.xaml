@@ -33,9 +33,6 @@
                     <Button Content="{Binding Group}" MinWidth="0" Margin="40 10" Padding="0 20" HorizontalAlignment="Stretch"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem" BasedOn="{StaticResource ListViewItemNotStyle}"/>
-            </ListView.ItemContainerStyle>
         </ListView>
 
         <ListView Grid.Row="1" Grid.Column="1" Name="LVSecondYear">
@@ -44,9 +41,6 @@
                     <Button Content="{Binding Group}" MinWidth="0" Margin="40 10" Padding="0 20" HorizontalAlignment="Stretch"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem" BasedOn="{StaticResource ListViewItemNotStyle}"/>
-            </ListView.ItemContainerStyle>
         </ListView>
 
         <ListView Grid.Row="1" Grid.Column="2" Name="LVThirdYear">
@@ -55,9 +49,6 @@
                     <Button Content="{Binding Group}" MinWidth="0" Margin="40 10" Padding="0 20" HorizontalAlignment="Stretch"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem" BasedOn="{StaticResource ListViewItemNotStyle}"/>
-            </ListView.ItemContainerStyle>
         </ListView>
 
         <ListView Grid.Row="1" Grid.Column="3" Name="LVFourthYear">
@@ -66,9 +57,6 @@
                     <Button Content="{Binding Group}" MinWidth="0" Margin="40 10" Padding="0 20" HorizontalAlignment="Stretch"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem" BasedOn="{StaticResource ListViewItemNotStyle}"/>
-            </ListView.ItemContainerStyle>
         </ListView>
 
         <Border Grid.RowSpan="2" BorderBrush="Gray" BorderThickness="0.5 0" Margin="0 40 0 0"/>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -166,6 +165,14 @@ namespace SpecialtyManagement.Pages
             x.Note == (TBoxNote.Text.Length == 0 ? null : TBoxNote.Text)) != null)
             {
                 MessageBox.Show("Данный студент уже есть в базе данных", "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            else if (_student != null && Database.Entities.Students.FirstOrDefault(x => x.Id != _student.Id && x.Surname == TBoxSurname.Text &&
+            x.Name == TBoxName.Text && x.Patronymic == (TBoxPatronymic.Text.Length == 0 ? null : TBoxPatronymic.Text) &&
+            x.IdGroup == (int)CBGroups.SelectedValue && x.Birthday == DPBirthday.SelectedDate.Value &&
+            x.Note == (TBoxNote.Text.Length == 0 ? null : TBoxNote.Text)) != null)
+            {
+                MessageBox.Show("Другой такой же студент уже есть в базе данных", "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
 

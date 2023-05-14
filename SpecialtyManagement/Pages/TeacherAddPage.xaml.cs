@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace SpecialtyManagement.Pages
 {
@@ -68,7 +67,7 @@ namespace SpecialtyManagement.Pages
                 Lessons lesson = LBLessons.SelectedItem as Lessons;
 
                 Groups group = new Groups();
-                ChoiceGroupWindow window = new ChoiceGroupWindow(group, lesson.FullName);
+                ChoiceElementWindow window = new ChoiceElementWindow(group, lesson.FullName);
                 window.ShowDialog();
 
                 if ((bool)window.DialogResult)
@@ -105,9 +104,9 @@ namespace SpecialtyManagement.Pages
             (sender as TextBlock).Text = "(" + _groups[_indexGroup++].Group + ")";
         }
 
-        private void TBDeleteLesson_MouseDown(object sender, MouseButtonEventArgs e)
+        private void BtnDeleteLesson_Click(object sender, RoutedEventArgs e)
         {
-            TextBlock tb = sender as TextBlock;
+            Button tb = sender as Button;
             int idLesson = Convert.ToInt32(tb.Uid);
             StackPanel spParent = tb.Parent as StackPanel;
             TextBlock tbGroup = spParent.Children[1] as TextBlock;
@@ -241,8 +240,15 @@ namespace SpecialtyManagement.Pages
             else if (_teacher == null && Database.Entities.Teachers.FirstOrDefault(x => x.Surname == TBoxSurname.Text &&
             x.Name == TBoxName.Text && x.Patronymic == (TBoxPatronymic.Text.Length == 0 ? null : TBoxPatronymic.Text)) != null)
             {
-                MessageBox.Show("Данный преподаватель уже есть в базе данных", "Преподаватели", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Данный преподаватель уже есть в базе данных, для изменения списка дисциплин отредактируйте его", "Преподаватели", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
+            }
+            else if (_teacher != null && Database.Entities.Teachers.FirstOrDefault(x => x.Id != _teacher.Id && x.Surname == TBoxSurname.Text &&
+            x.Name == TBoxName.Text && x.Patronymic == (TBoxPatronymic.Text.Length == 0 ? null : TBoxPatronymic.Text)) != null)
+            {
+                MessageBox.Show("Другой такой же преподаватель уже есть в базе данных, для изменения списка дисциплин отредактируйте его", "Преподаватели", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+
             }
 
             return true;
