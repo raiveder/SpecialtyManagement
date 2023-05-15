@@ -12,11 +12,15 @@ namespace SpecialtyManagement.Pages
     /// </summary>
     public partial class LessonsShowPage : Page
     {
+        private bool _isShowWarnings = false; // Для отсутствия предупреждений о результатах фильтрации при загрузке страницы.
+
         public LessonsShowPage()
         {
             UploadPage();
 
             CBType.SelectedIndex = 0;
+
+            _isShowWarnings = true;
         }
 
         public LessonsShowPage(Filter filter)
@@ -87,7 +91,8 @@ namespace SpecialtyManagement.Pages
 
             DGLessons.ItemsSource = lessons;
 
-            if (lessons.Count == 0)
+
+            if (_isShowWarnings && lessons.Count == 0)
             {
                 MessageBox.Show("Подходящих фильтру дисциплин не найдено", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
             }

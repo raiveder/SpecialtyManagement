@@ -24,7 +24,6 @@
             <Image Source="Resources/Logo.png" Margin="0 0 0 10"/>
             <Button Name="BtnStudents" Content="Студенты" Style="{StaticResource BtnMenuStyle}" Click="BtnStudents_Click"/>
             <Button Name="BtnArrears" Content="Задолженности" Style="{StaticResource BtnMenuStyle}" Click="BtnArrears_Click"/>
-            <Button Name="BtnPerformance" Content="Аттестация" Style="{StaticResource BtnMenuStyle}" Click="BtnPerformance_Click"/>
             <Button Name="BtnLessons" Content="Дисциплины" Style="{StaticResource BtnMenuStyle}" Click="BtnLessons_Click"/>
             <Button Name="BtnTeachers" Content="Преподаватели" Style="{StaticResource BtnMenuStyle}" Click="BtnTeachers_Click"/>
             <Button Name="BtnGroups" Content="Группы" Style="{StaticResource BtnMenuStyle}" Click="BtnGroups_Click"/>

@@ -13,6 +13,8 @@ namespace SpecialtyManagement.Pages
     /// </summary>
     public partial class ArrearsShowPage : Page
     {
+        private bool _isShowWarnings = false; // Для отсутствия предупреждений о результатах фильтрации при загрузке страницы.
+
         public ArrearsShowPage()
         {
             UploadPage();
@@ -21,6 +23,8 @@ namespace SpecialtyManagement.Pages
             CBGroup.SelectedIndex = 0;
             CBType.SelectedIndex = 0;
             CBSort.SelectedIndex = 0;
+
+            _isShowWarnings = true;
         }
 
         public ArrearsShowPage(Filter filter)
@@ -170,7 +174,7 @@ namespace SpecialtyManagement.Pages
 
             DGArrears.ItemsSource = arrears;
 
-            if (DGArrears.Items.Count == 0)
+            if (_isShowWarnings && DGArrears.Items.Count == 0)
             {
                 MessageBox.Show("Подходящих фильтру задолженностей не найдено", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
             }

@@ -23,7 +23,11 @@ namespace SpecialtyManagement
             _buttonsMenu.Add(BtnSettings);
             SelectButton(_buttonsMenu[0]);
 
-            Database.Entities = new SpecialtyManagementEntities(); // Сделать проверку подключения.
+            if (!Database.CreateEntities(out string message)) // Сделать проверку подключения внутри метода.
+            {
+                MessageBox.Show("При подключении к БД возникла ошибка. Обратитесь к администратору\nТекст ошибки: " + message, "Подключение к базе данных");
+                Close();
+            }
 
             Navigation.Frame = MainFrame;
             Navigation.Setting = new Setting();
@@ -44,11 +48,6 @@ namespace SpecialtyManagement
             Navigation.Frame.Navigate(new ArrearsShowPage());
         }
 
-        private void BtnPerformance_Click(object sender, RoutedEventArgs e)
-        {
-            SelectButton((Button)sender);
-        }
-
         private void BtnLessons_Click(object sender, RoutedEventArgs e)
         {
             SelectButton((Button)sender);
@@ -67,6 +66,12 @@ namespace SpecialtyManagement
             Navigation.Frame.Navigate(new GroupsShowPage());
         }
 
+        private void BtnSettings_Click(object sender, RoutedEventArgs e)
+        {
+            SelectButton((Button)sender);
+            Navigation.Frame.Navigate(new SettingsPage());
+        }
+
         /// <summary>
         /// Выделяет кнопку на фоне остальных.
         /// </summary>
@@ -83,12 +88,6 @@ namespace SpecialtyManagement
             currentButton.Background = ApplicationColor.ColorAccent;
             currentButton.Foreground = Brushes.White;
             currentButton.FontWeight = FontWeights.DemiBold;
-        }
-
-        private void BtnSettings_Click(object sender, RoutedEventArgs e)
-        {
-            SelectButton((Button)sender);
-            Navigation.Frame.Navigate(new SettingsPage());
         }
 
         private void BtnExit_Click(object sender, RoutedEventArgs e)

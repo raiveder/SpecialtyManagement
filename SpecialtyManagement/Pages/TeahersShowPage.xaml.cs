@@ -21,11 +21,14 @@ namespace SpecialtyManagement.Pages
     /// </summary>
     public partial class TeahersShowPage : Page
     {
+        private bool _isShowWarnings = false; // Для отсутствия предупреждений о результатах фильтрации при загрузке страницы.
+
         public TeahersShowPage()
         {
             InitializeComponent();
 
             CBSort.SelectedIndex = 0;
+            _isShowWarnings = true;
         }
 
         public TeahersShowPage(Filter filter)
@@ -80,7 +83,7 @@ namespace SpecialtyManagement.Pages
 
             DGTeachers.ItemsSource = teachers;
 
-            if (teachers.Count == 0)
+            if (_isShowWarnings && teachers.Count == 0)
             {
                 MessageBox.Show("Подходящих фильтру преподавателей не найдено", "Преподаватели", MessageBoxButton.OK, MessageBoxImage.Warning);
             }

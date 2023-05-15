@@ -14,6 +14,8 @@ namespace SpecialtyManagement.Pages
     /// </summary>
     public partial class StudentsShowPage : Page
     {
+        private bool _isShowWarnings = false; // Для отсутствия предупреждений о результатах фильтрации при загрузке страницы.
+
         public StudentsShowPage()
         {
             InitializeComponent();
@@ -22,6 +24,8 @@ namespace SpecialtyManagement.Pages
 
             CBGroup.SelectedIndex = 0;
             CBSort.SelectedIndex = 0;
+
+            _isShowWarnings = true;
         }
 
         public StudentsShowPage(Filter filter)
@@ -129,7 +133,7 @@ namespace SpecialtyManagement.Pages
 
             DGStudents.ItemsSource = students;
 
-            if (students.Count == 0)
+            if (_isShowWarnings && students.Count == 0)
             {
                 MessageBox.Show("Подходящих фильтру студентов не найдено", "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
             }

@@ -14,6 +14,7 @@ namespace SpecialtyManagement.Pages
     public partial class LessonsTypesShowPage : Page
     {
         private Filter _filter;
+        private bool _isShowWarnings = false; // Для отсутствия предупреждений о результатах фильтрации при загрузке страницы.
 
         public LessonsTypesShowPage(Filter filter)
         {
@@ -21,6 +22,7 @@ namespace SpecialtyManagement.Pages
 
             _filter = filter;
             SetFilter();
+            _isShowWarnings = true;
         }
 
         private void TBoxFind_TextChanged(object sender, TextChangedEventArgs e)
@@ -48,7 +50,7 @@ namespace SpecialtyManagement.Pages
 
             DGTypesLessons.ItemsSource = types;
 
-            if (types.Count == 0)
+            if (_isShowWarnings && types.Count == 0)
             {
                 MessageBox.Show("Подходящих фильтру типов дисциплин не найдено", "Типы дисциплин", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
