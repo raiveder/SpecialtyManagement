@@ -437,6 +437,7 @@ namespace SpecialtyManagement.Pages
                     tableStudents.Cell(j + 2, 2).Range.Text = _students[i][j].FullName;
                     tableStudents.Cell(j + 2, 3).Range.Text = _students[i][j].Groups.Group;
                     tableStudents.Cell(j + 2, 1).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                    tableStudents.Cell(j + 2, 2).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
                     tableStudents.Cell(j + 2, 3).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
                     tableStudents.Rows[j + 2].Range.Bold = 0;
                 }
