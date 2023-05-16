@@ -62,11 +62,6 @@ CREATE TABLE ArrearsLessons(
 [IsLiquidated] BIT NOT NULL,
 [IdReason] INT FOREIGN KEY REFERENCES ReasonsArrears(Id))
 
-CREATE TABLE LiquidationsCompositions(
-[Id] INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
-[IdArrearLesson] INT FOREIGN KEY REFERENCES ArrearsLessons(Id) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
-[IdTeacher] INT FOREIGN KEY REFERENCES Teachers(Id) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL)
-
 CREATE TABLE Specialty(
 [Id] INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 Code NVARCHAR(10) NOT NULL,
@@ -75,10 +70,10 @@ Code NVARCHAR(10) NOT NULL,
 [Head] NVARCHAR(100) NOT NULL)
 
 INSERT INTO TypesArrears
-VALUES ('Первичная'),
-('Комиссионная')
+VALUES ('РџРµСЂРІРёС‡РЅР°СЏ'),
+('РљРѕРјРёСЃСЃРёРѕРЅРЅР°СЏ')
 
 INSERT INTO ReasonsArrears
-VALUES ('Уважительная причина'),
-('Академический отпуск'),
-('Отчислен')
+VALUES ('РЈРІР°Р¶РёС‚РµР»СЊРЅР°СЏ РїСЂРёС‡РёРЅР°'),
+('РђРєР°РґРµРјРёС‡РµСЃРєРёР№ РѕС‚РїСѓСЃРє'),
+('РћС‚С‡РёСЃР»РµРЅ')

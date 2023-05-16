@@ -102,9 +102,6 @@
     <Compile Include="Lessons.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="LiquidationsCompositions.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -131,9 +128,6 @@
     </Compile>
     <Compile Include="Pages\ArrearsShowPage.xaml.cs">
       <DependentUpon>ArrearsShowPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\GroupAddPage.xaml.cs">
-      <DependentUpon>GroupAddPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\GroupsShowPage.xaml.cs">
       <DependentUpon>GroupsShowPage.xaml</DependentUpon>
@@ -217,10 +211,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\ArrearsShowPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\GroupAddPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -340,6 +330,7 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <Resource Include="Resources\IconInstall.ico" />
     <Resource Include="Resources\Icon.ico" />
     <EmbeddedResource Include="ScriptDatabase.sql" />
   </ItemGroup>

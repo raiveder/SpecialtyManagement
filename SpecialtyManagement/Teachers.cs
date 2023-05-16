@@ -18,7 +18,6 @@ namespace SpecialtyManagement
         public Teachers()
         {
             this.DistributionLessons = new HashSet<DistributionLessons>();
-            this.LiquidationsCompositions = new HashSet<LiquidationsCompositions>();
         }
     
         public int Id { get; set; }
@@ -28,7 +27,5 @@ namespace SpecialtyManagement
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DistributionLessons> DistributionLessons { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<LiquidationsCompositions> LiquidationsCompositions { get; set; }
     }
 }

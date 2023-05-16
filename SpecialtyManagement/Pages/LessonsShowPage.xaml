@@ -15,18 +15,14 @@
             <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Margin="10" VerticalAlignment="Center">
-            <StackPanel Orientation="Horizontal" Margin="0 0 0 20">
-                <TextBlock Text="Поиск" Padding="0 0 10 0" VerticalAlignment="Center"/>
-                <TextBox Name="TBoxFind" Width="200" Height="{Binding ActualHeight, ElementName=CBSort}" VerticalAlignment="Center" TextChanged="TBoxFind_TextChanged"/>
-            </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="10">
+            <TextBlock Text="Поиск" Padding="0 0 10 0" VerticalAlignment="Center"/>
+            <TextBox Name="TBoxFind" Width="200" VerticalAlignment="Center" TextChanged="TBoxFind_TextChanged"/>
         </StackPanel>
 
-        <StackPanel Margin="10" HorizontalAlignment="Right" VerticalAlignment="Center">
-            <StackPanel Orientation="Horizontal" Margin="0 0 0 20">
-                <TextBlock Name="TBType" Text="Тип" Padding="0 0 10 0" VerticalAlignment="Center"/>
-                <ComboBox Name="CBType" Width="200" VerticalAlignment="Center" SelectionChanged="CBType_SelectionChanged"/>
-            </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+            <TextBlock Name="TBType" Text="Тип" Padding="0 0 10 0" VerticalAlignment="Center"/>
+            <ComboBox Name="CBType" Width="200" VerticalAlignment="Center" SelectionChanged="CBType_SelectionChanged"/>
         </StackPanel>
 
         <DataGrid Grid.Row="1" Name="DGLessons" Margin="10 0" ColumnWidth="*" MouseLeftButtonUp="DGLessons_MouseLeftButtonUp" MouseRightButtonUp="DGLessons_MouseRightButtonUp">

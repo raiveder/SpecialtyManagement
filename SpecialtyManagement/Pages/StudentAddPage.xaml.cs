@@ -92,7 +92,6 @@ namespace SpecialtyManagement.Pages
 
                     if (isUpdate)
                     {
-                        MessageBox.Show("Данные успешно обновлены", "Студенты", MessageBoxButton.OK, MessageBoxImage.Information);
                         Navigation.Frame.Navigate(new StudentsShowPage(_filter));
                     }
                     else

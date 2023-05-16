@@ -89,6 +89,7 @@ namespace SpecialtyManagement.Pages
                 item.SequenceNumber = number++;
             }
 
+            lessons.Sort((x, y) => x.TypesLessons.Type.CompareTo(y.TypesLessons.Type));
             DGLessons.ItemsSource = lessons;
 
 

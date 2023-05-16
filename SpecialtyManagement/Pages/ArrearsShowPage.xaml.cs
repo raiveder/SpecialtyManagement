@@ -303,38 +303,83 @@ namespace SpecialtyManagement.Pages
 
         private void MIPrimaryArrears_Click(object sender, RoutedEventArgs e)
         {
-            if (DGArrears.Items.Count != 0)
+            if (CanCreateDocument())
             {
-                List<Arrears> arrears = new List<Arrears>();
-                foreach (Arrears item in DGArrears.Items)
+                if (Database.Entities.TypesLessons.FirstOrDefault(x => x.Type == "ПМ") != null)
                 {
-                    arrears.Add(item);
-                }
+                    List<Arrears> arrears = new List<Arrears>();
+                    foreach (Arrears item in DGArrears.Items)
+                    {
+                        arrears.Add(item);
+                    }
+                    Arrears.DeleteArrearsNotMatchByType(arrears, 1);
 
-                Navigation.Frame.Navigate(new ArrearsPrimaryCreateDocumentPage(GetFilter(), arrears));
-            }
-            else
-            {
-                MessageBox.Show("Список задолженностей для формирования протокола пуст", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    if (arrears.Count > 0)
+                    {
+                        Navigation.Frame.Navigate(new ArrearsPrimaryCreateDocumentPage(GetFilter(), arrears));
+                    }
+                    else
+                    {
+                        MessageBox.Show("В списке отсутствуют первичные задолженности", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Отсутствует тип дисциплины \"ПМ\". Добавьте его, прежде чем формировать протокол", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
         }
 
         private void MIComissionArrears_Click(object sender, RoutedEventArgs e)
         {
-            if (DGArrears.Items.Count != 0)
+            if (CanCreateDocument())
             {
                 List<Arrears> arrears = new List<Arrears>();
                 foreach (Arrears item in DGArrears.Items)
                 {
                     arrears.Add(item);
                 }
+                Arrears.DeleteArrearsNotMatchByType(arrears, 2);
 
-                Navigation.Frame.Navigate(new ArrearsComissionCreateDocumentPage(GetFilter(), arrears));
+                if (arrears.Count > 0)
+                {
+                    Navigation.Frame.Navigate(new ArrearsComissionCreateDocumentPage(GetFilter(), arrears));
+                }
+                else
+                {
+                    MessageBox.Show("В списке отсутствуют комисионные задолженности", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
-            else
+        }
+
+        /// <summary>
+        /// Проверяет, можно ли создавать документ.
+        /// </summary>
+        /// <returns>True, если все данные для документа есть в базе данных, в противном случае - false.</returns>
+        private bool CanCreateDocument()
+        {
+            if (DGArrears.Items.Count == 0)
             {
                 MessageBox.Show("Список задолженностей для формирования документов пуст", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
             }
+            if (Database.Entities.Specialty.FirstOrDefault() == null)
+            {
+                MessageBox.Show("Специальность не указана. Перейдите в пункт меню \"Настройки\"", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            if (Database.Entities.Teachers.Count() == 0)
+            {
+                MessageBox.Show("Список преподавателей пуст. Добавьте преподавателей", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            if (Database.Entities.Lessons.Count() == 0)
+            {
+                MessageBox.Show("Список дисциплин пуст. Добавьте преподавателей", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>

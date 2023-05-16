@@ -54,7 +54,9 @@ namespace SpecialtyManagement.Pages
             InitializeComponent();
             _filter = filter;
 
-            LBTeachers.ItemsSource = Database.Entities.Teachers.ToList();
+            List<Teachers> teachers = Database.Entities.Teachers.ToList();
+            teachers.Sort((x, y) => x.FullName.CompareTo(y.FullName));
+            LBTeachers.ItemsSource = teachers;
             LBTeachers.SelectedValuePath = "Id";
             LBTeachers.DisplayMemberPath = "FullName";
 
@@ -177,7 +179,6 @@ namespace SpecialtyManagement.Pages
 
                     if (isUpdate)
                     {
-                        MessageBox.Show("Данные успешно обновлены", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Information);
                         Navigation.Frame.Navigate(new LessonsShowPage(_filter));
                     }
                     else

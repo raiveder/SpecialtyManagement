@@ -51,14 +51,6 @@
           <Property Name="IdType" Type="int" Nullable="false" />
           <Property Name="Code" Type="nvarchar" MaxLength="5" Nullable="false" />
         </EntityType>
-        <EntityType Name="LiquidationsCompositions">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IdArrearLesson" Type="int" Nullable="false" />
-          <Property Name="IdTeacher" Type="int" Nullable="false" />
-        </EntityType>
         <EntityType Name="ReasonsArrears">
           <Key>
             <PropertyRef Name="Id" />
@@ -110,7 +102,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Type" Type="nvarchar" MaxLength="3" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="5" Nullable="false" />
         </EntityType>
         <Association Name="FK__Arrears__IdStude__34C8D9D1">
           <End Role="Students" Type="Self.Students" Multiplicity="1">
@@ -236,34 +228,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Liquidati__IdArr__412EB0B6">
-          <End Role="ArrearsLessons" Type="Self.ArrearsLessons" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="LiquidationsCompositions" Type="Self.LiquidationsCompositions" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ArrearsLessons">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="LiquidationsCompositions">
-              <PropertyRef Name="IdArrearLesson" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Liquidati__IdTea__4222D4EF">
-          <End Role="Teachers" Type="Self.Teachers" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="LiquidationsCompositions" Type="Self.LiquidationsCompositions" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Teachers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="LiquidationsCompositions">
-              <PropertyRef Name="IdTeacher" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Students__IdGrou__31EC6D26">
           <End Role="Groups" Type="Self.Groups" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -284,7 +248,6 @@
           <EntitySet Name="DistributionLessons" EntityType="Self.DistributionLessons" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Groups" EntityType="Self.Groups" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Lessons" EntityType="Self.Lessons" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="LiquidationsCompositions" EntityType="Self.LiquidationsCompositions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReasonsArrears" EntityType="Self.ReasonsArrears" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Specialty" EntityType="Self.Specialty" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
@@ -327,14 +290,6 @@
             <End Role="TypesLessons" EntitySet="TypesLessons" />
             <End Role="Lessons" EntitySet="Lessons" />
           </AssociationSet>
-          <AssociationSet Name="FK__Liquidati__IdArr__412EB0B6" Association="Self.FK__Liquidati__IdArr__412EB0B6">
-            <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
-            <End Role="LiquidationsCompositions" EntitySet="LiquidationsCompositions" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Liquidati__IdTea__4222D4EF" Association="Self.FK__Liquidati__IdTea__4222D4EF">
-            <End Role="Teachers" EntitySet="Teachers" />
-            <End Role="LiquidationsCompositions" EntitySet="LiquidationsCompositions" />
-          </AssociationSet>
           <AssociationSet Name="FK__Students__IdGrou__31EC6D26" Association="Self.FK__Students__IdGrou__31EC6D26">
             <End Role="Groups" EntitySet="Groups" />
             <End Role="Students" EntitySet="Students" />
@@ -350,7 +305,6 @@
           <EntitySet Name="DistributionLessons" EntityType="SpecialtyManagementModel.DistributionLessons" />
           <EntitySet Name="Groups" EntityType="SpecialtyManagementModel.Groups" />
           <EntitySet Name="Lessons" EntityType="SpecialtyManagementModel.Lessons" />
-          <EntitySet Name="LiquidationsCompositions" EntityType="SpecialtyManagementModel.LiquidationsCompositions" />
           <EntitySet Name="ReasonsArrears" EntityType="SpecialtyManagementModel.ReasonsArrears" />
           <EntitySet Name="Specialty" EntityType="SpecialtyManagementModel.Specialty" />
           <EntitySet Name="Students" EntityType="SpecialtyManagementModel.Students" />
@@ -377,10 +331,6 @@
             <End Role="TypesArrears" EntitySet="TypesArrears" />
             <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
           </AssociationSet>
-          <AssociationSet Name="FK__Liquidati__IdArr__412EB0B6" Association="SpecialtyManagementModel.FK__Liquidati__IdArr__412EB0B6">
-            <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
-            <End Role="LiquidationsCompositions" EntitySet="LiquidationsCompositions" />
-          </AssociationSet>
           <AssociationSet Name="FK__Distribut__IdGro__2F10007B" Association="SpecialtyManagementModel.FK__Distribut__IdGro__2F10007B">
             <End Role="Groups" EntitySet="Groups" />
             <End Role="DistributionLessons" EntitySet="DistributionLessons" />
@@ -400,10 +350,6 @@
           <AssociationSet Name="FK__Lessons__IdType__286302EC" Association="SpecialtyManagementModel.FK__Lessons__IdType__286302EC">
             <End Role="TypesLessons" EntitySet="TypesLessons" />
             <End Role="Lessons" EntitySet="Lessons" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Liquidati__IdTea__4222D4EF" Association="SpecialtyManagementModel.FK__Liquidati__IdTea__4222D4EF">
-            <End Role="Teachers" EntitySet="Teachers" />
-            <End Role="LiquidationsCompositions" EntitySet="LiquidationsCompositions" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Arrears">
@@ -432,7 +378,6 @@
           <NavigationProperty Name="Lessons" Relationship="SpecialtyManagementModel.FK__ArrearsLe__IdLes__3C69FB99" FromRole="ArrearsLessons" ToRole="Lessons" />
           <NavigationProperty Name="ReasonsArrears" Relationship="SpecialtyManagementModel.FK__ArrearsLe__IdRea__3E52440B" FromRole="ArrearsLessons" ToRole="ReasonsArrears" />
           <NavigationProperty Name="TypesArrears" Relationship="SpecialtyManagementModel.FK__ArrearsLe__IdTyp__3D5E1FD2" FromRole="ArrearsLessons" ToRole="TypesArrears" />
-          <NavigationProperty Name="LiquidationsCompositions" Relationship="SpecialtyManagementModel.FK__Liquidati__IdArr__412EB0B6" FromRole="ArrearsLessons" ToRole="LiquidationsCompositions" />
         </EntityType>
         <EntityType Name="DistributionLessons">
           <Key>
@@ -466,16 +411,6 @@
           <NavigationProperty Name="ArrearsLessons" Relationship="SpecialtyManagementModel.FK__ArrearsLe__IdLes__3C69FB99" FromRole="Lessons" ToRole="ArrearsLessons" />
           <NavigationProperty Name="DistributionLessons" Relationship="SpecialtyManagementModel.FK__Distribut__IdLes__2E1BDC42" FromRole="Lessons" ToRole="DistributionLessons" />
           <NavigationProperty Name="TypesLessons" Relationship="SpecialtyManagementModel.FK__Lessons__IdType__286302EC" FromRole="Lessons" ToRole="TypesLessons" />
-        </EntityType>
-        <EntityType Name="LiquidationsCompositions">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdArrearLesson" Type="Int32" Nullable="false" />
-          <Property Name="IdTeacher" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ArrearsLessons" Relationship="SpecialtyManagementModel.FK__Liquidati__IdArr__412EB0B6" FromRole="LiquidationsCompositions" ToRole="ArrearsLessons" />
-          <NavigationProperty Name="Teachers" Relationship="SpecialtyManagementModel.FK__Liquidati__IdTea__4222D4EF" FromRole="LiquidationsCompositions" ToRole="Teachers" />
         </EntityType>
         <EntityType Name="ReasonsArrears">
           <Key>
@@ -519,7 +454,6 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Patronymic" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="DistributionLessons" Relationship="SpecialtyManagementModel.FK__Distribut__IdTea__2D27B809" FromRole="Teachers" ToRole="DistributionLessons" />
-          <NavigationProperty Name="LiquidationsCompositions" Relationship="SpecialtyManagementModel.FK__Liquidati__IdTea__4222D4EF" FromRole="Teachers" ToRole="LiquidationsCompositions" />
         </EntityType>
         <EntityType Name="TypesArrears">
           <Key>
@@ -534,7 +468,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Type" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Lessons" Relationship="SpecialtyManagementModel.FK__Lessons__IdType__286302EC" FromRole="TypesLessons" ToRole="Lessons" />
         </EntityType>
         <Association Name="FK__Arrears__IdStude__34C8D9D1">
@@ -602,20 +536,6 @@
             </Principal>
             <Dependent Role="ArrearsLessons">
               <PropertyRef Name="IdType" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Liquidati__IdArr__412EB0B6">
-          <End Type="SpecialtyManagementModel.ArrearsLessons" Role="ArrearsLessons" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="SpecialtyManagementModel.LiquidationsCompositions" Role="LiquidationsCompositions" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ArrearsLessons">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="LiquidationsCompositions">
-              <PropertyRef Name="IdArrearLesson" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -689,20 +609,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Liquidati__IdTea__4222D4EF">
-          <End Type="SpecialtyManagementModel.Teachers" Role="Teachers" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="SpecialtyManagementModel.LiquidationsCompositions" Role="LiquidationsCompositions" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Teachers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="LiquidationsCompositions">
-              <PropertyRef Name="IdTeacher" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -756,15 +662,6 @@
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="IdType" ColumnName="IdType" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="LiquidationsCompositions">
-            <EntityTypeMapping TypeName="SpecialtyManagementModel.LiquidationsCompositions">
-              <MappingFragment StoreEntitySet="LiquidationsCompositions">
-                <ScalarProperty Name="IdTeacher" ColumnName="IdTeacher" />
-                <ScalarProperty Name="IdArrearLesson" ColumnName="IdArrearLesson" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

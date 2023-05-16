@@ -33,7 +33,6 @@ namespace SpecialtyManagement.Pages
 
             _filter = filter;
             _arrears = arrears;
-            Arrears.DeleteArrearsNotMatchByType(_arrears, IdTypeArrear);
             _lessonsSource = GetAllLessonsForArrearsByType(_arrears, IdTypeArrear);
         }
 
@@ -260,13 +259,83 @@ namespace SpecialtyManagement.Pages
 
         private void BtnGenerate_Click(object sender, RoutedEventArgs e)
         {
-            //if (true) Делать проверку или нет.
+            if (CheckFillData())
             {
                 Word.Application app = new Word.Application();
                 CreateDocumentMemo(app.Application, TBoxSender.Text, TBoxRecipient.Text);
                 CreateDocumentShedule(app.Application);
                 app.Visible = true;
             }
+        }
+        
+        /// <summary>
+         /// Проверяет корректность заполнения полей.
+         /// </summary>
+         /// <returns>True - если все данные заполнены корректно, в противном случае - false.</returns>
+        private bool CheckFillData()
+        {
+            if (ListView.Items.Count == 0)
+            {
+                MessageBox.Show("Список задолженностей для формирования документов пуст", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            foreach (List<Students> item in _students)
+            {
+                if (item.Count == 0)
+                {
+                    MessageBox.Show("Не у всех задолженностей выбраны студенты", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return false;
+                }
+            }
+
+            foreach (List<Students> item in _students)
+            {
+                if (item.Count == 0)
+                {
+                    MessageBox.Show("Не у всех задолженностей выбраны члены комиссии", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return false;
+                }
+            }
+
+            //foreach (string item in _dates)
+            //{
+            //    if (item == string.Empty)
+            //    {
+            //        MessageBox.Show("Не все даты работы преподавателей выбраны", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+            //        return false;
+            //    }
+            //    else if (!DateTime.TryParse(item, out DateTime result))
+            //    {
+            //        MessageBox.Show("Проверьте корректность выбранных дат работы преподавателей", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+            //        return false;
+            //    }
+            //}
+
+            //foreach (string item in _times)
+            //{
+            //    if (item == string.Empty)
+            //    {
+            //        MessageBox.Show("Не все времена работы преподавателей выбраны", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+            //        return false;
+            //    }
+            //    else if (!Regex.IsMatch(item, @"^(([0-1][0-9])|([2][0-3])):([0-5][0-9])$"))
+            //    {
+            //        MessageBox.Show("Проверьте корректность выбранного времени работы преподавателей", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+            //        return false;
+            //    }
+            //}
+
+            //foreach (string item in _audiences)
+            //{
+            //    if (item == string.Empty)
+            //    {
+            //        MessageBox.Show("Не все аудитории выбраны", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+            //        return false;
+            //    }
+            //}
+
+            return true;
         }
 
         /// <summary>

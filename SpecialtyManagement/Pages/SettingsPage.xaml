@@ -24,7 +24,7 @@
             <TextBox Name="TBoxCode" Width="300" HorizontalAlignment="Left" Margin="0 0 0 20"/>
             <TextBlock Text="Наименование специальности" Margin="0 0 0 5"/>
             <TextBox Name="TBoxName" Width="300" HorizontalAlignment="Left" Margin="0 0 0 20" TextWrapping="Wrap"/>
-            <TextBlock Text="ФИО зав. специальности" Margin="0 0 0 5"/>
+            <TextBlock Text="ФИО зав. отделением" Margin="0 0 0 5"/>
             <TextBox Name="TBoxHead" Width="300" HorizontalAlignment="Left" TextWrapping="Wrap"/>
         </StackPanel>
         

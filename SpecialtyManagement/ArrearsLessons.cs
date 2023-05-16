@@ -14,12 +14,6 @@ namespace SpecialtyManagement
     
     public partial class ArrearsLessons
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ArrearsLessons()
-        {
-            this.LiquidationsCompositions = new HashSet<LiquidationsCompositions>();
-        }
-    
         public int Id { get; set; }
         public int IdArrear { get; set; }
         public int IdLesson { get; set; }
@@ -31,7 +25,5 @@ namespace SpecialtyManagement
         public virtual Lessons Lessons { get; set; }
         public virtual ReasonsArrears ReasonsArrears { get; set; }
         public virtual TypesArrears TypesArrears { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<LiquidationsCompositions> LiquidationsCompositions { get; set; }
     }
 }

@@ -34,7 +34,7 @@ namespace SpecialtyManagement.Classes
                     return specialty.Head;
                 }
 
-                return "Зав. специальностью не указан";
+                return "Зав. отделением не указан";
             }
             set { }
         }

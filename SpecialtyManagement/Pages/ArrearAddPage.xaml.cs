@@ -305,7 +305,6 @@ namespace SpecialtyManagement.Pages
 
                     if (isUpdate)
                     {
-                        MessageBox.Show("Данные успешно обновлены", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Information);
                         Navigation.Frame.Navigate(new ArrearsShowPage(_filter));
                     }
                     else

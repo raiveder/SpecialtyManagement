@@ -17,7 +17,7 @@ namespace SpecialtyManagement.Pages
     public partial class ArrearsPrimaryCreateDocumentPage : Page
     {
         private const int IdTypeArrear = 1; // Id первичной задолженности.
-        private int _idPM;
+        private int _idPM = Database.Entities.TypesLessons.FirstOrDefault(x => x.Type == "ПМ").Id; // Id типа дисциплины ПМ.
         private Filter _filter;
         private List<Arrears> _arrears; // Список задолженностей.
         private List<List<Teachers>> _teachers = new List<List<Teachers>>(); // Список учителей.
@@ -36,18 +36,6 @@ namespace SpecialtyManagement.Pages
 
             _filter = filter;
             _arrears = arrears;
-            Arrears.DeleteArrearsNotMatchByType(_arrears, IdTypeArrear);
-
-            TypesLessons typeLesson = Database.Entities.TypesLessons.FirstOrDefault(x => x.Type == "ПМ");
-            if (typeLesson != null)
-            {
-                _idPM = typeLesson.Id;
-            }
-            else
-            {
-                MessageBox.Show("Отсутствует тип дисциплины \"ПМ\". Добавьте его, прежде чем формировать протокол", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
-                Navigation.Frame.Navigate(new ArrearsShowPage(_filter));
-            }
 
             foreach (Arrears arrear in _arrears)
             {
