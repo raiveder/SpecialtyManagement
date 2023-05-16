@@ -43,9 +43,9 @@ namespace SpecialtyManagement
                 }
                 catch (Exception ex)
                 {
-                    string text = ex.InnerException.Message.ToLower();
+                    string text = ex.InnerException.Message;
 
-                    if (text.Contains("specialtymanagement"))
+                    if (text.ToLower().Contains("specialtymanagement"))
                     {
                         MessageBoxResult result = MessageBox.Show("База данных для приложения с таким именем уже существует. Вы действительно хотите пересоздать её?\n\"Да\" - пересоздать БД\n\"Нет\" - работать с сохранённой\n\"Отмена\" - отменить установку", "Установка приложения", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
                         switch (result)
@@ -61,15 +61,21 @@ namespace SpecialtyManagement
                                 throw new InstallException("Установка была прервана пользователем");
                         }
                     }
-                    else if (text.Contains("create database"))
+                    else if (text.ToLower().Contains("create database"))
                     {
                         MessageBox.Show("Запустите установщик от имени администратора", "Установка приложения", MessageBoxButton.OK, MessageBoxImage.Warning);
                         Rollback(stateSaver);
                         throw new InstallException("Установка была прервана");
                     }
-                    else if (text.Contains("используется"))
+                    else if (text.ToLower().Contains("используется"))
                     {
                         MessageBox.Show("База данных в данный момент используется. Перезагрузите компьютер и повторите процесс установки", "Установка приложения", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        Rollback(stateSaver);
+                        throw new InstallException("Установка была прервана");
+                    }
+                    else
+                    {
+                        MessageBox.Show(text, "Установка приложения", MessageBoxButton.OK, MessageBoxImage.Warning);
                         Rollback(stateSaver);
                         throw new InstallException("Установка была прервана");
                     }

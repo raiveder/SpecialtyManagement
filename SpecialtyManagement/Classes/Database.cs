@@ -23,7 +23,7 @@ namespace SpecialtyManagement
             }
             catch (Exception e)
             {
-                message = e.Message;
+                message = e.InnerException.Message;
                 return false;
             }
         }
