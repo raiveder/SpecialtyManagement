@@ -290,6 +290,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -314,6 +322,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
     }
@@ -821,7 +837,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Управление специальностью"
         "ProductCode" = "8:{F05DCC3A-4FB1-4557-A439-A92ADBB76AC9}"
-        "PackageCode" = "8:{386035F0-AA4A-4CB9-AA9B-A6AD921E2BFE}"
+        "PackageCode" = "8:{1C87672A-CDE3-4298-B9DA-4C9DF3F4629A}"
         "UpgradeCode" = "8:{CA492777-F5D1-46D6-B2E4-0397AFF563FE}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -838,7 +854,7 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:"
+        "ARPPRODUCTICON" = "8:_F7B5A5BBAD3C4997B7CB437CC59F69B0"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"

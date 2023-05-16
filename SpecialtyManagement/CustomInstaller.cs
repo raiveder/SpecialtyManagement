@@ -32,7 +32,8 @@ namespace SpecialtyManagement
 
         private void ExecuteScriptSql(IDictionary stateSaver)
         {
-            string connStr = "Data Source=.\\SQLEXPRESS;Initial Catalog=master;Integrated Security=True";
+            string connStr = "Data Source=" + Environment.MachineName + "\\SQLEXPRESS;Initial Catalog=master;Integrated Security=True";
+            MessageBox.Show(Environment.MachineName + ". Строка подключения: " + connStr);
             Server server = new Server();
             using (SqlConnection conn = new SqlConnection(connStr))
             {
