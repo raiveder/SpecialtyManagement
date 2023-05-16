@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SpecialtyManagement.Windows"
         mc:Ignorable="d"
         ResizeMode="NoResize"
-        Title="Управление специальностью" Height="300" Width="700" WindowStartupLocation="CenterScreen">
+        Title="Управление специальностью" Height="300" Width="700" WindowStartupLocation="CenterScreen" Icon="/Resources/Icon.ico">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>

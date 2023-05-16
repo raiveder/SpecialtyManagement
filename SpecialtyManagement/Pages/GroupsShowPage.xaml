@@ -30,7 +30,7 @@
         <ListView Grid.Row="1" Name="LVFirstYear" BorderThickness="0 0.5" BorderBrush="{StaticResource ColorPrimary}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Button Content="{Binding Group}" MinWidth="0" Margin="40 10" Padding="0 20" HorizontalAlignment="Stretch"/>
+                    <Button Content="{Binding Group}" MinWidth="0" Margin="40 10" Padding="0 20" HorizontalAlignment="Stretch" Click="BtnGroup_Click"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
@@ -38,7 +38,7 @@
         <ListView Grid.Row="1" Grid.Column="1" Name="LVSecondYear">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Button Content="{Binding Group}" MinWidth="0" Margin="40 10" Padding="0 20" HorizontalAlignment="Stretch"/>
+                    <Button Content="{Binding Group}" MinWidth="0" Margin="40 10" Padding="0 20" HorizontalAlignment="Stretch" Click="BtnGroup_Click"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
@@ -46,7 +46,7 @@
         <ListView Grid.Row="1" Grid.Column="2" Name="LVThirdYear">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Button Content="{Binding Group}" MinWidth="0" Margin="40 10" Padding="0 20" HorizontalAlignment="Stretch"/>
+                    <Button Content="{Binding Group}" MinWidth="0" Margin="40 10" Padding="0 20" HorizontalAlignment="Stretch" Click="BtnGroup_Click"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
@@ -54,7 +54,7 @@
         <ListView Grid.Row="1" Grid.Column="3" Name="LVFourthYear">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Button Content="{Binding Group}" MinWidth="0" Margin="40 10" Padding="0 20" HorizontalAlignment="Stretch"/>
+                    <Button Content="{Binding Group}" MinWidth="0" Margin="40 10" Padding="0 20" HorizontalAlignment="Stretch" Click="BtnGroup_Click"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
@@ -64,7 +64,7 @@
         <Border Grid.RowSpan="2" Grid.Column="2" BorderBrush="Gray" BorderThickness="0.5 0" Margin="0 40 0 0"/>
         <Border Grid.RowSpan="2" Grid.Column="3" BorderBrush="Gray" BorderThickness="0.5 0 0 0" Margin="0 40 0 0"/>
         
-        <Button Grid.Row="2" Name="BtnAdd" Content="Добавить (?)" HorizontalAlignment="Left" Margin="10" Click="BtnAdd_Click"/>
+        <Button Grid.Row="2" Name="BtnAdd" Content="Добавить" HorizontalAlignment="Left" Margin="10" Click="BtnAdd_Click"/>
         <Button Grid.Row="2" Grid.ColumnSpan="4" Name="BtnOffset" Content="Смещение на год" HorizontalAlignment="Right" Margin="10" Click="BtnOffset_Click"/>
     </Grid>
 </Page>

@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using SpecialtyManagement.Windows;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SpecialtyManagement.Pages
 {
@@ -32,12 +22,29 @@ namespace SpecialtyManagement.Pages
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
+            GroupAddWindow window = new GroupAddWindow();
+            window.ShowDialog();
 
+            if ((bool)window.DialogResult)
+            {
+                Navigation.Frame.Navigate(new GroupsShowPage());
+            }
         }
 
         private void BtnOffset_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void BtnGroup_Click(object sender, RoutedEventArgs e)
+        {
+            GroupAddWindow window = new GroupAddWindow((sender as Button).DataContext as Groups);
+            window.ShowDialog();
+
+            if ((bool)window.DialogResult)
+            {
+                Navigation.Frame.Navigate(new GroupsShowPage());
+            }
         }
     }
 }

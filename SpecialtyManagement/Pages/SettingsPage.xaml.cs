@@ -11,22 +11,31 @@ namespace SpecialtyManagement.Pages
     /// </summary>
     public partial class SettingsPage : Page
     {
-        private Specialty _specialty = Database.Entities.Specialty.First();
+        private Specialty _specialty = Database.Entities.Specialty.FirstOrDefault();
 
         public SettingsPage()
         {
             InitializeComponent();
 
-            TBoxDepartament.Text = _specialty.Departament;
-            TBoxCode.Text = _specialty.Code;
-            TBoxName.Text = _specialty.Name;
-            TBoxHead.Text = _specialty.Head;
+            if (_specialty != null)
+            {
+                TBoxDepartament.Text = _specialty.Departament;
+                TBoxCode.Text = _specialty.Code;
+                TBoxName.Text = _specialty.Name;
+                TBoxHead.Text = _specialty.Head;
+            }
         }
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
             if (CheckFillData())
             {
+                if (_specialty == null)
+                {
+                    _specialty = new Specialty();
+                    Database.Entities.Specialty.Add(_specialty);
+                }
+
                 _specialty.Departament = TBoxDepartament.Text;
                 _specialty.Code = TBoxCode.Text;
                 _specialty.Name = TBoxName.Text;

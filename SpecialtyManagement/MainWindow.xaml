@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         MinHeight="800"
         MinWidth="1200"
-        Title="Управление специальностью" Height="800" Width="1200" WindowStartupLocation="CenterScreen">
+        Title="Управление специальностью" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Icon="/Resources/Icon.ico">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition MaxWidth="320"/>
@@ -20,18 +20,18 @@
 
         <StackPanel Grid.RowSpan="2" Background="{StaticResource ColorPrimary}"/>
 
-        <StackPanel Grid.RowSpan="2" Name="SPMenu" Margin="20 20 20 10">
-            <Image Source="Resources/Logo.png" Margin="0 0 0 10"/>
+        <StackPanel Grid.RowSpan="2" Name="SPMenu" Margin="20">
+            <Image Source="Resources/Logo.png" Margin="0 0 0 20"/>
             <Button Name="BtnStudents" Content="Студенты" Style="{StaticResource BtnMenuStyle}" Click="BtnStudents_Click"/>
             <Button Name="BtnArrears" Content="Задолженности" Style="{StaticResource BtnMenuStyle}" Click="BtnArrears_Click"/>
             <Button Name="BtnLessons" Content="Дисциплины" Style="{StaticResource BtnMenuStyle}" Click="BtnLessons_Click"/>
             <Button Name="BtnTeachers" Content="Преподаватели" Style="{StaticResource BtnMenuStyle}" Click="BtnTeachers_Click"/>
-            <Button Name="BtnGroups" Content="Группы" Style="{StaticResource BtnMenuStyle}" Click="BtnGroups_Click"/>
+            <Button Name="BtnGroups" Content="Группы" Style="{StaticResource BtnMenuStyle}" Margin="0" Click="BtnGroups_Click"/>
         </StackPanel>
 
-        <StackPanel Grid.RowSpan="2" VerticalAlignment="Bottom"  Margin="20">
+        <StackPanel Grid.RowSpan="2" VerticalAlignment="Bottom" Margin="20">
             <Button Name="BtnSettings" Content="Настройки" Style="{StaticResource BtnMenuStyle}" Click="BtnSettings_Click"/>
-            <Button Name="BtnExit" Content="Выйти" Style="{StaticResource BtnMenuStyle}" Click="BtnExit_Click"/>
+            <Button Name="BtnExit" Content="Выйти" Style="{StaticResource BtnMenuStyle}" Margin="0" Click="BtnExit_Click"/>
         </StackPanel>
 
         <Border Grid.Column="1" Background="{StaticResource ColorSecondary}" CornerRadius="0 0 10 10">

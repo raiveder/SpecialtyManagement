@@ -96,7 +96,7 @@ namespace SpecialtyManagement.Windows
             }
             else if (_typeLesson != null && Database.Entities.TypesLessons.FirstOrDefault(x => x.Id != _typeLesson.Id && x.Type == TBoxType.Text) != null)
             {
-                MessageBox.Show("Данный тип дисциплины уже есть в базе данных", "Типы дисциплин", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Данный тип дисциплины уже есть в базе данных, для изменения названия отредактируйте его", "Типы дисциплин", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
 
