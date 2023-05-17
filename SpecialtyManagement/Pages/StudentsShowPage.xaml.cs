@@ -188,8 +188,6 @@ namespace SpecialtyManagement.Pages
                         {
                             Database.Entities.SaveChanges();
                             CBGroup.SelectedValue = students[0].IdGroup;
-
-                            MessageBox.Show("Студенты успешно добавлены", "Студенты", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                         catch (Exception)
                         {
@@ -289,6 +287,7 @@ namespace SpecialtyManagement.Pages
                 try
                 {
                     Database.Entities.SaveChanges();
+                    SetFilter();
                 }
                 catch (Exception)
                 {
