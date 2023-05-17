@@ -101,13 +101,21 @@ namespace SpecialtyManagement.Pages
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
-            Filter filter = new Filter()
+            if (Database.Entities.TypesLessons.Count() > 0)
             {
-                FindText = TBoxFind.Text,
-                IndexType = CBType.SelectedIndex
-            };
+                Filter filter = new Filter()
+                {
+                    FindText = TBoxFind.Text,
+                    IndexType = CBType.SelectedIndex
+                };
 
-            Navigation.Frame.Navigate(new LessonAddPage(filter));
+                Navigation.Frame.Navigate(new LessonAddPage(filter));
+            }
+            else
+            {
+                MessageBox.Show("Сначала добавьте хотя бы 1 тип дисциплин, прежде чем добавлять саму дисциплину", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
         }
 
         private void BtnTypesLessons_Click(object sender, RoutedEventArgs e)

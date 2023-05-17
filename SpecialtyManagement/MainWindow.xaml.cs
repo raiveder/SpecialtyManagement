@@ -23,16 +23,50 @@ namespace SpecialtyManagement
             _buttonsMenu.Add(BtnSettings);
             SelectButton(_buttonsMenu[0]);
 
-
-            // Сделать проверку подключения внутри метода CreateEntities().
-
-
             if (!Database.CreateEntities(out string message))
             {
-                MessageBox.Show("При подключении к БД возникла ошибка. Обратитесь к администратору\nТекст ошибки: " + message, "Подключение к базе данных");
-                Close();
-            }
+                if (message.ToLower().Contains("error: 26"))
+                {
+                    //try
+                    //{
+                    //    var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                    //    MessageBox.Show(ConfigurationManager.ConnectionStrings["SpecialtyManagementEntities"].ConnectionString);
+                    //    var connectionStringsSection = (ConnectionStringsSection)config.GetSection("connectionStrings");
+                    //    string connStr = connectionStringsSection.ConnectionStrings["SpecialtyManagementEntities"].ConnectionString;
 
+                    //    MessageBox.Show("old String: " + connStr);
+                    //    //int index = 0;
+                    //    //for (int i = 0; i < connStr.Length - 11; i++)
+                    //    //{
+                    //    //    if (connStr[i] == '\\' && connStr[i + 1] == 'S' && connStr[i + 2] == 'Q' && connStr[i + 3] == 'L' && connStr[i + 4] == 'E' && connStr[i + 5] == 'X' &&
+                    //    //        connStr[i + 6] == 'P' && connStr[i + 7] == 'R' && connStr[i + 8] == 'E' && connStr[i + 9] == 'S' && connStr[i + 10] == 'S')
+                    //    //    {
+                    //    //        index = i;
+                    //    //        break;
+                    //    //    }
+                    //    //}
+                    //    //MessageBox.Show("new String: " + connStr);
+                    //    //connStr = connStr.Remove(index, 11);
+                    //    connStr = "metadata=res://*/Model1.csdl|res://*/Model1.ssdl|res://*/Model1.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=.;initial catalog=SpecialtyManagement;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework&quot;";
+                    //    MessageBox.Show("new String: " + connStr);
+                    //    connectionStringsSection.ConnectionStrings["SpecialtyManagementEntities"].ConnectionString = connStr;
+
+                    //    config.Save();
+                    //    ConfigurationManager.RefreshSection("connectionStrings");
+                    //    MessageBox.Show(ConfigurationManager.ConnectionStrings["SpecialtyManagementEntities"].ConnectionString);
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    MessageBox.Show(ex.Message);
+                    //}
+                    MessageBox.Show("Возникла ошибка при запуске приложения. Задайте имя сервера по одному из шаблонов:\n\"имя сервера\\SQLEXPRESS\"\n\"имя сервера\"\nТекст ошибки: " + message, "Установка приложения", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                else
+                {
+                    MessageBox.Show("При подключении к БД возникла ошибка. Обратитесь к администратору\nТекст ошибки: " + message, "Подключение к базе данных");
+                    Close();
+                }
+            }
             Navigation.Frame = MainFrame;
             Navigation.Setting = new Setting();
             Navigation.Frame.Navigate(new StudentsShowPage());

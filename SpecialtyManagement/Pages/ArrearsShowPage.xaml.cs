@@ -298,6 +298,22 @@ namespace SpecialtyManagement.Pages
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
+            if (Database.Entities.Lessons.Count() == 0)
+            {
+                MessageBox.Show("Сначала добавьте хотя бы 1-у дисциплину, прежде чем добавлять задолженность", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            if (Database.Entities.Students.Count() == 0)
+            {
+                MessageBox.Show("Сначала добавьте хотя бы 1-го студента, прежде чем добавлять задолженность", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            if (Database.Entities.DistributionLessons.Count() == 0)
+            {
+                MessageBox.Show("Сначала добавьте хотя бы 1-го преподавателя, который будет вести какие-либо дисциплины, прежде чем добавлять задолженность", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             Navigation.Frame.Navigate(new ArrearAddPage(GetFilter()));
         }
 
@@ -310,9 +326,12 @@ namespace SpecialtyManagement.Pages
                     List<Arrears> arrears = new List<Arrears>();
                     foreach (Arrears item in DGArrears.Items)
                     {
-                        arrears.Add(item);
+                        if (!item.Students.IsExpelled)
+                        {
+                            arrears.Add(item);
+                        }
                     }
-                    Arrears.DeleteArrearsNotMatchByType(arrears, 1);
+                    Arrears.DeleteArrearsNotMatchByType(arrears, 1); // 1 - Id первичной задолженности.
 
                     if (arrears.Count > 0)
                     {
@@ -320,12 +339,12 @@ namespace SpecialtyManagement.Pages
                     }
                     else
                     {
-                        MessageBox.Show("В списке отсутствуют первичные задолженности", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        MessageBox.Show("В списке отсутствуют первичные задолженности, которые имеются у неотчисленных студентов", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Отсутствует тип дисциплины \"ПМ\". Добавьте его, прежде чем формировать протокол", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("Отсутствует тип дисциплины \"ПМ\". Добавьте его, прежде чем формировать протокол о первичных задолженностях", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
         }
@@ -337,9 +356,12 @@ namespace SpecialtyManagement.Pages
                 List<Arrears> arrears = new List<Arrears>();
                 foreach (Arrears item in DGArrears.Items)
                 {
-                    arrears.Add(item);
+                    if (!item.Students.IsExpelled)
+                    {
+                        arrears.Add(item);
+                    }
                 }
-                Arrears.DeleteArrearsNotMatchByType(arrears, 2);
+                Arrears.DeleteArrearsNotMatchByType(arrears, 2); // 2 - Id комиссионной задолженности.
 
                 if (arrears.Count > 0)
                 {
@@ -347,7 +369,7 @@ namespace SpecialtyManagement.Pages
                 }
                 else
                 {
-                    MessageBox.Show("В списке отсутствуют комисионные задолженности", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("В списке отсутствуют комисионные задолженности, которые имеются у неотчисленных студентов", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
         }

@@ -31,11 +31,6 @@ namespace SpecialtyManagement.Pages
             }
         }
 
-        private void BtnOffset_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void BtnGroup_Click(object sender, RoutedEventArgs e)
         {
             GroupAddWindow window = new GroupAddWindow((sender as Button).DataContext as Groups);
@@ -45,6 +40,11 @@ namespace SpecialtyManagement.Pages
             {
                 Navigation.Frame.Navigate(new GroupsShowPage());
             }
+        }
+
+        private void BtnOffset_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

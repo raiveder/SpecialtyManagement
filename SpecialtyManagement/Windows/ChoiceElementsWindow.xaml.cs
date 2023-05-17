@@ -122,7 +122,6 @@ namespace SpecialtyManagement.Windows
         /// <summary>
         /// Обновляет визуальное отображение списков.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="itemsSelected">выбранные элементы.</param>
         /// <param name="itemsSource">элементы для выбора.</param>
         private void UpdateView<T>(List<T> itemsSelected, List<T> itemsSource)

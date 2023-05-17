@@ -46,20 +46,20 @@
                             <ColumnDefinition Width="0.45*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Button Grid.RowSpan="2" Name="BtnDelete" Uid="{Binding Id}" Content="✕" MinWidth="{Binding ActualHeight, ElementName=BtnDelete}" Padding="5" Click="BtnDelete_Click"/>
+                        <Button Grid.RowSpan="2" Name="BtnDelete" Content="✕" MinWidth="{Binding ActualHeight, ElementName=BtnDelete}" Padding="5" Click="BtnDelete_Click"/>
                         <Border Grid.RowSpan="2" Grid.Column="1" Name="BrdLesson" CornerRadius="{StaticResource CornerRadius}" Background="{StaticResource ColorSecondary}" Padding="10">
                             <TextBlock Text="{Binding ShortName}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <WrapPanel Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <RadioButton Name="RBPrimary" Uid="{Binding Id}" Content="Первичная" Margin="0 5 20 5" Checked="RBPrimary_Checked" Loaded="RBPrimary_Loaded"/>
-                            <RadioButton Name="RBComission" Uid="{Binding Id}" Content="Комиссионная" Margin="0 5" Checked="RBComission_Checked" Loaded="RBComission_Loaded"/>
+                            <RadioButton Name="RBPrimary" Content="Первичная" Margin="0 5 20 5" Checked="RBPrimary_Checked" Loaded="RBPrimary_Loaded"/>
+                            <RadioButton Name="RBComission" Content="Комиссионная" Margin="0 5" Checked="RBComission_Checked" Loaded="RBComission_Loaded"/>
                         </WrapPanel>
                         <WrapPanel Grid.Column="3" VerticalAlignment="Center">
                             <StackPanel Orientation="Horizontal" Margin="0 5 20 5" VerticalAlignment="Center">
                                 <TextBlock Name="TBLiquidated" Text="Отметка о ликвидации" Margin="0 0 10 0" VerticalAlignment="Center"/>
-                                <CheckBox Name="ChBLiquidated" Uid="{Binding Id}" Height="{Binding ActualHeight, ElementName=TBLiquidated}" FontSize="17" Loaded="ChBLiquidated_Loaded" Click="ChBLiquidated_Click"/>
+                                <CheckBox Name="ChBLiquidated" Height="{Binding ActualHeight, ElementName=TBLiquidated}" FontSize="17" Loaded="ChBLiquidated_Loaded" Click="ChBLiquidated_Click"/>
                             </StackPanel>
-                            <ComboBox Grid.Row="1" Name="CBReason" Uid="{Binding Id}" MinWidth="250" VerticalAlignment="Center" Margin="0 5" Loaded="CBReason_Loaded" SelectionChanged="CBReason_SelectionChanged"/>
+                            <ComboBox Grid.Row="1" Name="CBReason" MinWidth="250" VerticalAlignment="Center" Margin="0 5" Loaded="CBReason_Loaded" SelectionChanged="CBReason_SelectionChanged"/>
                         </WrapPanel>
                     </Grid>
                 </DataTemplate>

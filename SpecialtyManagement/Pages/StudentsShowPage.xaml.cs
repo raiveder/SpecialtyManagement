@@ -18,8 +18,6 @@ namespace SpecialtyManagement.Pages
 
         public StudentsShowPage()
         {
-            InitializeComponent();
-
             UploadPage();
 
             CBGroup.SelectedIndex = 0;
@@ -54,7 +52,14 @@ namespace SpecialtyManagement.Pages
                 }
             };
 
-            groups.AddRange(Database.Entities.Groups.ToList());
+            try
+            {
+                groups.AddRange(Database.Entities.Groups.ToList());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Database.Entities.Groups.ToList() не прошло:\n" + ex.InnerException.Message);
+            }
 
             CBGroup.ItemsSource = groups;
             CBGroup.SelectedValuePath = "Id";
@@ -208,6 +213,30 @@ namespace SpecialtyManagement.Pages
             Navigation.Frame.Navigate(new StudentAddPage(filter, DGStudents.SelectedItem as Students));
         }
 
+        private void MIRestore_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (Students item in DGStudents.SelectedItems)
+            {
+                item.IsExpelled = false;
+            }
+
+            try
+            {
+                Database.Entities.SaveChanges();
+                SetFilter();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show
+                (
+                    "При восстановлении " + (DGStudents.SelectedItems.Count == 1 ? "студента" : "студентов") + " возникла ошибка",
+                    "Студенты",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning
+                );
+            }
+        }
+
         private void MIExpel_Click(object sender, RoutedEventArgs e)
         {
             foreach (Students item in DGStudents.SelectedItems)
@@ -232,27 +261,46 @@ namespace SpecialtyManagement.Pages
             }
         }
 
-        private void MIRestore_Click(object sender, RoutedEventArgs e)
+        private void MIDelete_Click(object sender, RoutedEventArgs e)
         {
+            List<Students> students = new List<Students>();
             foreach (Students item in DGStudents.SelectedItems)
             {
-                item.IsExpelled = false;
+                students.Add(item);
             }
 
-            try
+            MessageBoxResult result;
+            if (students.Count == 1)
             {
-                Database.Entities.SaveChanges();
-                SetFilter();
+                result = MessageBox.Show("Вы действительно хотите удалить выбранного студента?", "Студенты", MessageBoxButton.YesNo, MessageBoxImage.Question);
             }
-            catch (Exception)
+            else
             {
-                MessageBox.Show
-                (
-                    "При восстановлении " + (DGStudents.SelectedItems.Count == 1 ? "студента" : "студентов") + " возникла ошибка",
-                    "Студенты",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning
-                );
+                result = MessageBox.Show("Вы действительно хотите удалить выбранных студентов?", "Студенты", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            }
+
+            if (result == MessageBoxResult.Yes)
+            {
+                foreach (Students item in students)
+                {
+                    Database.Entities.Students.Remove(item);
+                }
+
+                try
+                {
+                    Database.Entities.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    if (students.Count == 1)
+                    {
+                        MessageBox.Show("При удалении студента возникла ошибка", "Студенты", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    }
+                    else
+                    {
+                        MessageBox.Show("При удалении студентов возникла ошибка", "Студенты", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    }
+                }
             }
         }
 
@@ -285,22 +333,6 @@ namespace SpecialtyManagement.Pages
             if (students.FirstOrDefault(x => !x.IsExpelled) != null)
             {
                 MIRestore.Visibility = Visibility.Collapsed;
-            }
-
-            if (MIChange.Visibility == Visibility.Collapsed && MIExpel.Visibility == Visibility.Collapsed &&
-                MIRestore.Visibility == Visibility.Collapsed)
-            {
-
-                MessageBox.Show
-                (
-                    "К выбранным студентам нельзя применить общие операции. Попробуйте редактировать " +
-                    "каждого студента отдельно или выбрать их по общему признаку (например, только отчисленных)",
-                    "Студенты",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning
-                );
-
-                return;
             }
 
             CMStudents.IsOpen = true;
