@@ -585,14 +585,20 @@
             <Setter Property="FontFamily" Value="{StaticResource Font}"/>
             <Setter Property="FontSize" Value="{StaticResource FontSize}"/>
             <Setter Property="Background" Value="{StaticResource ColorSecondary}"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="MinWidth" Value="200"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="MenuItem">
                         <Border Background="{TemplateBinding Background}"
                                 CornerRadius="{StaticResource CornerRadius}"
-                                MinWidth="200"
-                                Padding="10"
+                                Padding="{TemplateBinding Padding}"
+                                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                MinWidth="{TemplateBinding MinWidth}"
                                 SnapsToDevicePixels="true">
                             <Grid>
                                 <ContentControl x:Name="MenuItemStyleContentControl"

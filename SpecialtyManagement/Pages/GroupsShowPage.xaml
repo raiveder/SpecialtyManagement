@@ -30,7 +30,12 @@
         <ListView Grid.Row="1" Name="LVFirstYear" BorderThickness="0 0.5" BorderBrush="{StaticResource ColorPrimary}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Button Content="{Binding Group}" MinWidth="0" Margin="40 10" Padding="0 20" HorizontalAlignment="Stretch" Click="BtnGroup_Click"/>
+                    <Menu Name="Menu" Margin="40 10">
+                        <MenuItem Header="{Binding Group}" Style="{StaticResource MenuItemStyle}" MinWidth="{Binding ActualWidth, ElementName=Menu}" Padding="0 20">
+                            <MenuItem Name="MIChange" Header="Изменить" Style="{StaticResource SubMenuItemStyle}" Click="MIChange_Click"/>
+                            <MenuItem Name="MIDelete" Header="Удалить" Style="{StaticResource SubMenuItemStyle}" Click="MIDelete_Click"/>
+                        </MenuItem>
+                    </Menu>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
@@ -38,7 +43,12 @@
         <ListView Grid.Row="1" Grid.Column="1" Name="LVSecondYear">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Button Content="{Binding Group}" MinWidth="0" Margin="40 10" Padding="0 20" HorizontalAlignment="Stretch" Click="BtnGroup_Click"/>
+                    <Menu Name="Menu" Margin="40 10">
+                        <MenuItem Header="{Binding Group}" Style="{StaticResource MenuItemStyle}" MinWidth="{Binding ActualWidth, ElementName=Menu}" Padding="0 20">
+                            <MenuItem Name="MIChange" Header="Изменить" Style="{StaticResource SubMenuItemStyle}" Click="MIChange_Click"/>
+                            <MenuItem Name="MIDelete" Header="Удалить" Style="{StaticResource SubMenuItemStyle}" Click="MIDelete_Click"/>
+                        </MenuItem>
+                    </Menu>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
@@ -46,7 +56,12 @@
         <ListView Grid.Row="1" Grid.Column="2" Name="LVThirdYear">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Button Content="{Binding Group}" MinWidth="0" Margin="40 10" Padding="0 20" HorizontalAlignment="Stretch" Click="BtnGroup_Click"/>
+                    <Menu Name="Menu" Margin="40 10">
+                        <MenuItem Header="{Binding Group}" Style="{StaticResource MenuItemStyle}" MinWidth="{Binding ActualWidth, ElementName=Menu}" Padding="0 20">
+                            <MenuItem Name="MIChange" Header="Изменить" Style="{StaticResource SubMenuItemStyle}" Click="MIChange_Click"/>
+                            <MenuItem Name="MIDelete" Header="Удалить" Style="{StaticResource SubMenuItemStyle}" Click="MIDelete_Click"/>
+                        </MenuItem>
+                    </Menu>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
@@ -54,7 +69,12 @@
         <ListView Grid.Row="1" Grid.Column="3" Name="LVFourthYear">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Button Content="{Binding Group}" MinWidth="0" Margin="40 10" Padding="0 20" HorizontalAlignment="Stretch" Click="BtnGroup_Click"/>
+                    <Menu Name="Menu" Margin="40 10">
+                        <MenuItem Header="{Binding Group}" Style="{StaticResource MenuItemStyle}" MinWidth="{Binding ActualWidth, ElementName=Menu}" Padding="0 20">
+                            <MenuItem Name="MIChange" Header="Изменить" Style="{StaticResource SubMenuItemStyle}" Click="MIChange_Click"/>
+                            <MenuItem Name="MIDelete" Header="Удалить" Style="{StaticResource SubMenuItemStyle}" Click="MIDelete_Click"/>
+                        </MenuItem>
+                    </Menu>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

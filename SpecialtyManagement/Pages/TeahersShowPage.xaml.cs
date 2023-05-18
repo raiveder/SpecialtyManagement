@@ -1,18 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SpecialtyManagement.Pages
 {
@@ -91,31 +82,32 @@ namespace SpecialtyManagement.Pages
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
-            Filter filter = new Filter()
-            {
-                FindText = TBoxFind.Text,
-                IndexSort = CBSort.SelectedIndex,
-            };
-
-            Navigation.Frame.Navigate(new TeacherAddPage(filter));
+            Navigation.Frame.Navigate(new TeacherAddPage(GetFilter()));
         }
 
         private void MIChange_Click(object sender, RoutedEventArgs e)
         {
             if (DGTeachers.SelectedItems.Count == 1)
             {
-                Filter filter = new Filter()
-                {
-                    FindText = TBoxFind.Text,
-                    IndexSort = CBSort.SelectedIndex,
-                };
-
-                Navigation.Frame.Navigate(new TeacherAddPage(filter, DGTeachers.SelectedItem as Teachers));
+                Navigation.Frame.Navigate(new TeacherAddPage(GetFilter(), DGTeachers.SelectedItem as Teachers));
             }
             else
             {
                 MessageBox.Show("Выберите одного преподавателя", "Преподаватели", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
+        }
+
+        /// <summary>
+        /// Получает текущие данные фильтра.
+        /// </summary>
+        /// <returns>Текущий фильтр.</returns>
+        private Filter GetFilter()
+        {
+            return new Filter()
+            {
+                FindText = TBoxFind.Text,
+                IndexSort = CBSort.SelectedIndex,
+            };
         }
 
         private void MIDelete_Click(object sender, RoutedEventArgs e)

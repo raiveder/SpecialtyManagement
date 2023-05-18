@@ -1,4 +1,5 @@
 ﻿using SpecialtyManagement.Windows;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -17,13 +18,6 @@ namespace SpecialtyManagement.Pages
             UpdateView();
         }
 
-
-
-        // Сделать группы MenuItem-ами.
-
-
-
-
         /// <summary>
         /// Обновляет визуальное отображение списков.
         /// </summary>
@@ -37,6 +31,39 @@ namespace SpecialtyManagement.Pages
             LVFourthYear.ItemsSource = Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "4").ToList();
         }
 
+        private void MIChange_Click(object sender, RoutedEventArgs e)
+        {
+            GroupAddWindow window = new GroupAddWindow((sender as MenuItem).DataContext as Groups);
+            window.ShowDialog();
+
+            if ((bool)window.DialogResult)
+            {
+                Navigation.Frame.Navigate(new GroupsShowPage());
+            }
+        }
+
+        private void MIDelete_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("При удалении группы удалится список её студентов. Вы действительно хотите удалить группу?", "Группы", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    Database.Entities.Groups.Remove((sender as MenuItem).DataContext as Groups);
+                    Database.Entities.SaveChanges();
+                    UpdateView();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show
+                    (
+                        "При удалении группы возникла ошибка", "Группы", MessageBoxButton.OK, MessageBoxImage.Warning
+                    );
+                }
+            }
+        }
+
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
             GroupAddWindow window = new GroupAddWindow();
@@ -48,28 +75,16 @@ namespace SpecialtyManagement.Pages
             }
         }
 
-        private void BtnGroup_Click(object sender, RoutedEventArgs e)
-        {
-            GroupAddWindow window = new GroupAddWindow((sender as Button).DataContext as Groups);
-            window.ShowDialog();
-
-            if ((bool)window.DialogResult)
-            {
-                Navigation.Frame.Navigate(new GroupsShowPage());
-            }
-        }
-
         private void BtnOffset_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show("Вы действительно хотите осуществить смещение групп?", "Группы", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
             {
-                foreach (Groups item in Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "4"))
-                {
-                    Database.Entities.Groups.Remove(item);
-                }
+                // Удаление текущих групп 4-го курса.
+                Database.Entities.Groups.RemoveRange(Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "4"));
 
+                // Создание новых групп 4-го курса для текущего 3-го курса и удаление текущих групп 3-го курса.
                 List<Groups> groups = Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "3").ToList();
                 foreach (Groups item in groups)
                 {
@@ -85,6 +100,7 @@ namespace SpecialtyManagement.Pages
                     Database.Entities.Groups.Remove(item);
                 }
 
+                // Создание новых групп 3-го курса для текущего 2-го курса и удаление текущих групп 2-го курса.
                 groups = Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "2").ToList();
                 foreach (Groups item in groups)
                 {

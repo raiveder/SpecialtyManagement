@@ -298,17 +298,17 @@ namespace SpecialtyManagement.Pages
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
-            if (Database.Entities.Lessons.Count() == 0)
+            if (Database.Entities.Lessons.FirstOrDefault() == null)
             {
                 MessageBox.Show("Сначала добавьте хотя бы 1-у дисциплину, прежде чем добавлять задолженность", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            if (Database.Entities.Students.Count() == 0)
+            if (Database.Entities.Students.FirstOrDefault() == null)
             {
                 MessageBox.Show("Сначала добавьте хотя бы 1-го студента, прежде чем добавлять задолженность", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            if (Database.Entities.DistributionLessons.Count() == 0)
+            if (Database.Entities.DistributionLessons.FirstOrDefault() == null)
             {
                 MessageBox.Show("Сначала добавьте хотя бы 1-го преподавателя, который будет вести какие-либо дисциплины, прежде чем добавлять задолженность", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
@@ -390,14 +390,14 @@ namespace SpecialtyManagement.Pages
                 MessageBox.Show("Специальность не указана. Перейдите в пункт меню \"Настройки\"", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
-            if (Database.Entities.Teachers.Count() == 0)
+            if (Database.Entities.Lessons.FirstOrDefault() == null)
             {
-                MessageBox.Show("Список преподавателей пуст. Добавьте преподавателей", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Список дисциплин пуст. Добавьте дисциплины", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
-            if (Database.Entities.Lessons.Count() == 0)
+            if (Database.Entities.Teachers.FirstOrDefault() == null)
             {
-                MessageBox.Show("Список дисциплин пуст. Добавьте преподавателей", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Список преподавателей пуст. Добавьте преподавателей", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
 
@@ -405,7 +405,7 @@ namespace SpecialtyManagement.Pages
         }
 
         /// <summary>
-        /// Возвращает текущие данные фильтра.
+        /// Получает текущие данные фильтра.
         /// </summary>
         /// <returns>Текущий фильтр.</returns>
         private Filter GetFilter()

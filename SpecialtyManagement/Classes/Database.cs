@@ -21,9 +21,9 @@ namespace SpecialtyManagement
                 message = string.Empty;
                 return true;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                message = e.InnerException.Message;
+                message = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
                 return false;
             }
         }

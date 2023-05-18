@@ -101,50 +101,44 @@ namespace SpecialtyManagement.Pages
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
-            if (Database.Entities.TypesLessons.Count() > 0)
+            if (Database.Entities.TypesLessons.FirstOrDefault() != null)
             {
-                Filter filter = new Filter()
-                {
-                    FindText = TBoxFind.Text,
-                    IndexType = CBType.SelectedIndex
-                };
-
-                Navigation.Frame.Navigate(new LessonAddPage(filter));
+                Navigation.Frame.Navigate(new LessonAddPage(GetFilter()));
             }
             else
             {
                 MessageBox.Show("Сначала добавьте хотя бы 1 тип дисциплин, прежде чем добавлять саму дисциплину", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-
         }
 
         private void BtnTypesLessons_Click(object sender, RoutedEventArgs e)
         {
-            Filter filter = new Filter()
-            {
-                FindText = TBoxFind.Text,
-                IndexType = CBType.SelectedIndex
-            };
-
-            Navigation.Frame.Navigate(new LessonsTypesShowPage(filter));
+            Navigation.Frame.Navigate(new LessonsTypesShowPage(GetFilter()));
         }
 
         private void MIChange_Click(object sender, RoutedEventArgs e)
         {
             if (DGLessons.SelectedItems.Count == 1)
             {
-                Filter filter = new Filter()
-                {
-                    FindText = TBoxFind.Text,
-                    IndexType = CBType.SelectedIndex
-                };
-
-                Navigation.Frame.Navigate(new LessonAddPage(filter, DGLessons.SelectedItem as Lessons));
+                Navigation.Frame.Navigate(new LessonAddPage(GetFilter(), DGLessons.SelectedItem as Lessons));
             }
             else
             {
                 MessageBox.Show("Выберите одну дисциплину", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
+        }
+
+        /// <summary>
+        /// Получает текущие данные фильтра.
+        /// </summary>
+        /// <returns>Текущий фильтр.</returns>
+        private Filter GetFilter()
+        {
+            return new Filter()
+            {
+                FindText = TBoxFind.Text,
+                IndexType = CBType.SelectedIndex
+            };
         }
 
         private void MIDelete_Click(object sender, RoutedEventArgs e)

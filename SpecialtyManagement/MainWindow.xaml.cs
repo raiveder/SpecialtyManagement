@@ -13,7 +13,7 @@ namespace SpecialtyManagement
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<Button> _buttonsMenu; // Список кнопок навигации меню.
+        private List<Button> _buttonsMenu; // Список кнопок навигации в меню.
 
         public MainWindow()
         {
@@ -27,46 +27,21 @@ namespace SpecialtyManagement
             {
                 if (message.ToLower().Contains("error: 26"))
                 {
-                    //try
-                    //{
-                    //    var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                    //    MessageBox.Show(ConfigurationManager.ConnectionStrings["SpecialtyManagementEntities"].ConnectionString);
-                    //    var connectionStringsSection = (ConnectionStringsSection)config.GetSection("connectionStrings");
-                    //    string connStr = connectionStringsSection.ConnectionStrings["SpecialtyManagementEntities"].ConnectionString;
-
-                    //    MessageBox.Show("old String: " + connStr);
-                    //    //int index = 0;
-                    //    //for (int i = 0; i < connStr.Length - 11; i++)
-                    //    //{
-                    //    //    if (connStr[i] == '\\' && connStr[i + 1] == 'S' && connStr[i + 2] == 'Q' && connStr[i + 3] == 'L' && connStr[i + 4] == 'E' && connStr[i + 5] == 'X' &&
-                    //    //        connStr[i + 6] == 'P' && connStr[i + 7] == 'R' && connStr[i + 8] == 'E' && connStr[i + 9] == 'S' && connStr[i + 10] == 'S')
-                    //    //    {
-                    //    //        index = i;
-                    //    //        break;
-                    //    //    }
-                    //    //}
-                    //    //MessageBox.Show("new String: " + connStr);
-                    //    //connStr = connStr.Remove(index, 11);
-                    //    connStr = "metadata=res://*/Model1.csdl|res://*/Model1.ssdl|res://*/Model1.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=.;initial catalog=SpecialtyManagement;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework&quot;";
-                    //    MessageBox.Show("new String: " + connStr);
-                    //    connectionStringsSection.ConnectionStrings["SpecialtyManagementEntities"].ConnectionString = connStr;
-
-                    //    config.Save();
-                    //    ConfigurationManager.RefreshSection("connectionStrings");
-                    //    MessageBox.Show(ConfigurationManager.ConnectionStrings["SpecialtyManagementEntities"].ConnectionString);
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    MessageBox.Show(ex.Message);
-                    //}
-                    MessageBox.Show("Возникла ошибка при запуске приложения. Задайте имя сервера по одному из шаблонов:\n\"имя сервера\\SQLEXPRESS\"\n\"имя сервера\"\nТекст ошибки: " + message, "Установка приложения", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("Возникла ошибка при запуске приложения. Задайте имя сервера по одному из шаблонов:\n\"имя сервера\\SQLEXPRESS\"\n\"имя сервера\"\nТекст ошибки: " + message, "Подключение к базе данных", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    Close();
+                }
+                else if (message.ToLower().Contains("error: 40"))
+                {
+                    MessageBox.Show("Не удалось соединиться с MS SQL Server. Убедитесь, что у вас установлен SQL EXPRESS и к нему есть доступ\nТекст ошибки: " + message, "Подключение к базе данных", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    Close();
                 }
                 else
                 {
-                    MessageBox.Show("При подключении к БД возникла ошибка. Обратитесь к администратору\nТекст ошибки: " + message, "Подключение к базе данных");
+                    MessageBox.Show("При подключении к БД возникла ошибка. Обратитесь к администратору\nТекст ошибки: " + message, "Подключение к базе данных", MessageBoxButton.OK, MessageBoxImage.Warning);
                     Close();
                 }
             }
+
             Navigation.Frame = MainFrame;
             Navigation.Setting = new Setting();
             Navigation.Frame.Navigate(new StudentsShowPage());

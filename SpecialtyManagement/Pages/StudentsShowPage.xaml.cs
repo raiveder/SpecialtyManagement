@@ -52,14 +52,7 @@ namespace SpecialtyManagement.Pages
                 }
             };
 
-            try
-            {
-                groups.AddRange(Database.Entities.Groups.ToList());
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Database.Entities.Groups.ToList() не прошло:\n" + ex.InnerException.Message);
-            }
+            groups.AddRange(Database.Entities.Groups.ToList());
 
             CBGroup.ItemsSource = groups;
             CBGroup.SelectedValuePath = "Id";
@@ -146,15 +139,14 @@ namespace SpecialtyManagement.Pages
 
         private void MIAdd_Click(object sender, RoutedEventArgs e)
         {
-            Filter filter = new Filter()
+            if (Database.Entities.Groups.FirstOrDefault() != null)
             {
-                FindText = TBoxFind.Text,
-                IndexGroup = CBGroup.SelectedIndex,
-                IndexSort = CBSort.SelectedIndex,
-                HasNote = (bool)ChBNote.IsChecked
-            };
-
-            Navigation.Frame.Navigate(new StudentAddPage(filter));
+                Navigation.Frame.Navigate(new StudentAddPage(GetFilter()));
+            }
+            else
+            {
+                MessageBox.Show("Сначала добавьте хотя бы 1-у группу, прежде чем добавлять студента", "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void MIReadFile_Click(object sender, RoutedEventArgs e)
@@ -200,15 +192,22 @@ namespace SpecialtyManagement.Pages
 
         private void MIChange_Click(object sender, RoutedEventArgs e)
         {
-            Filter filter = new Filter()
+            Navigation.Frame.Navigate(new StudentAddPage(GetFilter(), DGStudents.SelectedItem as Students));
+        }
+
+        /// <summary>
+        /// Получает текущие данные фильтра.
+        /// </summary>
+        /// <returns>Текущий фильтр.</returns>
+        private Filter GetFilter()
+        {
+            return new Filter()
             {
                 FindText = TBoxFind.Text,
                 IndexGroup = CBGroup.SelectedIndex,
                 IndexSort = CBSort.SelectedIndex,
                 HasNote = (bool)ChBNote.IsChecked
             };
-
-            Navigation.Frame.Navigate(new StudentAddPage(filter, DGStudents.SelectedItem as Students));
         }
 
         private void MIRestore_Click(object sender, RoutedEventArgs e)
