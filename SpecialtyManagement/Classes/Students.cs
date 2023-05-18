@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
+using System.Linq;
 using System.Windows;
 
 namespace SpecialtyManagement
@@ -52,79 +52,102 @@ namespace SpecialtyManagement
         /// <returns>Список студентов.</returns>
         public static List<Students> GetStudentsFromFile(string path)
         {
-            List<Students> students = new List<Students>();
-
             if (File.Exists(path))
             {
-                using (StreamReader reader = new StreamReader(path, Encoding.Default))
-                {
-                    reader.ReadLine(); // Пропуск строки заголовков.
+                string[] text = new string[0];
 
+                using (StreamReader reader = new StreamReader(path))
+                {
                     while (!reader.EndOfStream)
                     {
-                        Students student = ParseStringToStudent(reader.ReadLine());
-
-                        if (student == null)
-                        {
-                            MessageBox.Show
-                            (
-                                "При чтении файла произошла ошибка. Проверьте корректность заполнения файла",
-                                "Студенты",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Information
-                            );
-                            return new List<Students>();
-                        }
-
-                        students.Add(student);
+                        Array.Resize(ref text, text.Length + 1);
+                        text[text.Length - 1] = reader.ReadLine();
                     }
                 }
+
+                return GetStudentsFromText(text);
             }
             else
             {
                 MessageBox.Show("Файл не найден", "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return new List<Students>();
+            }
+        }
+
+        /// <summary>
+        /// Получает список студентов из текста файла.
+        /// </summary>
+        /// <param name="text">исходный текст файла построчно.</param>
+        /// <returns>Список студентов.</returns>
+        private static List<Students> GetStudentsFromText(string[] text)
+        {
+            List<Students> students = new List<Students>();
+
+            for (int i = text[0].Contains("Фамилия") ? 1 : 0; i < text.Length; i++) // Пропуск строки заголовков.
+            {
+                Students student = GetStudentFromString(text[i]);
+
+                if (student != null)
+                {
+                    if (student.Surname != null)
+                    {
+                        students.Add(student);
+                    }
+                    else if (student.Note != null)
+                    {
+                        students.Last().Note += "\n" + student.Note;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("При чтении файла произошла ошибка. Проверьте корректность заполнения файла", "Студенты", MessageBoxButton.OK, MessageBoxImage.Information);
+                    students = new List<Students>();
+                }
             }
 
             return students;
         }
 
         /// <summary>
-        /// Преобразует строку с разделителями в объект класса Student.
+        /// Получает объект класса Students путём преобразования данных из строки.
         /// </summary>
-        /// <param name="text">исходная строка.</param>
-        /// <returns>Объект типа Students из данной строки.</returns>
-        private static Students ParseStringToStudent(string text)
+        /// <param name="text">строка для преобразования.</param>
+        /// <returns>Объект класса Students.</returns>
+        private static Students GetStudentFromString(string text)
         {
-            text = text.Trim();
-            string[] array = text.Split(';');
-            string[] fullName = array[1].Split(' ');
-
             try
             {
-                if (fullName.Length > 1) // Если ФИО записано в одном поле.
+                string[] array = text.Split(';');
+                string[] fullName = array[1].Split(' ');
+
+                if (fullName[0] != string.Empty && fullName[1] != string.Empty && array[2] != string.Empty) // Если строка содержит полноценные данные о студенте.
                 {
                     return new Students()
                     {
-                        Surname = fullName[0],
-                        Name = fullName[1],
-                        Patronymic = fullName[2],
-                        Birthday = Convert.ToDateTime(array[2]),
-                        Note = array[3] == string.Empty ? null : array[3]
+                        Surname = fullName[0].Trim(),
+                        Name = fullName[1].Trim() == string.Empty ? null : fullName[1].Trim(),
+                        Patronymic = fullName[2].Trim(),
+                        Birthday = Convert.ToDateTime(array[2].Trim()),
+                        Note = array[3].Trim() == string.Empty ? null : array[3].Trim()
                     };
                 }
-                else
+                else if (fullName.Length == 1 && fullName[0] == string.Empty && array[2] == string.Empty && array[3] != string.Empty) // Если строка содержит только примечание.
                 {
                     return new Students()
                     {
-                        Surname = array[1],
-                        Name = array[2],
-                        Patronymic = array[3],
-                        Birthday = Convert.ToDateTime(array[4]),
-                        Note = array[5] == string.Empty ? null : array[5]
+                        Note = array[3].Trim() == string.Empty ? null : array[3].Trim()
                     };
+                }
+                else if (fullName.Length == 1 && fullName[1] == string.Empty && array[2] == string.Empty && array[3] == string.Empty) // Если строка пустая.
+                {
+                    return new Students();
+                }
+                else // Если строка некорректная.
+                {
+                    return null;
                 }
             }
-            catch (Exception)
+            catch
             {
                 return null;
             }

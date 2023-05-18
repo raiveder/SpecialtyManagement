@@ -307,15 +307,15 @@ namespace SpecialtyManagement.Pages
 
                     _arrear = null;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     if (isUpdate)
                     {
-                        MessageBox.Show("При сохранении данных произошла ошибка", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        MessageBox.Show("При сохранении данных произошла ошибка\nТекст ошибки: " + ex.Message, "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
                     else
                     {
-                        MessageBox.Show("При добавлении задолженности произошла ошибка", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        MessageBox.Show("При добавлении задолженности произошла ошибка\nТекст ошибки: " + ex.Message, "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
                 }
             }

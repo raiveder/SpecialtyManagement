@@ -54,11 +54,11 @@ namespace SpecialtyManagement.Pages
                     Database.Entities.SaveChanges();
                     UpdateView();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     MessageBox.Show
                     (
-                        "При удалении группы возникла ошибка", "Группы", MessageBoxButton.OK, MessageBoxImage.Warning
+                        "При удалении группы возникла ошибка\nТекст ошибки: " + ex.Message, "Группы", MessageBoxButton.OK, MessageBoxImage.Warning
                     );
                 }
             }
@@ -77,47 +77,66 @@ namespace SpecialtyManagement.Pages
 
         private void BtnOffset_Click(object sender, RoutedEventArgs e)
         {
+            if (Database.Entities.Groups.FirstOrDefault() == null)
+            {
+                MessageBox.Show("Отсутствуют группы для смещения", "Группы", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                return;
+            }
+
             MessageBoxResult result = MessageBox.Show("Вы действительно хотите осуществить смещение групп?", "Группы", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
             {
-                // Удаление текущих групп 4-го курса.
-                Database.Entities.Groups.RemoveRange(Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "4"));
-
-                // Создание новых групп 4-го курса для текущего 3-го курса и удаление текущих групп 3-го курса.
-                List<Groups> groups = Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "3").ToList();
-                foreach (Groups item in groups)
+                try
                 {
-                    Groups group = new Groups() { Group = "4" + item.Group.Substring(1, item.Group.Length - 1) };
-                    Database.Entities.Groups.Add(group);
-                    Database.Entities.SaveChanges();
+                    // Удаление текущих групп 4-го курса.
+                    Database.Entities.Groups.RemoveRange(Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "4"));
 
-                    foreach (Students student in Database.Entities.Students.Where(x => x.IdGroup == item.Id))
+                    // Создание новых групп 4-го курса для текущего 3-го курса и удаление текущих групп 3-го курса.
+                    List<Groups> groups = Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "3").ToList();
+                    foreach (Groups item in groups)
                     {
-                        student.IdGroup = group.Id;
+                        Groups group = new Groups() { Group = "4" + item.Group.Substring(1, item.Group.Length - 1) };
+                        Database.Entities.Groups.Add(group);
+                        Database.Entities.SaveChanges();
+
+                        foreach (Students student in Database.Entities.Students.Where(x => x.IdGroup == item.Id))
+                        {
+                            student.IdGroup = group.Id;
+                        }
+
+                        Database.Entities.Groups.Remove(item);
                     }
 
-                    Database.Entities.Groups.Remove(item);
-                }
-
-                // Создание новых групп 3-го курса для текущего 2-го курса и удаление текущих групп 2-го курса.
-                groups = Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "2").ToList();
-                foreach (Groups item in groups)
-                {
-                    Groups group = new Groups() { Group = "3" + item.Group.Substring(1, item.Group.Length - 1) };
-                    Database.Entities.Groups.Add(group);
-                    Database.Entities.SaveChanges();
-
-                    foreach (Students student in Database.Entities.Students.Where(x => x.IdGroup == item.Id))
+                    // Создание новых групп 3-го курса для текущего 2-го курса и удаление текущих групп 2-го курса.
+                    groups = Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "2").ToList();
+                    foreach (Groups item in groups)
                     {
-                        student.IdGroup = group.Id;
+                        Groups group = new Groups() { Group = "3" + item.Group.Substring(1, item.Group.Length - 1) };
+                        Database.Entities.Groups.Add(group);
+                        Database.Entities.SaveChanges();
+
+                        foreach (Students student in Database.Entities.Students.Where(x => x.IdGroup == item.Id))
+                        {
+                            student.IdGroup = group.Id;
+                        }
+
+                        Database.Entities.Groups.Remove(item);
                     }
 
-                    Database.Entities.Groups.Remove(item);
-                }
+                    Database.Entities.SaveChanges();
+                    UpdateView();
 
-                Database.Entities.SaveChanges();
-                UpdateView();
+                    if (Database.Entities.Students.FirstOrDefault(x => x.Groups.Group.Substring(0, 1) == "1") != null)
+                    {
+                        Navigation.Frame.Navigate(new GroupChoiceForOffsetPage());
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("При осуществлении смещения групп возникла ошибка\nТекст ошибки: " + ex.Message, "Группы", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                }
             }
         }
     }

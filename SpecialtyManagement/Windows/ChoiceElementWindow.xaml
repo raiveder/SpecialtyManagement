@@ -12,8 +12,6 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
-            <!--<RowDefinition Height="0.5*"/>
-            <RowDefinition Height="70"/>-->
         </Grid.RowDefinitions>
 
         <StackPanel VerticalAlignment="Center" Margin="10">
@@ -21,7 +19,7 @@
         </StackPanel>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-            <TextBlock Name="TBName" VerticalAlignment="Center" Margin="10"/>
+            <TextBlock Name="TBName" VerticalAlignment="Center" Margin="0 0 10 0"/>
             <ComboBox Name="CBItems" MinWidth="100" MaxWidth="500" VerticalAlignment="Center"/>
         </StackPanel>
 

@@ -140,17 +140,10 @@ namespace SpecialtyManagement
                     text = text.Replace(".\\SQLEXPRESS", Environment.MachineName + "\\SQLEXPRESS");
                 }
 
-                using (FileStream fstream = new FileStream(path, FileMode.OpenOrCreate))
+                using (FileStream fstream = new FileStream(path, FileMode.Create))
                 {
                     byte[] buffer = Encoding.Default.GetBytes(text);
                     fstream.Write(buffer, 0, buffer.Length);
-                }
-
-                using (FileStream fstream = File.OpenRead(path))
-                {
-                    byte[] buffer = new byte[fstream.Length];
-                    fstream.Read(buffer, 0, buffer.Length);
-                    text = Encoding.Default.GetString(buffer);
                 }
             }
             catch (Exception ex)

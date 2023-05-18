@@ -82,8 +82,9 @@ namespace SpecialtyManagement.Pages
                 lessons = lessons.Where(x => x.IdType == (int)CBType.SelectedValue).ToList();
             }
 
-            int number = 1;
+            lessons.Sort((x, y) => x.FullName.CompareTo(y.FullName));
 
+            int number = 1;
             foreach (Lessons item in lessons)
             {
                 item.SequenceNumber = number++;
@@ -153,11 +154,11 @@ namespace SpecialtyManagement.Pages
                 Database.Entities.SaveChanges();
                 SetFilter();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 MessageBox.Show
                 (
-                    "При удалении " + (DGLessons.SelectedItems.Count == 1 ? "дисциплины" : "дисциплин") + " возникла ошибка",
+                    "При удалении " + (DGLessons.SelectedItems.Count == 1 ? "дисциплины" : "дисциплин") + " возникла ошибка\nТекст ошибки: " + ex.Message,
                     "Дисциплины",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning

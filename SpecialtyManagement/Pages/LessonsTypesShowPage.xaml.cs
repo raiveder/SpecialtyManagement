@@ -90,11 +90,11 @@ namespace SpecialtyManagement.Pages
                 Database.Entities.SaveChanges();
                 SetFilter();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 MessageBox.Show
                 (
-                    "При удалении " + (DGTypesLessons.SelectedItems.Count == 1 ? "типов дисциплин" : "типа дисциплин") + " возникла ошибка",
+                    "При удалении " + (DGTypesLessons.SelectedItems.Count == 1 ? "типов дисциплин" : "типа дисциплин") + " возникла ошибка\nТекст ошибки: " + ex.Message,
                     "Типы дисциплин",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning

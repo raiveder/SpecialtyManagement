@@ -17,8 +17,8 @@ namespace SpecialtyManagement.Pages
         public TeahersShowPage()
         {
             InitializeComponent();
+            SetFilter();
 
-            CBSort.SelectedIndex = 0;
             _isShowWarnings = true;
         }
 
@@ -27,15 +27,9 @@ namespace SpecialtyManagement.Pages
             InitializeComponent();
 
             TBoxFind.Text = filter.FindText;
-            CBSort.SelectedIndex = filter.IndexSort;
         }
 
         private void TBoxFind_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            SetFilter();
-        }
-
-        private void CBSort_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SetFilter();
         }
@@ -52,21 +46,9 @@ namespace SpecialtyManagement.Pages
                 teachers = teachers.Where(x => x.FullName.ToLower().Contains(TBoxFind.Text.ToLower())).ToList();
             }
 
-            switch (CBSort.SelectedIndex)
-            {
-                case 1:
-                    teachers.Sort((x, y) => x.FullName.CompareTo(y.FullName));
-                    break;
-                case 2:
-                    teachers.Sort((x, y) => x.FullName.CompareTo(y.FullName));
-                    teachers.Reverse();
-                    break;
-                default:
-                    break;
-            }
+            teachers.Sort((x, y) => x.FullName.CompareTo(y.FullName));
 
             int number = 1;
-
             foreach (Teachers item in teachers)
             {
                 item.SequenceNumber = number++;
@@ -106,7 +88,6 @@ namespace SpecialtyManagement.Pages
             return new Filter()
             {
                 FindText = TBoxFind.Text,
-                IndexSort = CBSort.SelectedIndex,
             };
         }
 
@@ -126,11 +107,11 @@ namespace SpecialtyManagement.Pages
                 Database.Entities.SaveChanges();
                 SetFilter();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 MessageBox.Show
                 (
-                    "При удалении " + (DGTeachers.SelectedItems.Count == 1 ? "преподавателя" : "преподавателей") + " возникла ошибка",
+                    "При удалении " + (DGTeachers.SelectedItems.Count == 1 ? "преподавателя" : "преподавателей") + " возникла ошибка\nТекст ошибки: " + ex.Message,
                     "Преподаватели",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning

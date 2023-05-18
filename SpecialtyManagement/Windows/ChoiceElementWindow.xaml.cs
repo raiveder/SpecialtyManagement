@@ -13,7 +13,7 @@ namespace SpecialtyManagement.Windows
         private Lessons _lesson;
         private Teachers _teacher;
 
-        public string Text { get; set; }
+        public string Text { get; private set; }
 
         public ChoiceElementWindow(Groups group, string text)
         {
@@ -24,7 +24,9 @@ namespace SpecialtyManagement.Windows
             _group = group;
             TBName.Text = "Группа";
 
-            CBItems.ItemsSource = Database.Entities.Groups.ToList();
+            List<Groups> groups = Database.Entities.Groups.ToList();
+            groups.Sort((x, y) => x.Group.CompareTo(y.Group));
+            CBItems.ItemsSource = groups;
             CBItems.SelectedValuePath = "Id";
             CBItems.DisplayMemberPath = "Group";
         }

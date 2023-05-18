@@ -16,7 +16,7 @@ namespace SpecialtyManagement.Windows
         private List<Students> _studentsSelected;
         private List<Students> _students;
 
-        public string Text { get; set; }
+        public string Text { get; private set; }
 
         public ChoiceElementsWindow(List<Teachers> teachers, string text, List<Teachers> teachersSource)
         {

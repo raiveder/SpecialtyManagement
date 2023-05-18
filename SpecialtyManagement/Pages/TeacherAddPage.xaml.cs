@@ -191,15 +191,15 @@ namespace SpecialtyManagement.Pages
 
                     _teacher = null;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     if (isUpdate)
                     {
-                        MessageBox.Show("При сохранении данных произошла ошибка", "Преподаватели", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        MessageBox.Show("При сохранении данных произошла ошибка\nТекст ошибки: " + ex.Message, "Преподаватели", MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
                     else
                     {
-                        MessageBox.Show("При добавлении преподавателя произошла ошибка", "Преподаватели", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        MessageBox.Show("При добавлении преподавателя произошла ошибка\nТекст ошибки: " + ex.Message, "Преподаватели", MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
                 }
             }

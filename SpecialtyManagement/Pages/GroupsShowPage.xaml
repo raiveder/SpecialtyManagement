@@ -27,7 +27,7 @@
         <Button Grid.Column="2" Content="3 курс"  Background="{StaticResource ColorAccent}" Foreground="White" MinWidth="0" Margin="40 10" Padding="0 20" HorizontalAlignment="Stretch" Cursor="Arrow"/>
         <Button Grid.Column="3" Content="4 курс"  Background="{StaticResource ColorAccent}" Foreground="White" MinWidth="0" Margin="40 10" Padding="0 20" HorizontalAlignment="Stretch" Cursor="Arrow"/>
 
-        <ListView Grid.Row="1" Name="LVFirstYear" BorderThickness="0 0.5" BorderBrush="{StaticResource ColorPrimary}">
+        <ListView Grid.Row="1" Name="LVFirstYear">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Menu Name="Menu" Margin="40 10">
@@ -79,8 +79,8 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <Border Grid.RowSpan="2" BorderBrush="Gray" BorderThickness="0.5 0" Margin="0 40 0 0"/>
-        <Border Grid.RowSpan="2" Grid.Column="1" BorderBrush="Gray" BorderThickness="0 0 0.5 0" Margin="0 40 0 0"/>
+        <Border Grid.RowSpan="2" BorderBrush="Gray" BorderThickness="0 0 0.5 0" Margin="0 40 0 0"/>
+        <Border Grid.RowSpan="2" Grid.Column="1" BorderBrush="Gray" BorderThickness="0.5 0" Margin="0 40 0 0"/>
         <Border Grid.RowSpan="2" Grid.Column="2" BorderBrush="Gray" BorderThickness="0.5 0" Margin="0 40 0 0"/>
         <Border Grid.RowSpan="2" Grid.Column="3" BorderBrush="Gray" BorderThickness="0.5 0 0 0" Margin="0 40 0 0"/>
         

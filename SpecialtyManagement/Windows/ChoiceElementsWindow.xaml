@@ -23,7 +23,7 @@
         </StackPanel>
 
         <TextBlock Name="TBItems" Grid.Row="1" Grid.Column="1" Margin="10 0"/>
-        <ListBox Grid.Row="1" Grid.Column="1" Name="LBItems" Margin="10 30 10 10" SelectionChanged="LBLessons_SelectionChanged"/>
+        <ListBox Grid.Row="1" Grid.Column="1" Name="LBItems" Margin="10 30 10 0" SelectionChanged="LBLessons_SelectionChanged"/>
 
         <TextBlock Name="TBSelectedItems" Grid.Row="1" Margin="10 0"/>
         <ListView Grid.Row="1" Name="LVItems" Margin="10 30 10 0">

@@ -1,6 +1,7 @@
 ﻿using SpecialtyManagement.Windows;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -17,16 +18,16 @@ namespace SpecialtyManagement.Pages
     public partial class ArrearsPrimaryCreateDocumentPage : Page
     {
         private const int IdTypeArrear = 1; // Id первичной задолженности.
-        private int _idPM = Database.Entities.TypesLessons.FirstOrDefault(x => x.Type == "ПМ").Id; // Id типа дисциплины ПМ.
         private Filter _filter;
-        private List<Arrears> _arrears; // Список задолженностей.
-        private List<List<Teachers>> _teachers = new List<List<Teachers>>(); // Список учителей.
-        private List<DistributionLessons> _distributions = new List<DistributionLessons>(); // Распределение дисциплин и преподавателей на группы.
-        private List<Lessons> _lessons = new List<Lessons>(); // Список дисциплин (нужен для ПМ).
-        private List<string> _typesLessons = new List<string>(); // Список типов дисциплин для отображения (учебные дисциплины или ПМ).
-        private List<string> _dates = new List<string>(); // Список дат.
-        private List<string> _times = new List<string>(); // Список времён.
-        private List<string> _audiences = new List<string>(); // Список аудиторий.
+        private static int _idPM; // Id типа дисциплины ПМ.
+        private static List<Arrears> _arrears; // Список задолженностей.
+        private static List<List<Teachers>> _teachers; // Список учителей.
+        private static List<DistributionLessons> _distributions; // Распределение дисциплин и преподавателей на группы.
+        private static List<Lessons> _lessons; // Список дисциплин (нужен для ПМ).
+        private static List<string> _typesLessons; // Список типов дисциплин для отображения (учебные дисциплины или ПМ).
+        private static List<string> _dates; // Список дат.
+        private static List<string> _times; // Список времён.
+        private static List<string> _audiences; // Список аудиторий.
         private int _indexViewItem = 0; // Индекс отображаемого элемента ListView.
         private bool _IsFirstShowMessage = true; // True - сообщение о выборе преподавателей отображается впервые, в противном случае - false.
 
@@ -36,6 +37,14 @@ namespace SpecialtyManagement.Pages
 
             _filter = filter;
             _arrears = arrears;
+            _idPM = Database.Entities.TypesLessons.FirstOrDefault(x => x.Type == "ПМ").Id;
+            _teachers = new List<List<Teachers>>();
+            _distributions = new List<DistributionLessons>();
+            _lessons = new List<Lessons>();
+            _typesLessons = new List<string>();
+            _dates = new List<string>();
+            _times = new List<string>();
+            _audiences = new List<string>();
 
             foreach (Arrears arrear in _arrears)
             {
@@ -129,7 +138,7 @@ namespace SpecialtyManagement.Pages
         /// </summary>
         /// <param name="lessons">список дисциплин.</param>
         /// <returns>Удалённые дисциплины ПМ.</returns>
-        private List<Lessons> CutPMFromLessons(List<Lessons> lessons)
+        private static List<Lessons> CutPMFromLessons(List<Lessons> lessons)
         {
             List<Lessons> lessonsPM = lessons.Where(x => x.TypesLessons.Id == _idPM).ToList();
 
@@ -248,7 +257,7 @@ namespace SpecialtyManagement.Pages
 
                 return distributions;
             }
-            catch (Exception)
+            catch
             {
                 return new List<DistributionLessons>();
             }
@@ -447,9 +456,7 @@ namespace SpecialtyManagement.Pages
         {
             if (CheckFillData())
             {
-                Word.Application app = new Word.Application();
-                CreateDocument(app);
-                app.Visible = true;
+                new CreateDocumentWindow().ShowDialog();
             }
         }
 
@@ -502,307 +509,327 @@ namespace SpecialtyManagement.Pages
         /// <summary>
         /// Генерирует документ Word для первичных задолженностей.
         /// </summary>
-        /// <param name="app">экземпляр приложения Word.</param>
-        private void CreateDocument(Word.Application app)
+        public static void CreateDocument()
         {
-            List<Groups> groups = Arrears.GetGroupsWithArrears(_arrears, 1);
-
-            Word.Document document = new Word.Document();
-            document.PageSetup.LeftMargin = app.CentimetersToPoints(1.25F);
-            document.PageSetup.TopMargin = app.CentimetersToPoints(0.5F);
-            document.PageSetup.RightMargin = app.CentimetersToPoints(0.75F);
-            document.PageSetup.BottomMargin = app.CentimetersToPoints(0.25F);
-
-            for (int i = 0; i < groups.Count; i++)
+            Word.Application app = new Word.Application
             {
-                List<Arrears> arrears = new List<Arrears>();
+                Visible = false
+            };
 
-                foreach (Arrears item in _arrears)
+            try
+            {
+                List<Groups> groups = Arrears.GetGroupsWithArrears(_arrears, 1);
+
+                Word.Document document = new Word.Document();
+                document.PageSetup.LeftMargin = app.CentimetersToPoints(1.25F);
+                document.PageSetup.TopMargin = app.CentimetersToPoints(0.5F);
+                document.PageSetup.RightMargin = app.CentimetersToPoints(0.75F);
+                document.PageSetup.BottomMargin = app.CentimetersToPoints(0.25F);
+
+                for (int i = 0; i < groups.Count; i++)
                 {
-                    if (item.Students.IdGroup == groups[i].Id)
+                    List<Arrears> arrears = new List<Arrears>();
+
+                    foreach (Arrears item in _arrears)
                     {
-                        arrears.Add(item);
-                    }
-                }
-                Arrears.DeleteArrearsNotMatchByType(arrears, 1);
-
-                Word.Paragraph paragraphHeader = document.Paragraphs.Add();
-                Word.Range rangeHeader = paragraphHeader.Range;
-                rangeHeader.Text = "Протокол";
-                rangeHeader.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
-                rangeHeader.Font.Name = "Times New Roman";
-                rangeHeader.Font.Size = 20;
-                rangeHeader.Bold = 1;
-                paragraphHeader.Space1();
-                paragraphHeader.SpaceAfter = 0;
-                paragraphHeader.SpaceBefore = 0;
-                paragraphHeader.FirstLineIndent = 0;
-                paragraphHeader.RightIndent = 0;
-                paragraphHeader.LeftIndent = 0;
-                rangeHeader.InsertParagraphAfter();
-
-                paragraphHeader = document.Paragraphs.Add();
-                rangeHeader = paragraphHeader.Range;
-                rangeHeader.Text = "ознакомления с графиком ликвидации задолженностей по итогам";
-                rangeHeader.Font.Name = "Times New Roman";
-                rangeHeader.Font.Size = 14;
-                rangeHeader.Bold = 0;
-                rangeHeader.InsertParagraphAfter();
-
-                paragraphHeader = document.Paragraphs.Add();
-                rangeHeader = paragraphHeader.Range;
-                rangeHeader.Text = $"промежуточной аттестации за {arrears[0].SemesterSequenceNumberRoman} семестр {arrears[0].StartYear}-{arrears[0].StartYear + 1} учебного года в группе";
-                rangeHeader.Font.Name = "Times New Roman";
-                rangeHeader.Font.Size = 14;
-                rangeHeader.Bold = 0;
-                rangeHeader.InsertParagraphAfter();
-
-                paragraphHeader = document.Paragraphs.Add();
-                rangeHeader = paragraphHeader.Range;
-                rangeHeader.Text = $"{groups[i].Group},";
-                rangeHeader.Font.Name = "Times New Roman";
-                rangeHeader.Font.Size = 16;
-                rangeHeader.Bold = 1;
-                rangeHeader.InsertParagraphAfter();
-
-                paragraphHeader = document.Paragraphs.Add();
-                rangeHeader = paragraphHeader.Range;
-                rangeHeader.Text = $"специальность {Database.Entities.Specialty.FirstOrDefault().FullName}";
-                rangeHeader.Font.Name = "Times New Roman";
-                rangeHeader.Font.Size = 14;
-                rangeHeader.Bold = 0;
-                paragraphHeader.SpaceAfter = 16;
-                rangeHeader.InsertParagraphAfter();
-
-                paragraphHeader = document.Paragraphs.Add();
-                rangeHeader = paragraphHeader.Range;
-                rangeHeader.Text = "Список обучающихся, имеющих задолженности, и перечень учебных дисциплин";
-                rangeHeader.Font.Name = "Times New Roman";
-                rangeHeader.Font.Size = 14;
-                rangeHeader.Bold = 0;
-                rangeHeader.Underline = Word.WdUnderline.wdUnderlineSingle;
-                rangeHeader.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
-                rangeHeader.InsertParagraphAfter();
-                rangeHeader.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
-                paragraphHeader.SpaceAfter = 0;
-
-                Word.Paragraph paragraphStudents = document.Paragraphs.Add();
-                Word.Range rangeStudents = paragraphStudents.Range;
-                Word.Table tableStudents = document.Tables.Add(rangeStudents, arrears.Count + 1, 5);
-                tableStudents.Borders.InsideLineStyle = Word.WdLineStyle.wdLineStyleSingle;
-                tableStudents.Borders.OutsideLineStyle = Word.WdLineStyle.wdLineStyleSingle;
-                tableStudents.Range.Cells.VerticalAlignment = Word.WdCellVerticalAlignment.wdCellAlignVerticalCenter;
-                tableStudents.Range.Font.Name = "Times New Roman";
-                tableStudents.Range.Font.Size = 12;
-                tableStudents.Rows[1].Range.Bold = 1;
-                tableStudents.Rows[1].Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
-                paragraphStudents.Space1();
-                paragraphStudents.SpaceAfter = 0;
-                paragraphStudents.SpaceBefore = 0;
-                paragraphStudents.FirstLineIndent = 0;
-                paragraphStudents.RightIndent = 0;
-                paragraphStudents.LeftIndent = 0;
-
-                List<Students> tempStudents = new List<Students>();
-                foreach (Arrears item in arrears)
-                {
-                    tempStudents.Add(item.Students);
-                }
-                float[] widths = new float[5];
-                // Для корректной ширины столбцов задаётся текст, длина которого показывает, какое количество символов будет отображено в одной строке.
-                // Это количество подсчитано на основании реальных данных таблицы.
-                tableStudents.Cell(1, 1).Range.Text = new string('a', 1);
-                tableStudents.Cell(1, 2).Range.Text = new string('a', GetMaxLengthSurnameAndName(tempStudents) + 1);
-                tableStudents.Cell(1, 3).Range.Text = new string('a', 1);
-                tableStudents.Cell(1, 4).Range.Text = new string('a', 18);
-                tableStudents.Cell(1, 5).Range.Text = new string('a', 8);
-                for (int j = 5; j >= 1; j--)
-                {
-                    tableStudents.Columns[j].AutoFit();
-                    widths[j - 1] = tableStudents.Columns[j].Width;
-                };
-                tableStudents.AutoFitBehavior(Word.WdAutoFitBehavior.wdAutoFitWindow);
-                Thread.Sleep(100);
-
-                tableStudents.Columns[1].SetWidth(widths[0], Word.WdRulerStyle.wdAdjustProportional);
-                tableStudents.Columns[2].SetWidth(widths[1], Word.WdRulerStyle.wdAdjustProportional);
-                tableStudents.Columns[3].SetWidth(widths[2], Word.WdRulerStyle.wdAdjustProportional);
-                float tempWidth = tableStudents.Columns[5].Width;
-                tableStudents.Columns[5].Width = widths[4];
-                tableStudents.Columns[4].Width += tempWidth - tableStudents.Columns[5].Width;
-
-                tableStudents.Cell(1, 1).Range.Text = "№";
-                tableStudents.Cell(1, 2).Range.Text = "ФИО";
-                tableStudents.Cell(1, 3).Range.Text = "Кол-во задолж.";
-                tableStudents.Cell(1, 4).Range.Text = "Учебные дисциплины";
-                tableStudents.Cell(1, 5).Range.Text = "Подпись студента";
-
-                List<Lessons> allLessons = new List<Lessons>(); // Список всех дисциплин, по которым есть задолженность в текущей группе.
-                int number = 1;
-                for (int j = 0; j < arrears.Count; j++)
-                {
-                    List<Lessons> lessons = Arrears.GetLessonsForArrearsByType(arrears[j], IdTypeArrear);
-                    foreach (Lessons item in lessons)
-                    {
-                        if (!allLessons.Contains(item))
+                        if (item.Students.IdGroup == groups[i].Id)
                         {
-                            allLessons.Add(item);
+                            arrears.Add(item);
                         }
                     }
-                    arrears[j].SequenceNumber = number++;
+                    Arrears.DeleteArrearsNotMatchByType(arrears, 1);
 
-                    tableStudents.Cell(j + 2, 1).Range.Text = arrears[j].SequenceNumber.ToString();
-                    tableStudents.Cell(j + 2, 2).Range.Text = arrears[j].Students.FullName;
-                    tableStudents.Cell(j + 2, 3).Range.Text = arrears[j].CountArrears.ToString();
-                    tableStudents.Cell(j + 2, 4).Range.Text = GetLessonsInString(lessons);
-                    tableStudents.Rows[j + 2].Range.Bold = 0;
-                    tableStudents.Cell(j + 2, 1).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
-                    tableStudents.Cell(j + 2, 2).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
-                    tableStudents.Cell(j + 2, 3).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
-                    tableStudents.Cell(j + 2, 4).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
-                }
+                    Word.Paragraph paragraphHeader = document.Paragraphs.Add();
+                    Word.Range rangeHeader = paragraphHeader.Range;
+                    rangeHeader.Text = "Протокол";
+                    rangeHeader.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                    rangeHeader.Font.Name = "Times New Roman";
+                    rangeHeader.Font.Size = 20;
+                    rangeHeader.Bold = 1;
+                    paragraphHeader.Space1();
+                    paragraphHeader.SpaceAfter = 0;
+                    paragraphHeader.SpaceBefore = 0;
+                    paragraphHeader.FirstLineIndent = 0;
+                    paragraphHeader.RightIndent = 0;
+                    paragraphHeader.LeftIndent = 0;
+                    rangeHeader.InsertParagraphAfter();
 
-                Word.Paragraph paragraphShedule = document.Paragraphs.Add();
-                Word.Range rangeShedule = paragraphShedule.Range;
-                rangeShedule.Text = "График работы преподавателей";
-                rangeShedule.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
-                rangeShedule.Font.Name = "Times New Roman";
-                rangeShedule.Font.Size = 16;
-                rangeShedule.Bold = 1;
-                paragraphShedule.Space1();
-                paragraphShedule.SpaceAfter = 0;
-                paragraphShedule.SpaceBefore = 36;
-                paragraphShedule.FirstLineIndent = 0;
-                paragraphShedule.RightIndent = 0;
-                paragraphShedule.LeftIndent = 0;
-                rangeShedule.InsertParagraphAfter();
-                paragraphShedule.SpaceBefore = 0;
+                    paragraphHeader = document.Paragraphs.Add();
+                    rangeHeader = paragraphHeader.Range;
+                    rangeHeader.Text = "ознакомления с графиком ликвидации задолженностей по итогам";
+                    rangeHeader.Font.Name = "Times New Roman";
+                    rangeHeader.Font.Size = 14;
+                    rangeHeader.Bold = 0;
+                    rangeHeader.InsertParagraphAfter();
 
-                paragraphShedule = document.Paragraphs.Add();
-                rangeShedule = paragraphShedule.Range;
-                rangeShedule.Text = "с обучающимися, имеющими задолженности";
-                rangeShedule.Font.Name = "Times New Roman";
-                rangeShedule.Font.Size = 14;
-                rangeShedule.Bold = 0;
-                paragraphShedule.SpaceAfter = 18;
-                rangeShedule.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
-                rangeShedule.InsertParagraphAfter();
-                rangeShedule.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
-                paragraphShedule.SpaceAfter = 0;
+                    paragraphHeader = document.Paragraphs.Add();
+                    rangeHeader = paragraphHeader.Range;
+                    rangeHeader.Text = $"промежуточной аттестации за {arrears[0].SemesterSequenceNumberRoman} семестр {arrears[0].StartYear}-{arrears[0].StartYear + 1} учебного года в группе";
+                    rangeHeader.Font.Name = "Times New Roman";
+                    rangeHeader.Font.Size = 14;
+                    rangeHeader.Bold = 0;
+                    rangeHeader.InsertParagraphAfter();
 
-                List<Lessons> lessonsPM = CutPMFromLessons(allLessons);
-                List<Teachers> teachers = GetAllTeachersForGroupWithLessons(groups[i].Id, allLessons);
+                    paragraphHeader = document.Paragraphs.Add();
+                    rangeHeader = paragraphHeader.Range;
+                    rangeHeader.Text = $"{groups[i].Group},";
+                    rangeHeader.Font.Name = "Times New Roman";
+                    rangeHeader.Font.Size = 16;
+                    rangeHeader.Bold = 1;
+                    rangeHeader.InsertParagraphAfter();
 
-                Word.Paragraph paragraphTeachers = document.Paragraphs.Add();
-                Word.Range rangeTeachers = paragraphTeachers.Range;
-                Word.Table tableTeachers = document.Tables.Add(rangeTeachers, teachers.Count + 1, 4);
-                tableTeachers.Borders.InsideLineStyle = Word.WdLineStyle.wdLineStyleSingle;
-                tableTeachers.Borders.OutsideLineStyle = Word.WdLineStyle.wdLineStyleSingle;
-                tableTeachers.Range.Cells.VerticalAlignment = Word.WdCellVerticalAlignment.wdCellAlignVerticalCenter;
-                tableTeachers.Range.Font.Name = "Times New Roman";
-                tableTeachers.Range.Font.Size = 12;
-                tableTeachers.Rows[1].Range.Bold = 1;
-                tableTeachers.Rows[1].Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
-                paragraphTeachers.Space1();
-                paragraphTeachers.SpaceAfter = 0;
-                paragraphTeachers.SpaceBefore = 0;
-                paragraphTeachers.FirstLineIndent = 0;
-                paragraphTeachers.RightIndent = 0;
-                paragraphTeachers.LeftIndent = 0;
+                    paragraphHeader = document.Paragraphs.Add();
+                    rangeHeader = paragraphHeader.Range;
+                    rangeHeader.Text = $"специальность {Database.Entities.Specialty.FirstOrDefault().FullName}";
+                    rangeHeader.Font.Name = "Times New Roman";
+                    rangeHeader.Font.Size = 14;
+                    rangeHeader.Bold = 0;
+                    paragraphHeader.SpaceAfter = 16;
+                    rangeHeader.InsertParagraphAfter();
 
-                List<Teachers> listTeachrsPM = GetAllTeachersForGroupWithLessons(groups[i].Id, lessonsPM);
-                teachers.AddRange(listTeachrsPM);
-                tableTeachers.Cell(1, 1).Range.Text = new string('a', GetMaxLengthFullName(teachers));
-                tableTeachers.Cell(1, 2).Range.Text = new string('a', 18);
-                tableTeachers.Cell(1, 3).Range.Text = new string('a', 11);
-                tableTeachers.Cell(1, 4).Range.Text = new string('a', 13);
-                teachers.RemoveRange(teachers.Count - listTeachrsPM.Count, listTeachrsPM.Count);
+                    paragraphHeader = document.Paragraphs.Add();
+                    rangeHeader = paragraphHeader.Range;
+                    rangeHeader.Text = "Список обучающихся, имеющих задолженности, и перечень учебных дисциплин";
+                    rangeHeader.Font.Name = "Times New Roman";
+                    rangeHeader.Font.Size = 14;
+                    rangeHeader.Bold = 0;
+                    rangeHeader.Underline = Word.WdUnderline.wdUnderlineSingle;
+                    rangeHeader.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
+                    rangeHeader.InsertParagraphAfter();
+                    rangeHeader.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                    paragraphHeader.SpaceAfter = 0;
 
-                widths = new float[4];
-                for (int j = 4; j >= 1; j--)
-                {
-                    tableTeachers.Columns[j].AutoFit();
-                    widths[j - 1] = tableTeachers.Columns[j].Width;
-                };
-                tableTeachers.AutoFitBehavior(Word.WdAutoFitBehavior.wdAutoFitWindow);
-                Thread.Sleep(100);
-                tableTeachers.Columns[1].SetWidth(widths[0], Word.WdRulerStyle.wdAdjustProportional);
-                tableTeachers.Columns[3].SetWidth(widths[2], Word.WdRulerStyle.wdAdjustProportional);
-                tempWidth = tableTeachers.Columns[4].Width;
-                tableTeachers.Columns[4].Width = widths[3];
-                tableTeachers.Columns[2].Width += tempWidth - tableTeachers.Columns[4].Width;
+                    Word.Paragraph paragraphStudents = document.Paragraphs.Add();
+                    Word.Range rangeStudents = paragraphStudents.Range;
+                    Word.Table tableStudents = document.Tables.Add(rangeStudents, arrears.Count + 1, 5);
+                    tableStudents.Borders.InsideLineStyle = Word.WdLineStyle.wdLineStyleSingle;
+                    tableStudents.Borders.OutsideLineStyle = Word.WdLineStyle.wdLineStyleSingle;
+                    tableStudents.Range.Cells.VerticalAlignment = Word.WdCellVerticalAlignment.wdCellAlignVerticalCenter;
+                    tableStudents.Range.Font.Name = "Times New Roman";
+                    tableStudents.Range.Font.Size = 12;
+                    tableStudents.Rows[1].Range.Bold = 1;
+                    tableStudents.Rows[1].Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                    paragraphStudents.Space1();
+                    paragraphStudents.SpaceAfter = 0;
+                    paragraphStudents.SpaceBefore = 0;
+                    paragraphStudents.FirstLineIndent = 0;
+                    paragraphStudents.RightIndent = 0;
+                    paragraphStudents.LeftIndent = 0;
 
-                tableTeachers.Cell(1, 1).Range.Text = "ФИО преподавателя";
-                tableTeachers.Cell(1, 2).Range.Text = "Учебные дисциплины";
-                tableTeachers.Cell(1, 3).Range.Text = "Дни недели, числа";
-                tableTeachers.Cell(1, 4).Range.Text = "Время, № ауд.";
-
-                for (int j = 0; j < teachers.Count; j++)
-                {
-                    List<Lessons> lessons = GetLessonsForTeacherAndGroup(groups[i].Id, teachers[j], allLessons);
-                    int index = GetIndexTeacher(teachers[j]);
-
-                    tableTeachers.Cell(j + 2, 1).Range.Text = teachers[j].FullName;
-                    tableTeachers.Cell(j + 2, 2).Range.Text = GetLessonsInString(lessons);
-                    tableTeachers.Cell(j + 2, 3).Range.Text = _dates[index];
-                    tableTeachers.Cell(j + 2, 4).Range.Text = _times[index] + ", " + GetAudienceInString(_audiences[index]);
-                    tableTeachers.Rows[j + 2].Range.Bold = 0;
-                    tableStudents.Cell(j + 2, 1).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
-                    tableStudents.Cell(j + 2, 2).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
-                    tableTeachers.Cell(j + 2, 3).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
-                    tableTeachers.Cell(j + 2, 4).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
-                }
-
-                if (lessonsPM.Count > 0)
-                {
-                    for (int j = 0; j < lessonsPM.Count; j++)
+                    List<Students> tempStudents = new List<Students>();
+                    foreach (Arrears item in arrears)
                     {
-                        int index = _lessons.IndexOf(lessonsPM[j]);
-                        tableTeachers.Rows.Add();
+                        tempStudents.Add(item.Students);
+                    }
+                    float[] widths = new float[5];
+                    // Для корректной ширины столбцов задаётся текст, длина которого показывает, какое количество символов будет отображено в одной строке.
+                    // Это количество подсчитано на основании реальных данных таблицы.
+                    tableStudents.Cell(1, 1).Range.Text = new string('a', 1);
+                    tableStudents.Cell(1, 2).Range.Text = new string('a', GetMaxLengthSurnameAndName(tempStudents) + 1);
+                    tableStudents.Cell(1, 3).Range.Text = new string('a', 1);
+                    tableStudents.Cell(1, 4).Range.Text = new string('a', 18);
+                    tableStudents.Cell(1, 5).Range.Text = new string('a', 8);
+                    for (int j = 5; j >= 1; j--)
+                    {
+                        tableStudents.Columns[j].AutoFit();
+                        widths[j - 1] = tableStudents.Columns[j].Width;
+                    };
+                    tableStudents.AutoFitBehavior(Word.WdAutoFitBehavior.wdAutoFitWindow);
+                    Thread.Sleep(100);
 
-                        tableTeachers.Cell(teachers.Count + j + 2, 1).Range.Text = GetTeachersInString(_teachers[index]);
-                        tableTeachers.Cell(teachers.Count + j + 2, 2).Range.Text = lessonsPM[j].FullName;
-                        tableTeachers.Cell(teachers.Count + j + 2, 3).Range.Text = _dates[index];
-                        tableTeachers.Cell(teachers.Count + j + 2, 4).Range.Text = _times[index] + ", " + GetAudienceInString(_audiences[index]);
+                    tableStudents.Columns[1].SetWidth(widths[0], Word.WdRulerStyle.wdAdjustProportional);
+                    tableStudents.Columns[2].SetWidth(widths[1], Word.WdRulerStyle.wdAdjustProportional);
+                    tableStudents.Columns[3].SetWidth(widths[2], Word.WdRulerStyle.wdAdjustProportional);
+                    float tempWidth = tableStudents.Columns[5].Width;
+                    tableStudents.Columns[5].Width = widths[4];
+                    tableStudents.Columns[4].Width += tempWidth - tableStudents.Columns[5].Width;
+
+                    tableStudents.Cell(1, 1).Range.Text = "№";
+                    tableStudents.Cell(1, 2).Range.Text = "ФИО";
+                    tableStudents.Cell(1, 3).Range.Text = "Кол-во задолж.";
+                    tableStudents.Cell(1, 4).Range.Text = "Учебные дисциплины";
+                    tableStudents.Cell(1, 5).Range.Text = "Подпись студента";
+
+                    List<Lessons> allLessons = new List<Lessons>(); // Список всех дисциплин, по которым есть задолженность в текущей группе.
+                    int number = 1;
+                    for (int j = 0; j < arrears.Count; j++)
+                    {
+                        List<Lessons> lessons = Arrears.GetLessonsForArrearsByType(arrears[j], IdTypeArrear);
+                        foreach (Lessons item in lessons)
+                        {
+                            if (!allLessons.Contains(item))
+                            {
+                                allLessons.Add(item);
+                            }
+                        }
+                        arrears[j].SequenceNumber = number++;
+
+                        tableStudents.Cell(j + 2, 1).Range.Text = arrears[j].SequenceNumber.ToString();
+                        tableStudents.Cell(j + 2, 2).Range.Text = arrears[j].Students.FullName;
+                        tableStudents.Cell(j + 2, 3).Range.Text = arrears[j].CountArrears.ToString();
+                        tableStudents.Cell(j + 2, 4).Range.Text = GetLessonsInString(lessons);
+                        tableStudents.Rows[j + 2].Range.Bold = 0;
+                        tableStudents.Cell(j + 2, 1).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                        tableStudents.Cell(j + 2, 2).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
+                        tableStudents.Cell(j + 2, 3).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                        tableStudents.Cell(j + 2, 4).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
+                    }
+
+                    Word.Paragraph paragraphShedule = document.Paragraphs.Add();
+                    Word.Range rangeShedule = paragraphShedule.Range;
+                    rangeShedule.Text = "График работы преподавателей";
+                    rangeShedule.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                    rangeShedule.Font.Name = "Times New Roman";
+                    rangeShedule.Font.Size = 16;
+                    rangeShedule.Bold = 1;
+                    paragraphShedule.Space1();
+                    paragraphShedule.SpaceAfter = 0;
+                    paragraphShedule.SpaceBefore = 36;
+                    paragraphShedule.FirstLineIndent = 0;
+                    paragraphShedule.RightIndent = 0;
+                    paragraphShedule.LeftIndent = 0;
+                    rangeShedule.InsertParagraphAfter();
+                    paragraphShedule.SpaceBefore = 0;
+
+                    paragraphShedule = document.Paragraphs.Add();
+                    rangeShedule = paragraphShedule.Range;
+                    rangeShedule.Text = "с обучающимися, имеющими задолженности";
+                    rangeShedule.Font.Name = "Times New Roman";
+                    rangeShedule.Font.Size = 14;
+                    rangeShedule.Bold = 0;
+                    paragraphShedule.SpaceAfter = 18;
+                    rangeShedule.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
+                    rangeShedule.InsertParagraphAfter();
+                    rangeShedule.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                    paragraphShedule.SpaceAfter = 0;
+
+                    List<Lessons> lessonsPM = CutPMFromLessons(allLessons);
+                    List<Teachers> teachers = GetAllTeachersForGroupWithLessons(groups[i].Id, allLessons);
+
+                    Word.Paragraph paragraphTeachers = document.Paragraphs.Add();
+                    Word.Range rangeTeachers = paragraphTeachers.Range;
+                    Word.Table tableTeachers = document.Tables.Add(rangeTeachers, teachers.Count + 1, 4);
+                    tableTeachers.Borders.InsideLineStyle = Word.WdLineStyle.wdLineStyleSingle;
+                    tableTeachers.Borders.OutsideLineStyle = Word.WdLineStyle.wdLineStyleSingle;
+                    tableTeachers.Range.Cells.VerticalAlignment = Word.WdCellVerticalAlignment.wdCellAlignVerticalCenter;
+                    tableTeachers.Range.Font.Name = "Times New Roman";
+                    tableTeachers.Range.Font.Size = 12;
+                    tableTeachers.Rows[1].Range.Bold = 1;
+                    tableTeachers.Rows[1].Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                    paragraphTeachers.Space1();
+                    paragraphTeachers.SpaceAfter = 0;
+                    paragraphTeachers.SpaceBefore = 0;
+                    paragraphTeachers.FirstLineIndent = 0;
+                    paragraphTeachers.RightIndent = 0;
+                    paragraphTeachers.LeftIndent = 0;
+
+                    List<Teachers> listTeachrsPM = GetAllTeachersForGroupWithLessons(groups[i].Id, lessonsPM);
+                    teachers.AddRange(listTeachrsPM);
+                    tableTeachers.Cell(1, 1).Range.Text = new string('a', GetMaxLengthFullName(teachers));
+                    tableTeachers.Cell(1, 2).Range.Text = new string('a', 18);
+                    tableTeachers.Cell(1, 3).Range.Text = new string('a', 11);
+                    tableTeachers.Cell(1, 4).Range.Text = new string('a', 13);
+                    teachers.RemoveRange(teachers.Count - listTeachrsPM.Count, listTeachrsPM.Count);
+
+                    widths = new float[4];
+                    for (int j = 4; j >= 1; j--)
+                    {
+                        tableTeachers.Columns[j].AutoFit();
+                        widths[j - 1] = tableTeachers.Columns[j].Width;
+                    };
+                    tableTeachers.AutoFitBehavior(Word.WdAutoFitBehavior.wdAutoFitWindow);
+                    Thread.Sleep(100);
+                    tableTeachers.Columns[1].SetWidth(widths[0], Word.WdRulerStyle.wdAdjustProportional);
+                    tableTeachers.Columns[3].SetWidth(widths[2], Word.WdRulerStyle.wdAdjustProportional);
+                    tempWidth = tableTeachers.Columns[4].Width;
+                    tableTeachers.Columns[4].Width = widths[3];
+                    tableTeachers.Columns[2].Width += tempWidth - tableTeachers.Columns[4].Width;
+
+                    tableTeachers.Cell(1, 1).Range.Text = "ФИО преподавателя";
+                    tableTeachers.Cell(1, 2).Range.Text = "Учебные дисциплины";
+                    tableTeachers.Cell(1, 3).Range.Text = "Дни недели, числа";
+                    tableTeachers.Cell(1, 4).Range.Text = "Время, № ауд.";
+
+                    for (int j = 0; j < teachers.Count; j++)
+                    {
+                        List<Lessons> lessons = GetLessonsForTeacherAndGroup(groups[i].Id, teachers[j], allLessons);
+                        int index = GetIndexTeacher(teachers[j]);
+
+                        tableTeachers.Cell(j + 2, 1).Range.Text = teachers[j].FullName;
+                        tableTeachers.Cell(j + 2, 2).Range.Text = GetLessonsInString(lessons);
+                        tableTeachers.Cell(j + 2, 3).Range.Text = _dates[index];
+                        tableTeachers.Cell(j + 2, 4).Range.Text = _times[index] + ", " + GetAudienceInString(_audiences[index]);
                         tableTeachers.Rows[j + 2].Range.Bold = 0;
-                        tableTeachers.Cell(j + 2, 1).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
-                        tableTeachers.Cell(j + 2, 2).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
+                        tableStudents.Cell(j + 2, 1).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
+                        tableStudents.Cell(j + 2, 2).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
                         tableTeachers.Cell(j + 2, 3).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
                         tableTeachers.Cell(j + 2, 4).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
                     }
-                }
 
-                for (int j = 0; j < arrears.Count; j++)
-                {
-                    Word.Paragraph paragraphLines = document.Paragraphs.Add();
-                    Word.Range rangeLines = paragraphLines.Range;
-                    if (j == 0)
+                    if (lessonsPM.Count > 0)
                     {
-                        rangeLines.Text = "Число, подпись обучающихся:     ___________________________";
-                    }
-                    else
-                    {
-                        rangeLines.Text = "___________________________";
-                    }
-                    paragraphLines.Space1();
-                    paragraphLines.SpaceAfter = 0;
-                    paragraphLines.SpaceBefore = 16;
-                    paragraphLines.FirstLineIndent = 0;
-                    paragraphLines.RightIndent = app.CentimetersToPoints(3);
-                    paragraphLines.LeftIndent = 0;
-                    rangeLines.Font.Name = "Times New Roman";
-                    rangeLines.Font.Size = 14;
-                    rangeLines.Bold = 0;
-                    rangeLines.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphRight;
-                    rangeLines.InsertParagraphAfter();
-                    paragraphLines.SpaceBefore = 0;
-                }
+                        for (int j = 0; j < lessonsPM.Count; j++)
+                        {
+                            int index = _lessons.IndexOf(lessonsPM[j]);
+                            tableTeachers.Rows.Add();
 
-                if (i != groups.Count - 1)
-                {
-                    document.Words.Last.InsertBreak(Word.WdBreakType.wdPageBreak);
+                            tableTeachers.Cell(teachers.Count + j + 2, 1).Range.Text = GetTeachersInString(_teachers[index]);
+                            tableTeachers.Cell(teachers.Count + j + 2, 2).Range.Text = lessonsPM[j].FullName;
+                            tableTeachers.Cell(teachers.Count + j + 2, 3).Range.Text = _dates[index];
+                            tableTeachers.Cell(teachers.Count + j + 2, 4).Range.Text = _times[index] + ", " + GetAudienceInString(_audiences[index]);
+                            tableTeachers.Rows[j + 2].Range.Bold = 0;
+                            tableTeachers.Cell(j + 2, 1).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
+                            tableTeachers.Cell(j + 2, 2).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
+                            tableTeachers.Cell(j + 2, 3).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                            tableTeachers.Cell(j + 2, 4).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                        }
+                    }
+
+                    for (int j = 0; j < arrears.Count; j++)
+                    {
+                        Word.Paragraph paragraphLines = document.Paragraphs.Add();
+                        Word.Range rangeLines = paragraphLines.Range;
+                        if (j == 0)
+                        {
+                            rangeLines.Text = "Число, подпись обучающихся:     ___________________________";
+                        }
+                        else
+                        {
+                            rangeLines.Text = "___________________________";
+                        }
+                        paragraphLines.Space1();
+                        paragraphLines.SpaceAfter = 0;
+                        paragraphLines.SpaceBefore = 16;
+                        paragraphLines.FirstLineIndent = 0;
+                        paragraphLines.RightIndent = app.CentimetersToPoints(3);
+                        paragraphLines.LeftIndent = 0;
+                        rangeLines.Font.Name = "Times New Roman";
+                        rangeLines.Font.Size = 14;
+                        rangeLines.Bold = 0;
+                        rangeLines.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphRight;
+                        rangeLines.InsertParagraphAfter();
+                        paragraphLines.SpaceBefore = 0;
+                    }
+
+                    if (i != groups.Count - 1)
+                    {
+                        document.Words.Last.InsertBreak(Word.WdBreakType.wdPageBreak);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                if (ex.Message.ToLower().Contains("занято"))
+                {
+                    MessageBox.Show("Не изменяйте документ, пока он не будет сформирован", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                else if (!ex.Message.ToLower().Contains("вызов был отклонен"))
+                {
+                    MessageBox.Show("При формировании документа возникла ошибка\nТекст ошибки: " + ex.Message, "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+
+            app.Visible = true;
         }
 
         /// <summary>
@@ -811,7 +838,7 @@ namespace SpecialtyManagement.Pages
         /// <param name="idGroup">группа.</param>
         /// <param name="lessons">дисциплины.</param>
         /// <returns>Список преподавателей, которые ведут указанные дисциплины в указанной группе.</returns>
-        private List<Teachers> GetAllTeachersForGroupWithLessons(int idGroup, List<Lessons> lessons)
+        private static List<Teachers> GetAllTeachersForGroupWithLessons(int idGroup, List<Lessons> lessons)
         {
             List<Teachers> teachers = new List<Teachers>();
 
@@ -833,7 +860,7 @@ namespace SpecialtyManagement.Pages
         /// <param name="teacher">преподаватель.</param>
         /// <param name="lessonsSource">начальный список дисциплин.</param>
         /// <returns>Список всех предметов, которые ведёт преподаватель в указанной группе.</returns>
-        private List<Lessons> GetLessonsForTeacherAndGroup(int idGroup, Teachers teacher, List<Lessons> lessonsSource)
+        private static List<Lessons> GetLessonsForTeacherAndGroup(int idGroup, Teachers teacher, List<Lessons> lessonsSource)
         {
             List<Lessons> lessons = new List<Lessons>();
 
@@ -853,7 +880,7 @@ namespace SpecialtyManagement.Pages
         /// </summary>
         /// <param name="students">список студентов.</param>
         /// <returns>Максимальная длинна фамилии и имени человека.</returns>
-        private int GetMaxLengthSurnameAndName(List<Students> students)
+        private static int GetMaxLengthSurnameAndName(List<Students> students)
         {
             int length = 0;
 
@@ -906,7 +933,7 @@ namespace SpecialtyManagement.Pages
         /// </summary>
         /// <param name="teacher">преподаватель.</param>
         /// <returns>Индекс преподавателя из списка</returns>
-        private int GetIndexTeacher(Teachers teacher)
+        private static int GetIndexTeacher(Teachers teacher)
         {
             foreach (List<Teachers> item in _teachers.Where(x => x.Count == 1))
             {
@@ -924,7 +951,7 @@ namespace SpecialtyManagement.Pages
         /// </summary>
         /// <param name="teachers">преподаватель.</param>
         /// <returns>Индекс преподавателя из списка</returns>
-        private int GetIndexTeacher(List<Teachers> teachers)
+        private static int GetIndexTeacher(List<Teachers> teachers)
         {
             foreach (List<Teachers> item in _teachers.Where(x => x.Count == teachers.Count))
             {
@@ -953,7 +980,7 @@ namespace SpecialtyManagement.Pages
         /// </summary>
         /// <param name="teachers">список преподавателей.</param>
         /// <returns>Список преподавателей.</returns>
-        private string GetTeachersInString(List<Teachers> teachers)
+        private static string GetTeachersInString(List<Teachers> teachers)
         {
             string result = string.Empty;
 
@@ -969,7 +996,7 @@ namespace SpecialtyManagement.Pages
         /// </summary>
         /// <param name="teachers">список преподавателей.</param>
         /// <returns>Количество символов.</returns>
-        private int GetMaxLengthFullName(List<Teachers> teachers)
+        private static int GetMaxLengthFullName(List<Teachers> teachers)
         {
             int length = 0;
 

@@ -23,7 +23,6 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock Name="TBSort" Text="Сортировка" Padding="0 0 10 0" VerticalAlignment="Center"/>
                 <ComboBox Name="CBSort" Width="200" VerticalAlignment="Center" SelectionChanged="CBFilter_SelectionChanged">
-                    <ComboBoxItem>По умолчанию</ComboBoxItem>
                     <ComboBoxItem>ФИО ↑</ComboBoxItem>
                     <ComboBoxItem>Группа ↑</ComboBoxItem>
                     <ComboBoxItem>Дата рождения ↑</ComboBoxItem>

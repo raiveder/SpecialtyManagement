@@ -63,15 +63,15 @@ namespace SpecialtyManagement.Windows
 
                     _group = null;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     if (isUpdate)
                     {
-                        MessageBox.Show("При сохранении данных произошла ошибка", "Группы", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        MessageBox.Show("При сохранении данных произошла ошибка\nТекст ошибки:" + ex.Message, "Группы", MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
                     else
                     {
-                        MessageBox.Show("При добавлении группы произошла ошибка", "Группы", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        MessageBox.Show("При добавлении группы произошла ошибка\nТекст ошибки: " + ex.Message, "Группы", MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
                 }
             }

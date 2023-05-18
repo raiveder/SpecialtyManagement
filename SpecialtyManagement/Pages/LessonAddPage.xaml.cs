@@ -174,7 +174,6 @@ namespace SpecialtyManagement.Pages
                 try
                 {
                     Database.Entities.SaveChanges();
-
                     SaveLessonTeachers();
 
                     if (isUpdate)
@@ -188,15 +187,15 @@ namespace SpecialtyManagement.Pages
 
                     _lesson = null;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     if (isUpdate)
                     {
-                        MessageBox.Show("При сохранении данных произошла ошибка", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        MessageBox.Show("При сохранении данных произошла ошибка\nТекст ошибки: " + ex.Message, "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
                     else
                     {
-                        MessageBox.Show("При добавлении дисциплины произошла ошибка", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        MessageBox.Show("При добавлении дисциплины произошла ошибка\nТекст ошибки: " + ex.Message, "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
                 }
             }

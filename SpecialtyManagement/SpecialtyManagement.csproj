@@ -130,6 +130,9 @@
     <Compile Include="Pages\ArrearsShowPage.xaml.cs">
       <DependentUpon>ArrearsShowPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\GroupChoiceForOffsetPage.xaml.cs">
+      <DependentUpon>GroupChoiceForOffsetPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\GroupsShowPage.xaml.cs">
       <DependentUpon>GroupsShowPage.xaml</DependentUpon>
     </Compile>
@@ -178,6 +181,12 @@
     <Compile Include="Windows\ChoiceElementWindow.xaml.cs">
       <DependentUpon>ChoiceElementWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\ChoiceGroupForOffsetWindow.xaml.cs">
+      <DependentUpon>ChoiceGroupForOffsetWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\CreateDocumentWindow.xaml.cs">
+      <DependentUpon>CreateDocumentWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\GroupAddWindow.xaml.cs">
       <DependentUpon>GroupAddWindow.xaml</DependentUpon>
     </Compile>
@@ -212,6 +221,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\ArrearsShowPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\GroupChoiceForOffsetPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -256,6 +269,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\ChoiceElementWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ChoiceGroupForOffsetWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\CreateDocumentWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

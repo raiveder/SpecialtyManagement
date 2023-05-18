@@ -32,7 +32,7 @@
             <TextBox Name="TBoxNote" Width="300" HorizontalAlignment="Left" TextWrapping="Wrap"/>
         </StackPanel>
 
-        <Button Grid.Row="2" Name="BtnBack" Content="Назад" MinWidth="200" HorizontalAlignment="Left" Click="BtnBack_Click" Margin="10"/>
-        <Button Grid.Row="2" Name="BtnAdd" Content="Добавить" MinWidth="200" HorizontalAlignment="Right" Click="BtnAdd_Click" Margin="10" Cursor="Hand"/>
+        <Button Grid.Row="2" Name="BtnBack" Content="Назад" HorizontalAlignment="Left" Margin="10" Click="BtnBack_Click"/>
+        <Button Grid.Row="2" Name="BtnAdd" Content="Добавить" HorizontalAlignment="Right" Margin="10" Click="BtnAdd_Click"/>
     </Grid>
 </Page>

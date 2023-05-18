@@ -22,7 +22,7 @@ namespace SpecialtyManagement.Pages
             RBCurrentSemester.IsChecked = true;
             CBGroup.SelectedIndex = 0;
             CBType.SelectedIndex = 0;
-            CBSort.SelectedIndex = 0;
+            CBSort.SelectedIndex = 1;
 
             _isShowWarnings = true;
         }
@@ -141,24 +141,24 @@ namespace SpecialtyManagement.Pages
 
             switch (CBSort.SelectedIndex)
             {
-                case 1:
+                case 0:
                     arrears.Sort((x, y) => x.Students.FullName.CompareTo(y.Students.FullName));
                     break;
-                case 2:
+                case 1:
                     arrears.Sort((x, y) => x.Students.Groups.Group.CompareTo(y.Students.Groups.Group));
                     break;
-                case 3:
+                case 2:
                     arrears.Sort((x, y) => x.CountArrears.CompareTo(y.CountArrears));
                     break;
-                case 4:
+                case 3:
                     arrears.Sort((x, y) => x.Students.FullName.CompareTo(y.Students.FullName));
+                    arrears.Reverse();
+                    break;
+                case 4:
+                    arrears.Sort((x, y) => x.Students.Groups.Group.CompareTo(y.Students.Groups.Group));
                     arrears.Reverse();
                     break;
                 case 5:
-                    arrears.Sort((x, y) => x.Students.Groups.Group.CompareTo(y.Students.Groups.Group));
-                    arrears.Reverse();
-                    break;
-                case 6:
                     arrears.Sort((x, y) => x.CountArrears.CompareTo(y.CountArrears));
                     arrears.Reverse();
                     break;
@@ -279,11 +279,11 @@ namespace SpecialtyManagement.Pages
                 Database.Entities.SaveChanges();
                 SetFilter();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 MessageBox.Show
                 (
-                    "При удалении " + (DGArrears.SelectedItems.Count == 1 ? "задолженности" : "задолженностей") + " возникла ошибка",
+                    "При удалении " + (DGArrears.SelectedItems.Count == 1 ? "задолженности" : "задолженностей") + " возникла ошибка\nТекст ошибки: " + ex.Message,
                     "Задолженности",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning

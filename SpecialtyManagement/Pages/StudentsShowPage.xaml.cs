@@ -21,7 +21,7 @@ namespace SpecialtyManagement.Pages
             UploadPage();
 
             CBGroup.SelectedIndex = 0;
-            CBSort.SelectedIndex = 0;
+            CBSort.SelectedIndex = 1;
 
             _isShowWarnings = true;
         }
@@ -98,24 +98,24 @@ namespace SpecialtyManagement.Pages
 
             switch (CBSort.SelectedIndex)
             {
-                case 1:
+                case 0:
                     students.Sort((x, y) => x.FullName.CompareTo(y.FullName));
                     break;
-                case 2:
+                case 1:
                     students.Sort((x, y) => x.Groups.Group.CompareTo(y.Groups.Group));
                     break;
-                case 3:
+                case 2:
                     students.Sort((x, y) => x.Birthday.CompareTo(y.Birthday));
                     break;
-                case 4:
+                case 3:
                     students.Sort((x, y) => x.FullName.CompareTo(y.FullName));
+                    students.Reverse();
+                    break;
+                case 4:
+                    students.Sort((x, y) => x.Groups.Group.CompareTo(y.Groups.Group));
                     students.Reverse();
                     break;
                 case 5:
-                    students.Sort((x, y) => x.Groups.Group.CompareTo(y.Groups.Group));
-                    students.Reverse();
-                    break;
-                case 6:
                     students.Sort((x, y) => x.Birthday.CompareTo(y.Birthday));
                     students.Reverse();
                     break;
@@ -164,7 +164,7 @@ namespace SpecialtyManagement.Pages
                 if (students.Count > 0)
                 {
                     Groups group = new Groups();
-                    ChoiceElementWindow window = new ChoiceElementWindow(group, "Добавление студентов");
+                    ChoiceElementWindow window = new ChoiceElementWindow(group, "Выберите группу добавляемых студентов");
                     window.ShowDialog();
 
                     if ((bool)window.DialogResult)
@@ -174,20 +174,69 @@ namespace SpecialtyManagement.Pages
                             item.IdGroup = group.Id;
                         }
 
-                        Database.Entities.Students.AddRange(students);
-
-                        try
+                        MessageBoxResult result = MessageBoxResult.Yes;
+                        if (IsStudentContainsInGroup(students, false))
                         {
-                            Database.Entities.SaveChanges();
-                            CBGroup.SelectedValue = students[0].IdGroup;
+                            result = MessageBox.Show("Некоторые из добавляемых студентов уже есть в этой группе. Вы уверены, что хотите добавить их снова?", "Студенты", MessageBoxButton.YesNo, MessageBoxImage.Question);
                         }
-                        catch (Exception)
+
+                        if (result == MessageBoxResult.Yes)
                         {
-                            MessageBox.Show("При добавлении студентов возникла ошибка", "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            Database.Entities.Students.AddRange(students);
+
+                            try
+                            {
+                                Database.Entities.SaveChanges();
+                                CBGroup.SelectedValue = students[0].IdGroup;
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("При добавлении студентов возникла ошибка\nТекст ошибки: " + ex.Message, "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            }
                         }
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Проверяет, содержится ли хотя бы 1 студент из списка в базе данных.
+        /// </summary>
+        /// <param name="students">список студентов.</param>
+        /// <param name="considerNote">true, если примечание учитывается, в противном случае - false.</param>
+        /// <returns>True, если совпадение найдено, в противном случае - false.</returns>
+        private bool IsStudentContainsInGroup(List<Students> students, bool considerNote)
+        {
+            int idGroup = students[0].IdGroup;
+
+            if (considerNote)
+            {
+                foreach (Students studentFromDB in Database.Entities.Students.Where(x => x.IdGroup == idGroup))
+                {
+                    foreach (Students item in students)
+                    {
+                        if (studentFromDB.FullName == item.FullName && studentFromDB.Birthday == item.Birthday && studentFromDB.Note == item.Note)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (Students studentFromDB in Database.Entities.Students.Where(x => x.IdGroup == idGroup))
+                {
+                    foreach (Students item in students)
+                    {
+                        if (studentFromDB.FullName == item.FullName && studentFromDB.Birthday == item.Birthday)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
 
         private void MIChange_Click(object sender, RoutedEventArgs e)
@@ -222,11 +271,11 @@ namespace SpecialtyManagement.Pages
                 Database.Entities.SaveChanges();
                 SetFilter();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 MessageBox.Show
                 (
-                    "При восстановлении " + (DGStudents.SelectedItems.Count == 1 ? "студента" : "студентов") + " возникла ошибка",
+                    "При восстановлении " + (DGStudents.SelectedItems.Count == 1 ? "студента" : "студентов") + " возникла ошибка\nТекст ошибки: " + ex.Message,
                     "Студенты",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning
@@ -246,11 +295,11 @@ namespace SpecialtyManagement.Pages
                 Database.Entities.SaveChanges();
                 SetFilter();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 MessageBox.Show
                 (
-                    "При отчислении " + (DGStudents.SelectedItems.Count == 1 ? "студента" : "студентов") + " возникла ошибка",
+                    "При отчислении " + (DGStudents.SelectedItems.Count == 1 ? "студента" : "студентов") + " возникла ошибка\nТекст ошибки: " + ex.Message,
                     "Студенты",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning
@@ -288,15 +337,15 @@ namespace SpecialtyManagement.Pages
                     Database.Entities.SaveChanges();
                     SetFilter();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     if (students.Count == 1)
                     {
-                        MessageBox.Show("При удалении студента возникла ошибка", "Студенты", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                        MessageBox.Show("При удалении студента возникла ошибка\nТекст ошибки: " + ex.Message, "Студенты", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                     }
                     else
                     {
-                        MessageBox.Show("При удалении студентов возникла ошибка", "Студенты", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                        MessageBox.Show("При удалении студентов возникла ошибка\nТекст ошибки: " + ex.Message, "Студенты", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                     }
                 }
             }

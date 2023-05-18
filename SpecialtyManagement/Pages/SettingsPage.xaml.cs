@@ -47,9 +47,9 @@ namespace SpecialtyManagement.Pages
                     Navigation.Setting.UpdateSettings();
                     MessageBox.Show("Данные успешно обновлены", "Настройки", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    MessageBox.Show("При сохранении данных произошла ошибка", "Настройки", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("При сохранении данных произошла ошибка\nТекст ошибки: " + ex.Message, "Настройки", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
         }

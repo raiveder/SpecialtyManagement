@@ -20,19 +20,6 @@
             <TextBox Name="TBoxFind" Width="200" Height="{Binding ActualHeight, ElementName=CBSort}" VerticalAlignment="Center" TextChanged="TBoxFind_TextChanged"/>
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
-            <TextBlock Name="TBSort" Text="Сортировка" Padding="0 0 10 0" VerticalAlignment="Center"/>
-            <ComboBox Name="CBSort" Width="200" VerticalAlignment="Center" SelectionChanged="CBSort_SelectionChanged">
-                <ComboBoxItem>По умолчанию</ComboBoxItem>
-                <ComboBoxItem>ФИО ↑</ComboBoxItem>
-                <ComboBoxItem>Группа ↑</ComboBoxItem>
-                <ComboBoxItem>Дата рождения ↑</ComboBoxItem>
-                <ComboBoxItem>ФИО ↓</ComboBoxItem>
-                <ComboBoxItem>Группа ↓</ComboBoxItem>
-                <ComboBoxItem>Дата рождения ↓</ComboBoxItem>
-            </ComboBox>
-        </StackPanel>
-
         <DataGrid Grid.Row="1" Name="DGTeachers" Margin="10 0" ColumnWidth="*" MouseLeftButtonUp="DGTeachers_MouseLeftButtonUp" MouseRightButtonUp="DGTeachers_MouseRightButtonUp">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="№" Binding="{Binding SequenceNumber}" MinWidth="40" MaxWidth="40" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>
