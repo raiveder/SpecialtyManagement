@@ -17,23 +17,23 @@ namespace SpecialtyManagement.Pages
     public partial class ArrearsComissionCreateDocumentPage : Page
     {
         private const int IdTypeArrear = 2; // Id комиссионной задолженности.
-        private static Filter _filter;
-        private static List<Arrears> _arrears; // Список задолженностей.
-        private static List<Lessons> _lessonsSource = new List<Lessons>(); // Список всех дисциплин, по которым есть комисионные задолженности.
-        private static List<Lessons> _lessons = new List<Lessons>(); // Список дисциплин для отображения.
-        private static List<List<Teachers>> _teachers = new List<List<Teachers>>(); // Список учителей.
-        private static List<List<Students>> _students = new List<List<Students>>(); // Список студентов.
-        private static List<DateTime> _dates = new List<DateTime>(); // Список дат.
-        private static List<string> _times = new List<string>(); // Список времён.
-        private static List<string> _audiences = new List<string>(); // Список аудиторий.
+        private Filter _filter;
+        private static List<Arrears> s_arrears; // Список задолженностей.
+        private static List<Lessons> s_lessonsSource = new List<Lessons>(); // Список всех дисциплин, по которым есть комисионные задолженности.
+        private static List<Lessons> s_lessons = new List<Lessons>(); // Список дисциплин для отображения.
+        private static List<List<Teachers>> s_teachers = new List<List<Teachers>>(); // Список учителей.
+        private static List<List<Students>> s_students = new List<List<Students>>(); // Список студентов.
+        private static List<DateTime> s_dates = new List<DateTime>(); // Список дат.
+        private static List<string> s_times = new List<string>(); // Список времён.
+        private static List<string> s_audiences = new List<string>(); // Список аудиторий.
 
         public ArrearsComissionCreateDocumentPage(Filter filter, List<Arrears> arrears)
         {
             InitializeComponent();
 
             _filter = filter;
-            _arrears = arrears;
-            _lessonsSource = GetAllLessonsForArrearsByType(_arrears, IdTypeArrear);
+            s_arrears = arrears;
+            s_lessonsSource = GetAllLessonsForArrearsByType(s_arrears, IdTypeArrear);
         }
 
         /// <summary>
@@ -70,17 +70,17 @@ namespace SpecialtyManagement.Pages
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
             Lessons lesson = new Lessons();
-            ChoiceElementWindow window = new ChoiceElementWindow(lesson, "Выберите дисциплину", _lessonsSource);
+            ChoiceElementWindow window = new ChoiceElementWindow(lesson, "Выберите дисциплину", s_lessonsSource);
             window.ShowDialog();
 
             if ((bool)window.DialogResult)
             {
-                _lessons.Add(lesson);
-                _students.Add(new List<Students>());
-                _teachers.Add(new List<Teachers>());
-                _dates.Add(new DateTime());
-                _times.Add(string.Empty);
-                _audiences.Add(string.Empty);
+                s_lessons.Add(lesson);
+                s_students.Add(new List<Students>());
+                s_teachers.Add(new List<Teachers>());
+                s_dates.Add(new DateTime());
+                s_times.Add(string.Empty);
+                s_audiences.Add(string.Empty);
 
                 UpdateListView();
             }
@@ -93,22 +93,22 @@ namespace SpecialtyManagement.Pages
 
             datePicker.DisplayDateStart = DateTime.Now.AddDays(1);
 
-            if (_dates[index] >= DateTime.Now)
+            if (s_dates[index] >= DateTime.Now)
             {
-                datePicker.SelectedDate = _dates[index];
+                datePicker.SelectedDate = s_dates[index];
             }
         }
 
         private void TBoxTime_Loaded(object sender, RoutedEventArgs e)
         {
             TextBox box = sender as TextBox;
-            box.Text = _times[Convert.ToInt32(box.Uid)];
+            box.Text = s_times[Convert.ToInt32(box.Uid)];
         }
 
         private void TBoxAudience_Loaded(object sender, RoutedEventArgs e)
         {
             TextBox box = sender as TextBox;
-            box.Text = _audiences[Convert.ToInt32(box.Uid)];
+            box.Text = s_audiences[Convert.ToInt32(box.Uid)];
         }
 
         private void SPTeachers_Loaded(object sender, RoutedEventArgs e)
@@ -116,9 +116,9 @@ namespace SpecialtyManagement.Pages
             StackPanel panel = sender as StackPanel;
             int index = Convert.ToInt32(panel.Uid);
 
-            if (_teachers[index].Count > 0)
+            if (s_teachers[index].Count > 0)
             {
-                foreach (var item in _teachers[index])
+                foreach (var item in s_teachers[index])
                 {
                     panel.Children.Add(new TextBlock()
                     {
@@ -136,9 +136,9 @@ namespace SpecialtyManagement.Pages
             StackPanel panel = sender as StackPanel;
             int index = Convert.ToInt32(panel.Uid);
 
-            if (_students[index].Count > 0)
+            if (s_students[index].Count > 0)
             {
-                foreach (var item in _students[index])
+                foreach (var item in s_students[index])
                 {
                     panel.Children.Add(new TextBlock()
                     {
@@ -154,7 +154,7 @@ namespace SpecialtyManagement.Pages
         private void BtnChangeStudents_Click(object sender, RoutedEventArgs e)
         {
             int index = Convert.ToInt32((sender as Button).Uid);
-            ChoiceElementsWindow window = new ChoiceElementsWindow(_students[index], "Выберите студентов", GetStudentsForLesson(_arrears, _lessons[index]));
+            ChoiceElementsWindow window = new ChoiceElementsWindow(s_students[index], "Выберите студентов", GetStudentsForLesson(s_arrears, s_lessons[index]));
             window.ShowDialog();
 
             if ((bool)window.DialogResult)
@@ -190,7 +190,7 @@ namespace SpecialtyManagement.Pages
         {
             int index = Convert.ToInt32((sender as Button).Uid);
 
-            ChoiceElementsWindow window = new ChoiceElementsWindow(_teachers[index], "Выберите состав комиссии", Database.Entities.Teachers.ToList());
+            ChoiceElementsWindow window = new ChoiceElementsWindow(s_teachers[index], "Выберите состав комиссии", Database.Entities.Teachers.ToList());
             window.ShowDialog();
 
             if ((bool)window.DialogResult)
@@ -202,7 +202,7 @@ namespace SpecialtyManagement.Pages
         private void DPDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             DatePicker datePicker = sender as DatePicker;
-            _dates[Convert.ToInt32(datePicker.Uid)] = datePicker.SelectedDate.Value;
+            s_dates[Convert.ToInt32(datePicker.Uid)] = datePicker.SelectedDate.Value;
         }
 
         private void TBoxTime_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
@@ -211,7 +211,7 @@ namespace SpecialtyManagement.Pages
 
             if (Regex.IsMatch(box.Text, @"^(([0-1][0-9])|([2][0-3])):([0-5][0-9])$"))
             {
-                _times[Convert.ToInt32(box.Uid)] = box.Text;
+                s_times[Convert.ToInt32(box.Uid)] = box.Text;
             }
             else
             {
@@ -223,19 +223,19 @@ namespace SpecialtyManagement.Pages
         private void TBoxAudience_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             TextBox box = sender as TextBox;
-            _audiences[Convert.ToInt32(box.Uid)] = box.Text;
+            s_audiences[Convert.ToInt32(box.Uid)] = box.Text;
         }
 
         private void BtnDelete_Click(object sender, RoutedEventArgs e)
         {
             int index = Convert.ToInt32((sender as Button).Uid);
 
-            _lessons.RemoveAt(index);
-            _students.RemoveAt(index);
-            _teachers.RemoveAt(index);
-            _dates.RemoveAt(index);
-            _times.RemoveAt(index);
-            _audiences.RemoveAt(index);
+            s_lessons.RemoveAt(index);
+            s_students.RemoveAt(index);
+            s_teachers.RemoveAt(index);
+            s_dates.RemoveAt(index);
+            s_times.RemoveAt(index);
+            s_audiences.RemoveAt(index);
 
             UpdateListView();
         }
@@ -246,7 +246,7 @@ namespace SpecialtyManagement.Pages
         private void UpdateListView()
         {
             List<Lessons> tempLessons = new List<Lessons>();
-            tempLessons.AddRange(_lessons);
+            tempLessons.AddRange(s_lessons);
             int indexItem = 0;
 
             foreach (Lessons item in tempLessons)
@@ -277,7 +277,7 @@ namespace SpecialtyManagement.Pages
                 return false;
             }
 
-            foreach (List<Students> item in _students)
+            foreach (List<Students> item in s_students)
             {
                 if (item.Count == 0)
                 {
@@ -286,7 +286,7 @@ namespace SpecialtyManagement.Pages
                 }
             }
 
-            foreach (List<Students> item in _students)
+            foreach (List<Students> item in s_students)
             {
                 if (item.Count == 0)
                 {
@@ -340,13 +340,8 @@ namespace SpecialtyManagement.Pages
         /// </summary>
         /// <param name="sender">отправительи.</param>
         /// <param name="recipient">получатель.</param>
-        public static void CreateDocumentMemo(string sender, string recipient)
+        public static void CreateDocumentMemo(Word.Application app, string sender, string recipient)
         {
-            Word.Application app = new Word.Application
-            {
-                Visible = false
-            };
-
             try
             {
                 Word.Document document = new Word.Document();
@@ -427,19 +422,19 @@ namespace SpecialtyManagement.Pages
                 rangeHeader.InsertParagraphAfter();
                 paragraphHeader.SpaceBefore = 0;
 
-                for (int i = 0; i < _lessons.Count; i++)
+                for (int i = 0; i < s_lessons.Count; i++)
                 {
                     Word.Paragraph paragraphDescription = document.Paragraphs.Add();
                     Word.Range rangeDescription = paragraphDescription.Range;
                     rangeDescription.Text = i + 1 + ".\tПрошу провести комиссионную пересдачу учебной дисциплины";
                     int indexWordsUnderlineStart = rangeDescription.Words.Count + 1;
-                    rangeDescription.Text += $" {_lessons[i].FullName} ";
+                    rangeDescription.Text += $" {s_lessons[i].FullName} ";
                     int indexWordsUnderlineEnd = rangeDescription.Words.Count;
-                    rangeDescription.Text += $"для следующих обучающихся {GetGroupsInString(_students[i])} в {GetDayOfWeek(_dates[i])}, ";
+                    rangeDescription.Text += $"для следующих обучающихся {GetGroupsInString(s_students[i])} в {GetDayOfWeek(s_dates[i])}, ";
                     int indexWordsBackgroundStart = rangeDescription.Words.Count + 1;
-                    rangeDescription.Text += $"{_dates[i]:D}";
+                    rangeDescription.Text += $"{s_dates[i]:D}";
                     int indexWordsBackgroundEnd = rangeDescription.Words.Count;
-                    rangeDescription.Text += $" в {_times[i]} в кабинете {_audiences[i]}:";
+                    rangeDescription.Text += $" в {s_times[i]} в кабинете {s_audiences[i]}:";
                     rangeDescription.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
                     rangeDescription.Font.Name = "Times New Roman";
                     rangeDescription.Font.Size = 14;
@@ -464,7 +459,7 @@ namespace SpecialtyManagement.Pages
 
                     Word.Paragraph paragraphStudents = document.Paragraphs.Add();
                     Word.Range rangeStudents = paragraphStudents.Range;
-                    Word.Table tableStudents = document.Tables.Add(rangeStudents, _students[i].Count + 1, 4);
+                    Word.Table tableStudents = document.Tables.Add(rangeStudents, s_students[i].Count + 1, 4);
                     tableStudents.Borders.InsideLineStyle = Word.WdLineStyle.wdLineStyleSingle;
                     tableStudents.Borders.OutsideLineStyle = Word.WdLineStyle.wdLineStyleSingle;
                     tableStudents.Range.Cells.VerticalAlignment = Word.WdCellVerticalAlignment.wdCellAlignVerticalCenter;
@@ -484,7 +479,7 @@ namespace SpecialtyManagement.Pages
                     tableStudents.Columns[1].AutoFit();
                     widths[0] = tableStudents.Columns[1].Width;
 
-                    tableStudents.Cell(1, 2).Range.Text = new string('a', GetMaxLengthFullName(_students[i])); // Для задания ширины столбца по максимальной длине контента.
+                    tableStudents.Cell(1, 2).Range.Text = new string('a', GetMaxLengthFullName(s_students[i])); // Для задания ширины столбца по максимальной длине контента.
                     tableStudents.Columns[2].AutoFit();
                     widths[1] = tableStudents.Columns[2].Width;
 
@@ -503,23 +498,23 @@ namespace SpecialtyManagement.Pages
                     tableStudents.Cell(1, 4).Range.Text = "Состав комиссии";
 
                     int number = 1;
-                    for (int j = 0; j < _students[i].Count; j++)
+                    for (int j = 0; j < s_students[i].Count; j++)
                     {
-                        _students[i][j].SequenceNumber = number++;
+                        s_students[i][j].SequenceNumber = number++;
 
-                        tableStudents.Cell(j + 2, 1).Range.Text = _students[i][j].SequenceNumber.ToString();
-                        tableStudents.Cell(j + 2, 2).Range.Text = _students[i][j].FullName;
-                        tableStudents.Cell(j + 2, 3).Range.Text = _students[i][j].Groups.Group;
+                        tableStudents.Cell(j + 2, 1).Range.Text = s_students[i][j].SequenceNumber.ToString();
+                        tableStudents.Cell(j + 2, 2).Range.Text = s_students[i][j].FullName;
+                        tableStudents.Cell(j + 2, 3).Range.Text = s_students[i][j].Groups.Group;
                         tableStudents.Cell(j + 2, 1).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
                         tableStudents.Cell(j + 2, 2).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
                         tableStudents.Cell(j + 2, 3).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
                         tableStudents.Rows[j + 2].Range.Bold = 0;
                     }
-                    tableStudents.Cell(2, 4).Range.Text = GetTeachersInString(_teachers[i]);
+                    tableStudents.Cell(2, 4).Range.Text = GetTeachersInString(s_teachers[i]);
 
-                    if (_students[i].Count > 1)
+                    if (s_students[i].Count > 1)
                     {
-                        tableStudents.Cell(2, 4).Merge(tableStudents.Cell(_students[i].Count + 1, 4));
+                        tableStudents.Cell(2, 4).Merge(tableStudents.Cell(s_students[i].Count + 1, 4));
                     }
                 }
             }
@@ -534,20 +529,13 @@ namespace SpecialtyManagement.Pages
                     MessageBox.Show("При формировании документа возникла ошибка\nТекст ошибки: " + ex.Message, "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
-
-            app.Visible = true;
         }
 
         /// <summary>
         /// Генерирует документ Word для комиссионных задолженностей.
         /// </summary>
-        public static void CreateDocumentShedule()
+        public static void CreateDocumentShedule(Word.Application app)
         {
-            Word.Application app = new Word.Application
-            {
-                Visible = false
-            };
-
             try
             {
                 Word.Document document = new Word.Document();
@@ -571,19 +559,19 @@ namespace SpecialtyManagement.Pages
                     times.Add(new List<string>());
                     audiences.Add(new List<string>());
 
-                    foreach (List<Students> listStudents in _students)
+                    foreach (List<Students> listStudents in s_students)
                     {
                         foreach (Students item in listStudents)
                         {
                             if (item == students[i])
                             {
-                                int index = _students.IndexOf(listStudents);
+                                int index = s_students.IndexOf(listStudents);
                                 teachers[i].Add(new List<Teachers>());
-                                lessons[i].Add(_lessons[index]);
-                                dates[i].Add(_dates[index]);
-                                times[i].Add(_times[index]);
-                                audiences[i].Add(_audiences[index]);
-                                foreach (Teachers teacher in _teachers[index])
+                                lessons[i].Add(s_lessons[index]);
+                                dates[i].Add(s_dates[index]);
+                                times[i].Add(s_times[index]);
+                                audiences[i].Add(s_audiences[index]);
+                                foreach (Teachers teacher in s_teachers[index])
                                 {
                                     if (!teachers[i][lessons[i].IndexOf(lessons[i].Last())].Contains(teacher))
                                     {
@@ -734,7 +722,7 @@ namespace SpecialtyManagement.Pages
                     rangeShedule.InsertParagraphAfter();
                     paragraphShedule.SpaceAfter = 0;
 
-                    if (i + 1 % 2 == 0 && i != students.Count - 1)
+                    if ((i + 1) % 2 == 0 && i != students.Count - 1)
                     {
                         document.Words.Last.InsertBreak(Word.WdBreakType.wdPageBreak);
                     }
@@ -751,8 +739,6 @@ namespace SpecialtyManagement.Pages
                     MessageBox.Show("При формировании документа возникла ошибка\nТекст ошибки: " + ex.Message, "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
-
-            app.Visible = true;
         }
 
         /// <summary>
@@ -876,7 +862,7 @@ namespace SpecialtyManagement.Pages
         {
             List<Students> students = new List<Students>();
 
-            foreach (List<Students> list in _students)
+            foreach (List<Students> list in s_students)
             {
                 foreach (Students item in list)
                 {

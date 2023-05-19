@@ -1,7 +1,6 @@
 ﻿using SpecialtyManagement.Windows;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -19,15 +18,15 @@ namespace SpecialtyManagement.Pages
     {
         private const int IdTypeArrear = 1; // Id первичной задолженности.
         private Filter _filter;
-        private static int _idPM; // Id типа дисциплины ПМ.
-        private static List<Arrears> _arrears; // Список задолженностей.
-        private static List<List<Teachers>> _teachers; // Список учителей.
-        private static List<DistributionLessons> _distributions; // Распределение дисциплин и преподавателей на группы.
-        private static List<Lessons> _lessons; // Список дисциплин (нужен для ПМ).
-        private static List<string> _typesLessons; // Список типов дисциплин для отображения (учебные дисциплины или ПМ).
-        private static List<string> _dates; // Список дат.
-        private static List<string> _times; // Список времён.
-        private static List<string> _audiences; // Список аудиторий.
+        private static int s_idPM; // Id типа дисциплины ПМ.
+        private static List<Arrears> s_arrears; // Список задолженностей.
+        private static List<List<Teachers>> s_teachers; // Список учителей.
+        private static List<DistributionLessons> s_distributions; // Распределение дисциплин и преподавателей на группы.
+        private static List<Lessons> s_lessons; // Список дисциплин (нужен для ПМ).
+        private static List<string> s_typesLessons; // Список типов дисциплин для отображения (учебные дисциплины или ПМ).
+        private static List<string> s_dates; // Список дат.
+        private static List<string> s_times; // Список времён.
+        private static List<string> s_audiences; // Список аудиторий.
         private int _indexViewItem = 0; // Индекс отображаемого элемента ListView.
         private bool _IsFirstShowMessage = true; // True - сообщение о выборе преподавателей отображается впервые, в противном случае - false.
 
@@ -36,17 +35,17 @@ namespace SpecialtyManagement.Pages
             InitializeComponent();
 
             _filter = filter;
-            _arrears = arrears;
-            _idPM = Database.Entities.TypesLessons.FirstOrDefault(x => x.Type == "ПМ").Id;
-            _teachers = new List<List<Teachers>>();
-            _distributions = new List<DistributionLessons>();
-            _lessons = new List<Lessons>();
-            _typesLessons = new List<string>();
-            _dates = new List<string>();
-            _times = new List<string>();
-            _audiences = new List<string>();
+            s_arrears = arrears;
+            s_idPM = Database.Entities.TypesLessons.FirstOrDefault(x => x.Type == "ПМ").Id;
+            s_teachers = new List<List<Teachers>>();
+            s_distributions = new List<DistributionLessons>();
+            s_lessons = new List<Lessons>();
+            s_typesLessons = new List<string>();
+            s_dates = new List<string>();
+            s_times = new List<string>();
+            s_audiences = new List<string>();
 
-            foreach (Arrears arrear in _arrears)
+            foreach (Arrears arrear in s_arrears)
             {
                 List<Lessons> lessons = Arrears.GetLessonsForArrearsByType(arrear, IdTypeArrear);
                 List<Lessons> lessonsPM = CutPMFromLessons(lessons);
@@ -61,17 +60,17 @@ namespace SpecialtyManagement.Pages
 
                             if (!IsTeacherContains(teachers[0]))
                             {
-                                _teachers.Add(teachers);
-                                _typesLessons.Add("Учебные дисциплины");
-                                _lessons.Add(lessons[i]);
-                                _dates.Add(string.Empty);
-                                _times.Add(string.Empty);
-                                _audiences.Add(string.Empty);
+                                s_teachers.Add(teachers);
+                                s_typesLessons.Add("Учебные дисциплины");
+                                s_lessons.Add(lessons[i]);
+                                s_dates.Add(string.Empty);
+                                s_times.Add(string.Empty);
+                                s_audiences.Add(string.Empty);
                             }
                         }
                         else
                         {
-                            List<DistributionLessons> distributions = _distributions.Where(x => x.Lessons == lessons[i] && x.Groups != arrear.Students.Groups).ToList();
+                            List<DistributionLessons> distributions = s_distributions.Where(x => x.Lessons == lessons[i] && x.Groups != arrear.Students.Groups).ToList();
                             foreach (DistributionLessons item in distributions)
                             {
                                 DistributionLessons temp = new DistributionLessons()
@@ -86,7 +85,7 @@ namespace SpecialtyManagement.Pages
 
                                 if (!IsDistributionContains(temp))
                                 {
-                                    _distributions.Add(temp);
+                                    s_distributions.Add(temp);
                                 }
                             }
                         }
@@ -102,20 +101,20 @@ namespace SpecialtyManagement.Pages
 
                             if (!IsTeacherContains(teachers))
                             {
-                                _teachers.Add(teachers);
-                                _typesLessons.Add(lessonsPM[i].ShortName);
-                                _lessons.Add(lessonsPM[i]);
-                                _dates.Add(string.Empty);
-                                _times.Add(string.Empty);
-                                _audiences.Add(string.Empty);
+                                s_teachers.Add(teachers);
+                                s_typesLessons.Add(lessonsPM[i].ShortName);
+                                s_lessons.Add(lessonsPM[i]);
+                                s_dates.Add(string.Empty);
+                                s_times.Add(string.Empty);
+                                s_audiences.Add(string.Empty);
                             }
                         }
                         else
                         {
-                            List<DistributionLessons> distributions = _distributions.Where(x => x.Lessons == lessonsPM[i] && x.Groups != arrear.Students.Groups).ToList();
+                            List<DistributionLessons> distributions = s_distributions.Where(x => x.Lessons == lessonsPM[i] && x.Groups != arrear.Students.Groups).ToList();
                             foreach (DistributionLessons item in distributions)
                             {
-                                _distributions.Add(new DistributionLessons()
+                                s_distributions.Add(new DistributionLessons()
                                 {
                                     Lessons = item.Lessons,
                                     Groups = arrear.Students.Groups,
@@ -130,7 +129,7 @@ namespace SpecialtyManagement.Pages
                 }
             }
 
-            ListView.ItemsSource = _teachers;
+            ListView.ItemsSource = s_teachers;
         }
 
         /// <summary>
@@ -140,7 +139,7 @@ namespace SpecialtyManagement.Pages
         /// <returns>Удалённые дисциплины ПМ.</returns>
         private static List<Lessons> CutPMFromLessons(List<Lessons> lessons)
         {
-            List<Lessons> lessonsPM = lessons.Where(x => x.TypesLessons.Id == _idPM).ToList();
+            List<Lessons> lessonsPM = lessons.Where(x => x.TypesLessons.Id == s_idPM).ToList();
 
             foreach (Lessons item in lessonsPM)
             {
@@ -157,7 +156,7 @@ namespace SpecialtyManagement.Pages
         /// <returns>True, если список _distributions содержит элемент с такой же дисциплиной, в противном случае - false.</returns>
         private bool IsDistributionContains(Lessons lesson)
         {
-            foreach (DistributionLessons item in _distributions)
+            foreach (DistributionLessons item in s_distributions)
             {
                 if (item.Lessons == lesson)
                 {
@@ -175,7 +174,7 @@ namespace SpecialtyManagement.Pages
         /// <returns>True, если список _distributions содержит элемент с такой же дисциплиной, в противном случае - false.</returns>
         private bool IsDistributionContains(DistributionLessons distribution)
         {
-            foreach (DistributionLessons item in _distributions)
+            foreach (DistributionLessons item in s_distributions)
             {
                 if (item.Lessons == distribution.Lessons && item.Groups == distribution.Groups && item.Teachers == distribution.Teachers)
                 {
@@ -207,7 +206,7 @@ namespace SpecialtyManagement.Pages
 
                     item.Groups = group;
                     item.IdGroup = group.Id;
-                    _distributions.Add(item);
+                    s_distributions.Add(item);
                 }
             }
             else
@@ -215,7 +214,7 @@ namespace SpecialtyManagement.Pages
                 teachers = GetChoiceTeachers(lesson);
                 foreach (Teachers item in teachers)
                 {
-                    _distributions.Add(new DistributionLessons()
+                    s_distributions.Add(new DistributionLessons()
                     {
                         Teachers = item,
                         Groups = group,
@@ -278,7 +277,7 @@ namespace SpecialtyManagement.Pages
 
             List<Teachers> teachers = new List<Teachers>();
 
-            if (lesson.IdType == _idPM)
+            if (lesson.IdType == s_idPM)
             {
                 while (true)
                 {
@@ -324,7 +323,7 @@ namespace SpecialtyManagement.Pages
         /// <returns>True, если указанный преподаватель содержится в списке преподавателей, в противном случае - false.</returns>
         private bool IsTeacherContains(Teachers teacher)
         {
-            foreach (List<Teachers> item in _teachers.Where(x => x.Count == 1))
+            foreach (List<Teachers> item in s_teachers.Where(x => x.Count == 1))
             {
                 if (item.Contains(teacher))
                 {
@@ -342,7 +341,7 @@ namespace SpecialtyManagement.Pages
         /// <returns>True, если указанные преподаватели содержатся в списке преподавателей, в противном случае - false.</returns>
         private bool IsTeacherContains(List<Teachers> teachers)
         {
-            foreach (List<Teachers> item in _teachers.Where(x => x.Count == teachers.Count))
+            foreach (List<Teachers> item in s_teachers.Where(x => x.Count == teachers.Count))
             {
                 bool checkFullyContains = true;
 
@@ -367,13 +366,13 @@ namespace SpecialtyManagement.Pages
         private void TBTypeLessons_Loaded(object sender, RoutedEventArgs e)
         {
             TextBlock tb = sender as TextBlock;
-            tb.Text = _typesLessons[GetIndexTeacher(tb.DataContext as List<Teachers>)];
+            tb.Text = s_typesLessons[GetIndexTeacher(tb.DataContext as List<Teachers>)];
         }
 
         private void TBTeachers_Loaded(object sender, RoutedEventArgs e)
         {
             TextBlock tb = sender as TextBlock;
-            List<Teachers> teachers = _teachers[_indexViewItem++];
+            List<Teachers> teachers = s_teachers[_indexViewItem++];
 
             if (teachers.Count == 1)
             {
@@ -407,7 +406,7 @@ namespace SpecialtyManagement.Pages
             }
             else
             {
-                _dates[GetIndexTeacher(datePicker.DataContext as List<Teachers>)] = date.ToString("d");
+                s_dates[GetIndexTeacher(datePicker.DataContext as List<Teachers>)] = date.ToString("d");
             }
         }
 
@@ -431,7 +430,7 @@ namespace SpecialtyManagement.Pages
                 box.Foreground = Brushes.Black;
                 if (Regex.IsMatch(box.Text, @"^(([0-1][0-9])|([2][0-3])):([0-5][0-9])$"))
                 {
-                    _times[GetIndexTeacher(box.DataContext as List<Teachers>)] = box.Text;
+                    s_times[GetIndexTeacher(box.DataContext as List<Teachers>)] = box.Text;
                 }
                 else
                 {
@@ -449,7 +448,7 @@ namespace SpecialtyManagement.Pages
         private void TBoxAudience_LostKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
         {
             TextBox box = sender as TextBox;
-            _audiences[GetIndexTeacher(box.DataContext as List<Teachers>)] = box.Text;
+            s_audiences[GetIndexTeacher(box.DataContext as List<Teachers>)] = box.Text;
         }
 
         private void BtnGenerate_Click(object sender, RoutedEventArgs e)
@@ -509,16 +508,11 @@ namespace SpecialtyManagement.Pages
         /// <summary>
         /// Генерирует документ Word для первичных задолженностей.
         /// </summary>
-        public static void CreateDocument()
+        public static void CreateDocument(Word.Application app)
         {
-            Word.Application app = new Word.Application
-            {
-                Visible = false
-            };
-
             try
             {
-                List<Groups> groups = Arrears.GetGroupsWithArrears(_arrears, 1);
+                List<Groups> groups = Arrears.GetGroupsWithArrears(s_arrears, 1);
 
                 Word.Document document = new Word.Document();
                 document.PageSetup.LeftMargin = app.CentimetersToPoints(1.25F);
@@ -530,7 +524,7 @@ namespace SpecialtyManagement.Pages
                 {
                     List<Arrears> arrears = new List<Arrears>();
 
-                    foreach (Arrears item in _arrears)
+                    foreach (Arrears item in s_arrears)
                     {
                         if (item.Students.IdGroup == groups[i].Id)
                         {
@@ -757,8 +751,8 @@ namespace SpecialtyManagement.Pages
 
                         tableTeachers.Cell(j + 2, 1).Range.Text = teachers[j].FullName;
                         tableTeachers.Cell(j + 2, 2).Range.Text = GetLessonsInString(lessons);
-                        tableTeachers.Cell(j + 2, 3).Range.Text = _dates[index];
-                        tableTeachers.Cell(j + 2, 4).Range.Text = _times[index] + ", " + GetAudienceInString(_audiences[index]);
+                        tableTeachers.Cell(j + 2, 3).Range.Text = s_dates[index];
+                        tableTeachers.Cell(j + 2, 4).Range.Text = s_times[index] + ", " + GetAudienceInString(s_audiences[index]);
                         tableTeachers.Rows[j + 2].Range.Bold = 0;
                         tableStudents.Cell(j + 2, 1).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
                         tableStudents.Cell(j + 2, 2).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
@@ -770,13 +764,13 @@ namespace SpecialtyManagement.Pages
                     {
                         for (int j = 0; j < lessonsPM.Count; j++)
                         {
-                            int index = _lessons.IndexOf(lessonsPM[j]);
+                            int index = s_lessons.IndexOf(lessonsPM[j]);
                             tableTeachers.Rows.Add();
 
-                            tableTeachers.Cell(teachers.Count + j + 2, 1).Range.Text = GetTeachersInString(_teachers[index]);
+                            tableTeachers.Cell(teachers.Count + j + 2, 1).Range.Text = GetTeachersInString(s_teachers[index]);
                             tableTeachers.Cell(teachers.Count + j + 2, 2).Range.Text = lessonsPM[j].FullName;
-                            tableTeachers.Cell(teachers.Count + j + 2, 3).Range.Text = _dates[index];
-                            tableTeachers.Cell(teachers.Count + j + 2, 4).Range.Text = _times[index] + ", " + GetAudienceInString(_audiences[index]);
+                            tableTeachers.Cell(teachers.Count + j + 2, 3).Range.Text = s_dates[index];
+                            tableTeachers.Cell(teachers.Count + j + 2, 4).Range.Text = s_times[index] + ", " + GetAudienceInString(s_audiences[index]);
                             tableTeachers.Rows[j + 2].Range.Bold = 0;
                             tableTeachers.Cell(j + 2, 1).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
                             tableTeachers.Cell(j + 2, 2).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
@@ -842,7 +836,7 @@ namespace SpecialtyManagement.Pages
         {
             List<Teachers> teachers = new List<Teachers>();
 
-            foreach (DistributionLessons item in _distributions.Where(x => x.IdGroup == idGroup))
+            foreach (DistributionLessons item in s_distributions.Where(x => x.IdGroup == idGroup))
             {
                 if (lessons.Contains(item.Lessons) && !teachers.Contains(item.Teachers))
                 {
@@ -864,7 +858,7 @@ namespace SpecialtyManagement.Pages
         {
             List<Lessons> lessons = new List<Lessons>();
 
-            foreach (DistributionLessons item in _distributions.Where(x => x.IdGroup == idGroup && x.IdTeacher == teacher.Id))
+            foreach (DistributionLessons item in s_distributions.Where(x => x.IdGroup == idGroup && x.IdTeacher == teacher.Id))
             {
                 if (lessonsSource.Contains(item.Lessons))
                 {
@@ -935,11 +929,11 @@ namespace SpecialtyManagement.Pages
         /// <returns>Индекс преподавателя из списка</returns>
         private static int GetIndexTeacher(Teachers teacher)
         {
-            foreach (List<Teachers> item in _teachers.Where(x => x.Count == 1))
+            foreach (List<Teachers> item in s_teachers.Where(x => x.Count == 1))
             {
                 if (item[0] == teacher)
                 {
-                    return _teachers.IndexOf(item);
+                    return s_teachers.IndexOf(item);
                 }
             }
 
@@ -953,7 +947,7 @@ namespace SpecialtyManagement.Pages
         /// <returns>Индекс преподавателя из списка</returns>
         private static int GetIndexTeacher(List<Teachers> teachers)
         {
-            foreach (List<Teachers> item in _teachers.Where(x => x.Count == teachers.Count))
+            foreach (List<Teachers> item in s_teachers.Where(x => x.Count == teachers.Count))
             {
                 bool checkFullyContains = true;
 
@@ -968,7 +962,7 @@ namespace SpecialtyManagement.Pages
 
                 if (checkFullyContains)
                 {
-                    return _teachers.IndexOf(item);
+                    return s_teachers.IndexOf(item);
                 }
             }
 

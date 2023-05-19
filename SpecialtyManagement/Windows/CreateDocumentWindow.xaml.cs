@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Word = Microsoft.Office.Interop.Word;
 
 namespace SpecialtyManagement.Windows
 {
@@ -32,20 +33,33 @@ namespace SpecialtyManagement.Windows
             new Thread(CreateDocumentsComissionArrears).Start();
         }
 
-        private void CreateDocumentPrimaryArrears()
+        private async void CreateDocumentPrimaryArrears()
         {
-            ArrearsPrimaryCreateDocumentPage.CreateDocument();
+            Word.Application app = new Word.Application
+            {
+                Visible = false
+            };
+
+            await Task.Run(() => ArrearsPrimaryCreateDocumentPage.CreateDocument(app));
+            app.Visible = true;
+
             _canClosing = true;
-            Dispatcher.BeginInvoke(new ThreadStart(() => Close()));
+            await Dispatcher.BeginInvoke(new ThreadStart(() => Close()));
         }
 
         private async void CreateDocumentsComissionArrears()
         {
-            Task shedule = Task.Run(() => ArrearsComissionCreateDocumentPage.CreateDocumentShedule());
-            Task memo = Task.Run(() => ArrearsComissionCreateDocumentPage.CreateDocumentMemo(_sender, _recipient));
+            Word.Application app = new Word.Application
+            {
+                Visible = false
+            };
+
+            Task shedule = Task.Run(() => ArrearsComissionCreateDocumentPage.CreateDocumentShedule(app));
+            Task memo = Task.Run(() => ArrearsComissionCreateDocumentPage.CreateDocumentMemo(app, _sender, _recipient));
 
             await shedule;
             await memo;
+            app.Visible = true;
 
             _canClosing = true;
             await Dispatcher.BeginInvoke(new ThreadStart(() => Close()));
