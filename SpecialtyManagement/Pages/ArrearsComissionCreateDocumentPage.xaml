@@ -50,10 +50,6 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <StackPanel Grid.Row="1" Grid.Column="0" Background="Aqua"/>
-                        <StackPanel Grid.Row="1" Grid.Column="1" Background="PapayaWhip"/>
-                        <StackPanel Grid.Row="1" Grid.Column="2" Background="NavajoWhite"/>
-
                         <Border Grid.ColumnSpan="3" Name="BrdLesson" CornerRadius="{StaticResource CornerRadius}" Background="{StaticResource ColorSecondary}" Padding="20" Margin="0 0 0 10">
                             <TextBlock Name="TBLesson" Text="{Binding FullName}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>

@@ -15,16 +15,17 @@ namespace SpecialtyManagement.Windows
         private List<Students> _studentsSelectedTemp = new List<Students>();
         private List<Students> _studentsSelected;
         private List<Students> _students;
+        private string _headerSelectedItems;
 
         public string Text { get; private set; }
 
         public ChoiceElementsWindow(List<Teachers> teachers, string text, List<Teachers> teachersSource)
         {
+            _headerSelectedItems = "Выбранные члены комиссии";
+
             UploadPage(text, teachers, teachersSource);
 
-            _teachers = teachers;
             TBItems.Text = "Члены комиссии";
-            TBSelectedItems.Text = "Выбранные члены комиссии";
 
             _teachers = teachersSource;
             _teachersSelected = teachers;
@@ -36,11 +37,11 @@ namespace SpecialtyManagement.Windows
 
         public ChoiceElementsWindow(List<Students> students, string text, List<Students> studentsSource)
         {
+            _headerSelectedItems = "Выбранные студенты";
+
             UploadPage(text, students, studentsSource);
 
-            _students = students;
             TBItems.Text = "Студенты";
-            TBSelectedItems.Text = "Выбранные студенты";
 
             _students = studentsSource;
             _studentsSelected = students;
@@ -62,11 +63,20 @@ namespace SpecialtyManagement.Windows
             DataContext = this;
             Text = text;
 
-            foreach (T item in itemsSelected)
+            if (itemsSelected.Count == 0)
             {
-                if (itemsSource.Contains(item))
+                TBSelectedItems.Text = _headerSelectedItems;
+            }
+            else
+            {
+                TBSelectedItems.Text = _headerSelectedItems + " (" + itemsSelected.Count + ")";
+
+                foreach (T item in itemsSelected)
                 {
-                    itemsSource.Remove(item);
+                    if (itemsSource.Contains(item))
+                    {
+                        itemsSource.Remove(item);
+                    }
                 }
             }
 
@@ -133,6 +143,15 @@ namespace SpecialtyManagement.Windows
             List<T> tempSelectedItems = new List<T>();
             tempSelectedItems.AddRange(itemsSelected);
             LVItems.ItemsSource = tempSelectedItems;
+
+            if (tempSelectedItems.Count == 0)
+            {
+                TBSelectedItems.Text = _headerSelectedItems;
+            }
+            else
+            {
+                TBSelectedItems.Text = _headerSelectedItems + " (" + tempSelectedItems.Count + ")";
+            }
         }
 
         private void BtnAccept_Click(object sender, RoutedEventArgs e)
