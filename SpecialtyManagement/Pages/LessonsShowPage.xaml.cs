@@ -168,7 +168,10 @@ namespace SpecialtyManagement.Pages
 
         private void DGLessons_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            CMLessons.IsOpen = true;
+            if (DGLessons.SelectedItems.Count > 0)
+            {
+                CMLessons.IsOpen = true;
+            }
         }
 
         private void DGLessons_MouseRightButtonUp(object sender, MouseButtonEventArgs e)

@@ -353,36 +353,34 @@ namespace SpecialtyManagement.Pages
 
         private void DGStudents_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (DGStudents.SelectedItems.Count == 0)
+            if (DGStudents.SelectedItems.Count > 0)
             {
-                return;
-            }
+                MIChange.Visibility = Visibility.Visible;
+                MIExpel.Visibility = Visibility.Visible;
+                MIRestore.Visibility = Visibility.Visible;
 
-            MIChange.Visibility = Visibility.Visible;
-            MIExpel.Visibility = Visibility.Visible;
-            MIRestore.Visibility = Visibility.Visible;
+                if (DGStudents.SelectedItems.Count > 1)
+                {
+                    MIChange.Visibility = Visibility.Collapsed;
+                }
 
-            if (DGStudents.SelectedItems.Count > 1)
-            {
-                MIChange.Visibility = Visibility.Collapsed;
-            }
+                List<Students> students = new List<Students>();
+                foreach (Students item in DGStudents.SelectedItems)
+                {
+                    students.Add(item);
+                }
 
-            List<Students> students = new List<Students>();
-            foreach (Students item in DGStudents.SelectedItems)
-            {
-                students.Add(item);
-            }
+                if (students.FirstOrDefault(x => x.IsExpelled) != null)
+                {
+                    MIExpel.Visibility = Visibility.Collapsed;
+                }
+                if (students.FirstOrDefault(x => !x.IsExpelled) != null)
+                {
+                    MIRestore.Visibility = Visibility.Collapsed;
+                }
 
-            if (students.FirstOrDefault(x => x.IsExpelled) != null)
-            {
-                MIExpel.Visibility = Visibility.Collapsed;
+                CMStudents.IsOpen = true;
             }
-            if (students.FirstOrDefault(x => !x.IsExpelled) != null)
-            {
-                MIRestore.Visibility = Visibility.Collapsed;
-            }
-
-            CMStudents.IsOpen = true;
         }
 
         private void DGStudents_MouseRightButtonUp(object sender, MouseButtonEventArgs e)

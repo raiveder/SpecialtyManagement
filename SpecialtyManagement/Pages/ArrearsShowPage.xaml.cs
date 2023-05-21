@@ -241,20 +241,18 @@ namespace SpecialtyManagement.Pages
 
         private void DGArrears_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (DGArrears.SelectedItems.Count == 0)
+            if (DGArrears.SelectedItems.Count > 0)
             {
-                return;
+                MIChange.Visibility = Visibility.Visible;
+                MIDelete.Visibility = Visibility.Visible;
+
+                if (DGArrears.SelectedItems.Count > 1)
+                {
+                    MIChange.Visibility = Visibility.Collapsed;
+                }
+
+                CMArrears.IsOpen = true;
             }
-
-            MIChange.Visibility = Visibility.Visible;
-            MIDelete.Visibility = Visibility.Visible;
-
-            if (DGArrears.SelectedItems.Count > 1)
-            {
-                MIChange.Visibility = Visibility.Collapsed;
-            }
-
-            CMArrears.IsOpen = true;
         }
 
         private void DGArrears_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
