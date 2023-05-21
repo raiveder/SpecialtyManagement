@@ -101,6 +101,9 @@ namespace SpecialtyManagement.Pages
         {
             _lessons.Clear();
             _lessonsSelected.Clear();
+            _isPrimaryArrears.Clear();
+            _isLiquidated.Clear();
+            _reasonsArrears.Clear();
 
             if (CBGroups.SelectedIndex != -1)
             {

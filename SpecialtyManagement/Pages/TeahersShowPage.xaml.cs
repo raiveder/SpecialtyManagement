@@ -27,6 +27,10 @@ namespace SpecialtyManagement.Pages
             InitializeComponent();
 
             TBoxFind.Text = filter.FindText;
+            if (TBoxFind.Text.Length == 0)
+            {
+                SetFilter();
+            }
         }
 
         private void TBoxFind_TextChanged(object sender, TextChangedEventArgs e)

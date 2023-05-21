@@ -34,6 +34,11 @@ namespace SpecialtyManagement.Pages
             _filter = filter;
             s_arrears = arrears;
             s_lessonsSource = GetAllLessonsForArrearsByType(s_arrears, IdTypeArrear);
+            s_teachers = new List<List<Teachers>>();
+            s_students = new List<List<Students>>();
+            s_dates = new List<DateTime>();
+            s_times = new List<string>();
+            s_audiences = new List<string>();
         }
 
         /// <summary>

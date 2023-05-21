@@ -27,8 +27,8 @@
             <ComboBox Name="CBGroups" Width="300" HorizontalAlignment="Left" Margin="0 0 0 20" SelectionChanged="CBGroups_SelectionChanged"/>
             <TextBlock Text="Студент" Margin="0 0 0 5"/>
             <ComboBox Name="CBStudents" Width="300" HorizontalAlignment="Left" Margin="0 0 0 20"/>
-            <RadioButton Name="RBLastSemester" Content="Прошлый семестр" Height="{Binding ActualHeight, ElementName=CBStudents}" Margin="0 0 0 0"/>
-            <RadioButton Name="RBCurrentSemester" Content="Текущий семестр" Height="{Binding ActualHeight, ElementName=CBStudents}"/>
+            <RadioButton  Name="RBLastSemester" Content="Прошлый семестр" Height="{Binding ActualHeight, ElementName=CBStudents}" VerticalContentAlignment="Center" Margin="0 0 0 0"/>
+            <RadioButton Name="RBCurrentSemester" Content="Текущий семестр" Height="{Binding ActualHeight, ElementName=CBStudents}" VerticalContentAlignment="Center"/>
         </StackPanel>
 
         <TextBlock Grid.Row="1" Grid.Column="1" Text="Дисциплины" Margin="10"/>
@@ -51,8 +51,8 @@
                             <TextBlock Text="{Binding ShortName}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <WrapPanel Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <RadioButton Name="RBPrimary" Content="Первичная" Margin="0 5 20 5" Checked="RBPrimary_Checked" Loaded="RBPrimary_Loaded"/>
-                            <RadioButton Name="RBComission" Content="Комиссионная" Margin="0 5" Checked="RBComission_Checked" Loaded="RBComission_Loaded"/>
+                            <RadioButton Name="RBPrimary" Content="Первичная" Margin="0 5 20 5" VerticalContentAlignment="Center" Checked="RBPrimary_Checked" Loaded="RBPrimary_Loaded"/>
+                            <RadioButton Name="RBComission" Content="Комиссионная" Margin="0 5" VerticalContentAlignment="Center" Checked="RBComission_Checked" Loaded="RBComission_Loaded"/>
                         </WrapPanel>
                         <WrapPanel Grid.Column="3" VerticalAlignment="Center">
                             <StackPanel Orientation="Horizontal" Margin="0 5 20 5" VerticalAlignment="Center">

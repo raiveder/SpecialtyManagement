@@ -37,8 +37,8 @@
 
         <StackPanel Grid.Column="1" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel HorizontalAlignment="Center" Margin="0 0 0 20">
-                <RadioButton Name="RBLastSemester" Content="Прошлый семестр" Height="{Binding ActualHeight, ElementName=TBoxFind}" HorizontalAlignment="Left" Margin="0 0 0 20" Checked="RBLastSemester_Checked"/>
-                <RadioButton Name="RBCurrentSemester" Content="Текущий семестр" Height="{Binding ActualHeight, ElementName=TBoxFind}" HorizontalAlignment="Left" Checked="RBCurrentSemester_Checked"/>
+                <RadioButton Name="RBLastSemester" Content="Прошлый семестр" Height="{Binding ActualHeight, ElementName=TBoxFind}" HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="0 0 0 20" Checked="RBLastSemester_Checked"/>
+                <RadioButton Name="RBCurrentSemester" Content="Текущий семестр" Height="{Binding ActualHeight, ElementName=TBoxFind}" HorizontalAlignment="Left" VerticalContentAlignment="Center" Checked="RBCurrentSemester_Checked"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Name="TBSort" Text="Сортировка" Margin="0 0 10 0" VerticalAlignment="Center"/>
