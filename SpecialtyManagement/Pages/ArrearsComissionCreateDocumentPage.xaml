@@ -41,9 +41,9 @@
                 <DataTemplate>
                     <Grid Margin="0 10" MaxWidth="1200">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition MaxWidth="280"/>
-                            <ColumnDefinition MinWidth="320" Width="Auto"/>
-                            <ColumnDefinition MinWidth="320"/>
+                            <ColumnDefinition Width="0.24*"/>
+                            <ColumnDefinition Width="0.38*"/>
+                            <ColumnDefinition Width="0.38*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
