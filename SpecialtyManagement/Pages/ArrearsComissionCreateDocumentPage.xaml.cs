@@ -159,7 +159,23 @@ namespace SpecialtyManagement.Pages
         private void BtnChangeStudents_Click(object sender, RoutedEventArgs e)
         {
             int index = Convert.ToInt32((sender as Button).Uid);
-            ChoiceElementsWindow window = new ChoiceElementsWindow(s_students[index], "Выберите студентов", GetStudentsForLesson(s_arrears, s_lessons[index]));
+            int idLesson = s_lessons[index].Id;
+
+            List<Lessons> lessonsEquals = s_lessons.Where(x => x.Id == idLesson).ToList();
+            List<Students> studentsSource = GetStudentsForLesson(s_arrears, s_lessons[index]);
+
+            for (int i = 0; i < lessonsEquals.Count; i++)
+            {
+                foreach (Students item in s_students[lessonsEquals[i].SequenceNumber])
+                {
+                    if (studentsSource.Contains(item))
+                    {
+                        studentsSource.Remove(item);
+                    }
+                }
+            }
+
+            ChoiceElementsWindow window = new ChoiceElementsWindow(s_students[index], "Выберите студентов", studentsSource);
             window.ShowDialog();
 
             if ((bool)window.DialogResult)
