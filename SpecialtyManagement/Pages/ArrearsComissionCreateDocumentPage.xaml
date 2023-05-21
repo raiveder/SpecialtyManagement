@@ -41,45 +41,62 @@
                 <DataTemplate>
                     <Grid Margin="0 10" MaxWidth="1200">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition MaxWidth="280"/>
+                            <ColumnDefinition MinWidth="320" Width="Auto"/>
+                            <ColumnDefinition MinWidth="320"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <Border Grid.ColumnSpan="4" Name="BrdLesson" CornerRadius="{StaticResource CornerRadius}" Background="{StaticResource ColorSecondary}" Padding="20" Margin="0 0 0 10">
+                        <StackPanel Grid.Row="1" Grid.Column="0" Background="Aqua"/>
+                        <StackPanel Grid.Row="1" Grid.Column="1" Background="PapayaWhip"/>
+                        <StackPanel Grid.Row="1" Grid.Column="2" Background="NavajoWhite"/>
+
+                        <Border Grid.ColumnSpan="3" Name="BrdLesson" CornerRadius="{StaticResource CornerRadius}" Background="{StaticResource ColorSecondary}" Padding="20" Margin="0 0 0 10">
                             <TextBlock Name="TBLesson" Text="{Binding FullName}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
-                        <Button Grid.Column="3" Name="BtnDelete" Content="✕" Uid="{Binding SequenceNumber}" MinWidth="0" VerticalAlignment="Center" Padding="5 2" Margin="20 0 20 10" Click="BtnDelete_Click"/>
-                        
-                        <StackPanel Grid.Row="1">
-                            <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
-                                <TextBlock Text="Дата" Width="{Binding ActualWidth, ElementName=TBAudience}" VerticalAlignment="Center"/>
-                                <DatePicker Name="DPDate" Uid="{Binding SequenceNumber}" Width="{Binding ActualWidth, ElementName=TBoxAudience}" VerticalAlignment="Center" Loaded="DPDate_Loaded" SelectedDateChanged="DPDate_SelectedDateChanged"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
-                                <TextBlock Text="Время" Width="{Binding ActualWidth, ElementName=TBAudience}" VerticalAlignment="Center"/>
-                                <TextBox Name="TBoxTime" Uid="{Binding SequenceNumber}" Width="{Binding ActualWidth, ElementName=TBoxAudience}" VerticalAlignment="Center" Loaded="TBoxTime_Loaded" LostKeyboardFocus="TBoxTime_LostKeyboardFocus"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Name="TBAudience" Text="Аудитория" FontSize="20" VerticalAlignment="Center" Padding="0 0 10 0"/>
-                                <TextBox Name="TBoxAudience" Uid="{Binding SequenceNumber}" Width="150" VerticalAlignment="Center" Loaded="TBoxAudience_Loaded" LostKeyboardFocus="TBoxAudience_LostKeyboardFocus"/>
-                            </StackPanel>
+                        <Button Grid.Column="3" Name="BtnDelete" Content="✕" Uid="{Binding SequenceNumber}" MinWidth="0" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="5 2" Margin="20 0 20 10" Click="BtnDelete_Click"/>
+
+                        <StackPanel Grid.Row="1" Margin="10 0">
+                            <WrapPanel Margin="0 5">
+                                <TextBlock Text="Дата" Width="{Binding ActualWidth,ElementName=TBAudience}" VerticalAlignment="Center" Margin="0 2"/>
+                                <DatePicker Name="DPDate" Uid="{Binding SequenceNumber}" Width="{Binding ActualWidth, ElementName=TBoxAudience}" VerticalAlignment="Center" Margin="0 2" Loaded="DPDate_Loaded" SelectedDateChanged="DPDate_SelectedDateChanged"/>
+                            </WrapPanel>
+                            <WrapPanel Margin="0 5">
+                                <TextBlock Text="Время" Width="{Binding ActualWidth,ElementName=TBAudience}" VerticalAlignment="Center" Margin="0 2"/>
+                                <TextBox Name="TBoxTime" Uid="{Binding SequenceNumber}" Width="{Binding ActualWidth, ElementName=TBoxAudience}" VerticalAlignment="Center" Margin="0 2" Loaded="TBoxTime_Loaded" LostKeyboardFocus="TBoxTime_LostKeyboardFocus"/>
+                            </WrapPanel>
+                            <WrapPanel Margin="0 5">
+                                <TextBlock Name="TBAudience" Text="Аудитория" FontSize="20" VerticalAlignment="Center" Padding="0 2 10 2"/>
+                                <TextBox Name="TBoxAudience" Uid="{Binding SequenceNumber}" Width="150" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0 2" Loaded="TBoxAudience_Loaded" LostKeyboardFocus="TBoxAudience_LostKeyboardFocus"/>
+                            </WrapPanel>
                         </StackPanel>
 
                         <StackPanel Grid.Row="1" Grid.Column="2">
-                            <TextBlock Text="Студенты:"/>
-                            <StackPanel Name="SPStudents" Uid="{Binding SequenceNumber}" Margin="0 10" Loaded="SPStudents_Loaded"/>
-                            <Button Name="BtnChangeStudents" Content="Изменить" Uid="{Binding SequenceNumber}" MinWidth="0" HorizontalAlignment="Left" Padding="5" Click="BtnChangeStudents_Click"/>
+                            <TextBlock Text="Студенты" HorizontalAlignment="Center"/>
+                            <Grid Name="GridStudents" Uid="{Binding SequenceNumber}" Margin="0 10" Loaded="GridStudents_Loaded">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel HorizontalAlignment="Right" Margin="0 0 10 0"/>
+                                <StackPanel Grid.Column="1" HorizontalAlignment="Left" Margin="10 0 0 0"/>
+                            </Grid>
+                            <Button Name="BtnChangeStudents" Content="Изменить" Uid="{Binding SequenceNumber}" MinWidth="0" Padding="5" Click="BtnChangeStudents_Click"/>
                         </StackPanel>
                         <StackPanel Grid.Row="1" Grid.Column="1">
-                            <TextBlock Text="Преподаватели:"/>
-                            <StackPanel Name="SPTeachers" Uid="{Binding SequenceNumber}" Margin="0 10" Loaded="SPTeachers_Loaded"/>
-                            <Button Name="BtnChangeTeachers" Content="Изменить" Uid="{Binding SequenceNumber}" MinWidth="0" HorizontalAlignment="Left" Padding="5" Click="BtnChangeTeachers_Click"/>
+                            <TextBlock Text="Преподаватели" HorizontalAlignment="Center"/>
+                            <Grid Name="GridTeachers" Uid="{Binding SequenceNumber}" Margin="0 10" Loaded="GridTeachers_Loaded">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel HorizontalAlignment="Right" Margin="0 0 10 0"/>
+                                <StackPanel Grid.Column="1" HorizontalAlignment="Left" Margin="10 0 0 0"/>
+                            </Grid>
+                            <Button Name="BtnChangeTeachers" Content="Изменить" Uid="{Binding SequenceNumber}" MinWidth="0" Padding="5" Click="BtnChangeTeachers_Click"/>
                         </StackPanel>
                     </Grid>
                 </DataTemplate>

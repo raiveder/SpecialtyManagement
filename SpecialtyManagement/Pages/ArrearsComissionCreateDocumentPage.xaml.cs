@@ -34,6 +34,7 @@ namespace SpecialtyManagement.Pages
             _filter = filter;
             s_arrears = arrears;
             s_lessonsSource = GetAllLessonsForArrearsByType(s_arrears, IdTypeArrear);
+            s_lessons = new List<Lessons>();
             s_teachers = new List<List<Teachers>>();
             s_students = new List<List<Students>>();
             s_dates = new List<DateTime>();
@@ -116,43 +117,113 @@ namespace SpecialtyManagement.Pages
             box.Text = s_audiences[Convert.ToInt32(box.Uid)];
         }
 
-        private void SPTeachers_Loaded(object sender, RoutedEventArgs e)
+        private void GridTeachers_Loaded(object sender, RoutedEventArgs e)
         {
-            StackPanel panel = sender as StackPanel;
-            int index = Convert.ToInt32(panel.Uid);
+            Grid grid = sender as Grid;
+            StackPanel panelFirst = grid.Children[0] as StackPanel;
+            StackPanel panelSecond = grid.Children[1] as StackPanel;
+            int index = Convert.ToInt32(grid.Uid);
+
+            if (s_teachers[index].Count > 3)
+            {
+                for (int i = 0; i < s_teachers[index].Count; i++)
+                {
+                    if (i % 2 == 0)
+                    {
+                        panelFirst.Children.Add(new TextBlock()
+                        {
+                            Text = s_teachers[index][i].ShortName,
+                            Margin = new Thickness(0, 0, 0, 5)
+                        });
+                    }
+                    else
+                    {
+                        panelSecond.Children.Add(new TextBlock()
+                        {
+                            Text = s_teachers[index][i].ShortName,
+                            Margin = new Thickness(0, 0, 0, 5)
+                        });
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < s_teachers[index].Count; i++)
+                {
+                    panelFirst.Children.Add(new TextBlock()
+                    {
+                        Text = s_teachers[index][i].ShortName,
+                        Margin = new Thickness(0, 0, 0, 5)
+                    });
+                }
+                Grid.SetColumnSpan(panelFirst, 2);
+                panelFirst.HorizontalAlignment = HorizontalAlignment.Center;
+                panelFirst.Margin = new Thickness(0);
+            }
 
             if (s_teachers[index].Count > 0)
             {
-                foreach (var item in s_teachers[index])
-                {
-                    panel.Children.Add(new TextBlock()
-                    {
-                        Text = item.ShortName,
-                        Margin = new Thickness(0, 0, 0, 5)
-                    });
-                }
+                (panelFirst.Children[panelFirst.Children.Count - 1] as TextBlock).Margin = new Thickness(0);
 
-            (panel.Children[panel.Children.Count - 1] as TextBlock).Margin = new Thickness(0);
+                if (s_teachers[index].Count > 3)
+                {
+                    (panelSecond.Children[panelSecond.Children.Count - 1] as TextBlock).Margin = new Thickness(0);
+                }
             }
         }
 
-        private void SPStudents_Loaded(object sender, RoutedEventArgs e)
+        private void GridStudents_Loaded(object sender, RoutedEventArgs e)
         {
-            StackPanel panel = sender as StackPanel;
-            int index = Convert.ToInt32(panel.Uid);
+            Grid grid = sender as Grid;
+            StackPanel panelFirst = grid.Children[0] as StackPanel;
+            StackPanel panelSecond = grid.Children[1] as StackPanel;
+            int index = Convert.ToInt32(grid.Uid);
 
-            if (s_students[index].Count > 0)
+            if (s_students[index].Count > 3)
             {
-                foreach (var item in s_students[index])
+                for (int i = 0; i < s_students[index].Count; i++)
                 {
-                    panel.Children.Add(new TextBlock()
+                    if (i % 2 == 0)
                     {
-                        Text = item.ShortName,
+                        panelFirst.Children.Add(new TextBlock()
+                        {
+                            Text = s_students[index][i].ShortName,
+                            Margin = new Thickness(0, 0, 0, 5)
+                        });
+                    }
+                    else
+                    {
+                        panelSecond.Children.Add(new TextBlock()
+                        {
+                            Text = s_students[index][i].ShortName,
+                            Margin = new Thickness(0, 0, 0, 5)
+                        });
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < s_students[index].Count; i++)
+                {
+                    panelFirst.Children.Add(new TextBlock()
+                    {
+                        Text = s_students[index][i].ShortName,
                         Margin = new Thickness(0, 0, 0, 5)
                     });
                 }
+                Grid.SetColumnSpan(panelFirst, 2);
+                panelFirst.HorizontalAlignment = HorizontalAlignment.Center;
+                panelFirst.Margin = new Thickness(0);
+            }
 
-            (panel.Children[panel.Children.Count - 1] as TextBlock).Margin = new Thickness(0);
+            if (s_students[index].Count > 0)
+            {
+                (panelFirst.Children[panelFirst.Children.Count - 1] as TextBlock).Margin = new Thickness(0);
+
+                if (s_students[index].Count > 3)
+                {
+                    (panelSecond.Children[panelSecond.Children.Count - 1] as TextBlock).Margin = new Thickness(0);
+                }
             }
         }
 
