@@ -102,6 +102,7 @@ namespace SpecialtyManagement
                 {
                     MessageBox.Show("При чтении файла произошла ошибка. Проверьте корректность заполнения файла", "Студенты", MessageBoxButton.OK, MessageBoxImage.Information);
                     students = new List<Students>();
+                    break;
                 }
             }
 
@@ -138,7 +139,7 @@ namespace SpecialtyManagement
                         Note = array[3].Trim() == string.Empty ? null : array[3].Trim()
                     };
                 }
-                else if (fullName.Length == 1 && fullName[1] == string.Empty && array[2] == string.Empty && array[3] == string.Empty) // Если строка пустая.
+                else if (fullName.Length == 1 && fullName[0] == string.Empty && array[2] == string.Empty && array[3] == string.Empty) // Если строка пустая.
                 {
                     return new Students();
                 }

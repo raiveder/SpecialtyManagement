@@ -125,7 +125,7 @@ namespace SpecialtyManagement.Pages
 
         private void DGTeachers_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (DGTeachers.SelectedItems.Count == 0)
+            if (DGTeachers.SelectedItems.Count > 0)
             {
                 CMTeachers.IsOpen = true;
             }

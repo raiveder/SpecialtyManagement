@@ -104,7 +104,7 @@ namespace SpecialtyManagement.Pages
 
         private void DGTypesLessons_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (DGTypesLessons.SelectedItems.Count == 0)
+            if (DGTypesLessons.SelectedItems.Count > 0)
             {
                 CMTypesLessons.IsOpen = true;
             }

@@ -102,7 +102,7 @@ namespace SpecialtyManagement.Pages
                     students.Sort((x, y) => x.FullName.CompareTo(y.FullName));
                     break;
                 case 1:
-                    students.Sort((x, y) => x.Groups.Group.CompareTo(y.Groups.Group));
+                    students.Sort((x, y) => x.Groups.Group.CompareTo(y.Groups.Group) == 0 ? x.FullName.CompareTo(y.FullName) : x.Groups.Group.CompareTo(y.Groups.Group));
                     break;
                 case 2:
                     students.Sort((x, y) => x.Birthday.CompareTo(y.Birthday));
@@ -187,7 +187,15 @@ namespace SpecialtyManagement.Pages
                             try
                             {
                                 Database.Entities.SaveChanges();
-                                CBGroup.SelectedValue = students[0].IdGroup;
+
+                                if ((int)CBGroup.SelectedValue != students[0].IdGroup)
+                                {
+                                    CBGroup.SelectedValue = students[0].IdGroup;
+                                }
+                                else
+                                {
+                                    SetFilter();
+                                }
                             }
                             catch (Exception ex)
                             {
