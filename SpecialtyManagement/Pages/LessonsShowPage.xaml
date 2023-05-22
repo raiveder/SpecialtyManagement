@@ -27,7 +27,7 @@
 
         <DataGrid Grid.Row="1" Name="DGLessons" Margin="10 0" ColumnWidth="*" MouseLeftButtonUp="DGLessons_MouseLeftButtonUp" MouseRightButtonUp="DGLessons_MouseRightButtonUp">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="№" Binding="{Binding SequenceNumber}" MinWidth="40" MaxWidth="40" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>
+                <DataGridTextColumn Header="№" Binding="{Binding SequenceNumber}" MinWidth="50" MaxWidth="50" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>
                 <DataGridTextColumn Header="Дисциплина" Binding="{Binding FullName}"/>
             </DataGrid.Columns>
             <DataGrid.ContextMenu>

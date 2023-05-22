@@ -46,7 +46,7 @@
 
         <DataGrid Grid.Row="1" Name="DGStudents" Margin="10 0" ColumnWidth="*" CellStyle="{StaticResource DataGridTextCell}" MouseLeftButtonUp="DGStudents_MouseLeftButtonUp" MouseRightButtonUp="DGStudents_MouseRightButtonUp">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="№" Binding="{Binding SequenceNumber}" MinWidth="40" MaxWidth="40" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>
+                <DataGridTextColumn Header="№" Binding="{Binding SequenceNumber}" MinWidth="50" MaxWidth="50" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>
                 <DataGridTextColumn Header="Группа" Binding="{Binding Groups.Group}" MinWidth="80" MaxWidth="80" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>
                 <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}" MinWidth="200"/>
                 <DataGridTextColumn Header="Дата рождения" Binding="{Binding Birthday, StringFormat={}{0:dd.MM.yyyy}}" MinWidth="160" MaxWidth="160" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>

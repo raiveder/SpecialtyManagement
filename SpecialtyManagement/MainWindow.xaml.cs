@@ -44,7 +44,15 @@ namespace SpecialtyManagement
 
             Navigation.Frame = MainFrame;
             Navigation.Setting = new Setting();
-            Navigation.Frame.Navigate(new StudentsShowPage());
+
+            if (Database.Entities.Specialty.FirstOrDefault() == null)
+            {
+                Navigation.Frame.Navigate(new SettingsPage());
+            }
+            else
+            {
+                Navigation.Frame.Navigate(new StudentsShowPage());
+            }
 
             DataContext = Navigation.Setting;
         }
