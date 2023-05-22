@@ -51,6 +51,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_655EAFB3E8CE4DBA9B020FF918105D23"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_6A2B1D2550C20057B4C17CD840008031"
         "OwnerKey" = "8:_0185B94EE36D411E8E8A73D1343520CD"
         "MsmSig" = "8:_UNDEFINED"
@@ -481,6 +487,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_655EAFB3E8CE4DBA9B020FF918105D23"
+            {
+            "SourcePath" = "8:..\\SpecialtyManagement\\ScriptDatabase.sql"
+            "TargetName" = "8:ScriptDatabase.sql"
+            "Tag" = "8:"
+            "Folder" = "8:_4C1FD96D779C481B97029D688CC37736"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6A2B1D2550C20057B4C17CD840008031"
             {
             "AssemblyRegister" = "3:1"
@@ -837,7 +863,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Управление специальностью"
         "ProductCode" = "8:{F05DCC3A-4FB1-4557-A439-A92ADBB76AC9}"
-        "PackageCode" = "8:{1C87672A-CDE3-4298-B9DA-4C9DF3F4629A}"
+        "PackageCode" = "8:{18456C07-DFA8-4E65-B200-919FAE01A629}"
         "UpgradeCode" = "8:{CA492777-F5D1-46D6-B2E4-0397AFF563FE}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
