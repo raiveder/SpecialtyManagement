@@ -21,7 +21,6 @@ namespace SpecialtyManagement
 
             _buttonsMenu = SPMenu.Children.OfType<Button>().ToList();
             _buttonsMenu.Add(BtnSettings);
-            SelectButton(_buttonsMenu[0]);
 
             if (!Database.CreateEntities(out string message))
             {
@@ -48,10 +47,12 @@ namespace SpecialtyManagement
             if (Database.Entities.Specialty.FirstOrDefault() == null)
             {
                 Navigation.Frame.Navigate(new SettingsPage());
+                SelectButton(_buttonsMenu[_buttonsMenu.Count - 1]);
             }
             else
             {
                 Navigation.Frame.Navigate(new StudentsShowPage());
+                SelectButton(_buttonsMenu[0]);
             }
 
             DataContext = Navigation.Setting;

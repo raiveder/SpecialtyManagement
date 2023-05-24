@@ -19,7 +19,7 @@ namespace SpecialtyManagement.Pages
             InitializeComponent();
 
             _students = Database.Entities.Students.Where(x => x.Groups.Group.Substring(0, 1) == "1").ToList();
-            _students.Sort((x, y) => x.Groups.Group.CompareTo(y.Groups.Group));
+            _students.Sort((x, y) => x.Groups.Group.CompareTo(y.Groups.Group) == 0 ? x.FullName.CompareTo(y.FullName) : x.Groups.Group.CompareTo(y.Groups.Group));
 
             for (int i = 0; i < _students.Count; i++)
             {
@@ -58,29 +58,37 @@ namespace SpecialtyManagement.Pages
                 }
             }
 
-            ChoiceGroupForOffsetWindow window = new ChoiceGroupForOffsetWindow(students);
-            window.ShowDialog();
-
-            if ((bool)window.DialogResult)
+            if (students.Count > 0)
             {
-                foreach (Students item in students)
+                ChoiceGroupForOffsetWindow window = new ChoiceGroupForOffsetWindow(students);
+                window.ShowDialog();
+
+                if ((bool)window.DialogResult)
                 {
-                    int index = _students.IndexOf(item);
-                    _students.RemoveAt(index);
-                    _isAdded.RemoveAt(index);
-
-                    if (_students.Count == 0)
+                    foreach (Students item in students)
                     {
-                        Database.Entities.Groups.RemoveRange(Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "1"));
-                        Database.Entities.SaveChanges();
-                        Navigation.Frame.Navigate(new GroupsShowPage());
-                        return;
-                    }
-                }
+                        int index = _students.IndexOf(item);
+                        _students.RemoveAt(index);
+                        _isAdded.RemoveAt(index);
 
-                List<Students> tempStudents = new List<Students>();
-                tempStudents.AddRange(_students);
-                LVStudents.ItemsSource = tempStudents;
+                        if (_students.Count == 0)
+                        {
+                            // Удаление лишних групп 2-го курса.
+                            Database.Entities.Groups.RemoveRange(Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "2" && x.Students.Count == 0).ToList());
+                            Database.Entities.SaveChanges();
+                            Navigation.Frame.Navigate(new GroupsShowPage());
+                            return;
+                        }
+                    }
+
+                    List<Students> tempStudents = new List<Students>();
+                    tempStudents.AddRange(_students);
+                    LVStudents.ItemsSource = tempStudents;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Студенты не выбраны", "Смещение групп", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
     }

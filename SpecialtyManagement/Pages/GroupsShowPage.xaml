@@ -83,8 +83,13 @@
         <Border Grid.RowSpan="2" Grid.Column="1" BorderBrush="Gray" BorderThickness="0.5 0" Margin="0 40 0 0"/>
         <Border Grid.RowSpan="2" Grid.Column="2" BorderBrush="Gray" BorderThickness="0.5 0" Margin="0 40 0 0"/>
         <Border Grid.RowSpan="2" Grid.Column="3" BorderBrush="Gray" BorderThickness="0.5 0 0 0" Margin="0 40 0 0"/>
-        
+
         <Button Grid.Row="2" Name="BtnAdd" Content="Добавить" HorizontalAlignment="Left" Margin="10" Click="BtnAdd_Click"/>
-        <Button Grid.Row="2" Grid.ColumnSpan="4" Name="BtnOffset" Content="Смещение на год" HorizontalAlignment="Right" Margin="10" Click="BtnOffset_Click"/>
+        <Menu Grid.Row="2" Grid.ColumnSpan="4" Margin="10" HorizontalAlignment="Right">
+            <MenuItem Header="Смещение на год" Style="{StaticResource MenuItemStyle}">
+                <MenuItem Name="MIAll" Header="Все группы" Style="{StaticResource SubMenuItemStyle}" Click="MIAll_Click"/>
+                <MenuItem Name="MIFirstYear" Header="Только 1-й курс" Style="{StaticResource SubMenuItemStyle}" Click="MIFirstYear_Click"/>
+            </MenuItem>
+        </Menu>
     </Grid>
 </Page>

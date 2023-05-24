@@ -10,8 +10,8 @@
         Title="Управление специальностью" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Icon="/Resources/Icon.ico">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition MaxWidth="320"/>
-            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="0.25*" Name="CDMenu" MaxWidth="320"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
