@@ -73,7 +73,8 @@ namespace SpecialtyManagement.Pages
             {
                 bool isAdded = false;
 
-                foreach (DistributionLessons item in Database.Entities.DistributionLessons.Where(x => x.Lessons.TypesLessons.Type != "ОП" && x.Lessons.Code.Substring(0, 2) == TBoxCode.Text))
+                foreach (DistributionLessons item in Database.Entities.DistributionLessons
+                    .Where(x => x.Lessons.TypesLessons.Type != "ОП" && x.Lessons.Code.Substring(0, 2) == TBoxCode.Text))
                 {
                     _teachers.Add(item.Teachers);
                     _groups.Add(item.Groups);
