@@ -98,6 +98,26 @@ namespace SpecialtyManagement.Pages
             int index = Convert.ToInt32(datePicker.Uid);
 
             datePicker.DisplayDateStart = DateTime.Now.AddDays(1);
+            datePicker.DisplayDateEnd = DateTime.Now.AddMonths(1);
+
+            DateTime dateWeekend = (DateTime)datePicker.DisplayDateStart;
+
+            if (dateWeekend.DayOfWeek != DayOfWeek.Sunday)
+            {
+                for (DateTime date = dateWeekend; date <= (DateTime)datePicker.DisplayDateEnd; date = date.AddDays(1))
+                {
+                    if (date.DayOfWeek == DayOfWeek.Sunday)
+                    {
+                        dateWeekend = date;
+                        break;
+                    }
+                }
+            }
+
+            for (DateTime date = dateWeekend; date <= (DateTime)datePicker.DisplayDateEnd; date = date.AddDays(7))
+            {
+                datePicker.BlackoutDates.Add(new CalendarDateRange(date));
+            }
 
             if (s_dates[index] >= DateTime.Now)
             {

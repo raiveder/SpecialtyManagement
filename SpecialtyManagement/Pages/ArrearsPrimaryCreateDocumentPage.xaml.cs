@@ -392,6 +392,26 @@ namespace SpecialtyManagement.Pages
         {
             DatePicker datePicker = sender as DatePicker;
             datePicker.DisplayDateStart = DateTime.Now.AddDays(1);
+            datePicker.DisplayDateEnd = DateTime.Now.AddMonths(1);
+
+            DateTime dateWeekend = (DateTime)datePicker.DisplayDateStart;
+
+            if (dateWeekend.DayOfWeek != DayOfWeek.Sunday)
+            {
+                for (DateTime date = dateWeekend; date <= (DateTime)datePicker.DisplayDateEnd; date = date.AddDays(1))
+                {
+                    if (date.DayOfWeek == DayOfWeek.Sunday)
+                    {
+                        dateWeekend = date;
+                        break;
+                    }
+                }
+            }
+
+            for (DateTime date = dateWeekend; date <= (DateTime)datePicker.DisplayDateEnd; date = date.AddDays(7))
+            {
+                datePicker.BlackoutDates.Add(new CalendarDateRange(date));
+            }
         }
 
         private void DPDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
@@ -399,9 +419,9 @@ namespace SpecialtyManagement.Pages
             DatePicker datePicker = sender as DatePicker;
             DateTime date = datePicker.SelectedDate.Value;
 
-            if (date < DateTime.Today)
+            if (date.DayOfWeek == DayOfWeek.Sunday)
             {
-                MessageBox.Show("Дата назначения пересдачи не может быть ранее, чем сегодня", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Дата назначения пересдачи не может быть в воскресенье", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
                 datePicker.IsDropDownOpen = true;
             }
             else
@@ -453,56 +473,7 @@ namespace SpecialtyManagement.Pages
 
         private void BtnGenerate_Click(object sender, RoutedEventArgs e)
         {
-            if (CheckFillData())
-            {
-                new CreateDocumentWindow().ShowDialog();
-            }
-        }
-
-        /// <summary>
-        /// Проверяет корректность заполнения полей.
-        /// </summary>
-        /// <returns>True - если все данные заполнены корректно, в противном случае - false.</returns>
-        private bool CheckFillData()
-        {
-            //foreach (string item in _dates)
-            //{
-            //    if (item == string.Empty)
-            //    {
-            //        MessageBox.Show("Не все даты работы преподавателей выбраны", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
-            //        return false;
-            //    }
-            //    else if (!DateTime.TryParse(item, out DateTime result))
-            //    {
-            //        MessageBox.Show("Проверьте корректность выбранных дат работы преподавателей", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
-            //        return false;
-            //    }
-            //}
-
-            //foreach (string item in _times)
-            //{
-            //    if (item == string.Empty)
-            //    {
-            //        MessageBox.Show("Не все времена работы преподавателей выбраны", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
-            //        return false;
-            //    }
-            //    else if (!Regex.IsMatch(item, @"^(([0-1][0-9])|([2][0-3])):([0-5][0-9])$"))
-            //    {
-            //        MessageBox.Show("Проверьте корректность выбранного времени работы преподавателей", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
-            //        return false;
-            //    }
-            //}
-
-            //foreach (string item in _audiences)
-            //{
-            //    if (item == string.Empty)
-            //    {
-            //        MessageBox.Show("Не все аудитории выбраны", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
-            //        return false;
-            //    }
-            //}
-
-            return true;
+            new CreateDocumentWindow().ShowDialog();
         }
 
         /// <summary>
@@ -1008,6 +979,21 @@ namespace SpecialtyManagement.Pages
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
             Navigation.Frame.Navigate(new ArrearsShowPage(_filter));
+        }
+
+        private void DPDate_CalendarClosed(object sender, RoutedEventArgs e)
+        {
+            DatePicker datePicker = sender as DatePicker;
+            DateTime date = datePicker.SelectedDate.Value;
+
+            if (date.DayOfWeek == DayOfWeek.Sunday)
+            {
+                MessageBox.Show("Дата назначения пересдачи не может быть в воскресенье", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                s_dates[GetIndexTeacher(datePicker.DataContext as List<Teachers>)] = date.ToString("d");
+            }
         }
     }
 }

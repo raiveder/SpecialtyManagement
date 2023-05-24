@@ -39,10 +39,15 @@ namespace SpecialtyManagement
         {
             if (isCurrentSemester)
             {
-                if (DateTime.Today >= new DateTime(DateTime.Today.Year, 9, 1) && DateTime.Today <= new DateTime(DateTime.Today.Year, 12, 31))
+                if (DateTime.Today > new DateTime(DateTime.Today.Year, 6, 28) && DateTime.Today < new DateTime(DateTime.Today.Year, 12, 29))
                 {
                     year = DateTime.Today.Year;
                     semesterNumber = 1;
+                }
+                else if (DateTime.Today > new DateTime(DateTime.Today.Year, 12, 28) && DateTime.Today < new DateTime(DateTime.Today.Year + 1, 1, 1))
+                {
+                    year = DateTime.Today.Year;
+                    semesterNumber = 2;
                 }
                 else
                 {
@@ -52,46 +57,20 @@ namespace SpecialtyManagement
             }
             else
             {
-                if (DateTime.Today >= new DateTime(DateTime.Today.Year, 9, 1) && DateTime.Today <= new DateTime(DateTime.Today.Year, 12, 31))
+                if (DateTime.Today > new DateTime(DateTime.Today.Year, 6, 28) && DateTime.Today < new DateTime(DateTime.Today.Year, 12, 29))
+                {
+                    year = DateTime.Today.Year - 1;
+                    semesterNumber = 2;
+                }
+                else if (DateTime.Today > new DateTime(DateTime.Today.Year, 12, 28) && DateTime.Today < new DateTime(DateTime.Today.Year + 1, 1, 1))
                 {
                     year = DateTime.Today.Year;
-                    semesterNumber = 2;
+                    semesterNumber = 1;
                 }
                 else
                 {
                     year = DateTime.Today.Year - 1;
                     semesterNumber = 1;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Проверяет, является ли указанный семестр текущим.
-        /// </summary>
-        /// <param name="semesterNumber">номер семестра.</param>
-        /// <returns>True - семестр является текущим, в противном случае - false.</returns>
-        public static bool IsCurrentSemester(int semesterNumber)
-        {
-            if (DateTime.Today >= new DateTime(DateTime.Today.Year, 9, 1) && DateTime.Today <= new DateTime(DateTime.Today.Year, 12, 31))
-            {
-                if (semesterNumber == 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                if (semesterNumber == 2)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
                 }
             }
         }

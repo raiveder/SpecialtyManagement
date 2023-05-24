@@ -159,6 +159,7 @@
             <Setter Property="FontFamily" Value="{StaticResource Font}"/>
             <Setter Property="FontSize" Value="{StaticResource FontSize}"/>
             <Setter Property="Background" Value="{StaticResource ColorPrimary}"/>
+            <Setter Property="Focusable" Value="False"/>
             <Style.Resources>
                 <Style TargetType="Button">
                     <Setter Property="MinWidth" Value="10"/>
@@ -168,6 +169,7 @@
                     <Setter Property="FontFamily" Value="{StaticResource Font}"/>
                     <Setter Property="FontSize" Value="{StaticResource FontSize}"/>
                     <Setter Property="Background" Value="{StaticResource ColorPrimary}"/>
+                    <Setter Property="Cursor" Value="Arrow"/>
                 </Style>
             </Style.Resources>
         </Style>
