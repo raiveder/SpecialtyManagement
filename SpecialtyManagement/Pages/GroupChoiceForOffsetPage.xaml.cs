@@ -19,7 +19,9 @@ namespace SpecialtyManagement.Pages
             InitializeComponent();
 
             _students = Database.Entities.Students.Where(x => x.Groups.Group.Substring(0, 1) == "1").ToList();
-            _students.Sort((x, y) => x.Groups.Group.CompareTo(y.Groups.Group) == 0 ? x.FullName.CompareTo(y.FullName) : x.Groups.Group.CompareTo(y.Groups.Group));
+            _students.Sort((x, y) => x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()) == 0
+            ? x.FullName.ToLower().CompareTo(y.FullName.ToLower())
+            : x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()));
 
             for (int i = 0; i < _students.Count; i++)
             {

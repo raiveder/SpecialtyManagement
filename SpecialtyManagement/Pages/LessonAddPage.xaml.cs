@@ -67,6 +67,31 @@ namespace SpecialtyManagement.Pages
             CBTypes.DisplayMemberPath = "Type";
         }
 
+        private void TBoxCode_LostKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
+        {
+            if ((CBTypes.SelectedItem as TypesLessons).Type == "ПМ")
+            {
+                bool isAdded = false;
+
+                foreach (DistributionLessons item in Database.Entities.DistributionLessons.Where(x => x.Lessons.TypesLessons.Type != "ОП" && x.Lessons.Code.Substring(0, 2) == TBoxCode.Text))
+                {
+                    _teachers.Add(item.Teachers);
+                    _groups.Add(item.Groups);
+
+                    if (!isAdded)
+                    {
+                        isAdded = true;
+                    }
+                }
+
+                if (isAdded)
+                {
+                    LVTeachers.ItemsSource = new List<Teachers>();
+                    UpdateListView();
+                }
+            }
+        }
+
         private void LBTeachers_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (LBTeachers.SelectedIndex != -1)
@@ -184,6 +209,13 @@ namespace SpecialtyManagement.Pages
                     }
 
                     _lesson = null;
+                    CBTypes.SelectedIndex = -1;
+                    TBoxCode.Text = string.Empty;
+                    TBoxName.Text = string.Empty;
+                    _groups.Clear();
+                    _teachers.Clear();
+                    _indexGroup = 0;
+                    LVTeachers.ItemsSource = new List<Teachers>();
                 }
                 catch (Exception ex)
                 {
@@ -212,7 +244,12 @@ namespace SpecialtyManagement.Pages
             }
             else if (TBoxCode.Text.Length == 0)
             {
-                MessageBox.Show("Введите код дисциплины корректно", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Введите код дисциплины", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            if (TBoxCode.Text.Length < 2)
+            {
+                MessageBox.Show("Код дисциплины не может быть короче 2-х символов. Если он состоит из одной цифры, то поставьте в начало \"0\"", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
             else if (TBoxName.Text.Length == 0)
@@ -220,16 +257,9 @@ namespace SpecialtyManagement.Pages
                 MessageBox.Show("Введите наименование дисциплины", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
-            else if (_lesson == null && Database.Entities.Lessons.FirstOrDefault(x => x.IdType == (int)CBTypes.SelectedValue &&
-            x.Code == TBoxCode.Text && x.Name == TBoxName.Text) != null)
+            else if (Database.Entities.Lessons.FirstOrDefault(x => x.IdType == (int)CBTypes.SelectedValue && x.Code == TBoxCode.Text) != null)
             {
-                MessageBox.Show("Данная дисциплина уже есть в базе данных, для изменения списка преподавателей отредактируйте её", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return false;
-            }
-            else if (_lesson != null && Database.Entities.Lessons.FirstOrDefault(x => x.Id != _lesson.Id && x.IdType == (int)CBTypes.SelectedValue &&
-            x.Code == TBoxCode.Text && x.Name == TBoxName.Text) != null)
-            {
-                MessageBox.Show("Другая такая же дисциплина уже есть в базе данных", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Дисциплина с таким кодом уже есть в базе данных, для изменения списка преподавателей отредактируйте её", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
 

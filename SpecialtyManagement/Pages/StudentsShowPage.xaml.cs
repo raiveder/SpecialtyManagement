@@ -99,7 +99,9 @@ namespace SpecialtyManagement.Pages
                     students.Sort((x, y) => x.FullName.CompareTo(y.FullName));
                     break;
                 case 1:
-                    students.Sort((x, y) => x.Groups.Group.CompareTo(y.Groups.Group) == 0 ? x.FullName.CompareTo(y.FullName) : x.Groups.Group.CompareTo(y.Groups.Group));
+                    students.Sort((x, y) => x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()) == 0
+                    ? x.FullName.ToLower().CompareTo(y.FullName.ToLower())
+                    : x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()));
                     break;
                 case 2:
                     students.Sort((x, y) => x.Birthday.CompareTo(y.Birthday));
@@ -109,7 +111,9 @@ namespace SpecialtyManagement.Pages
                     students.Reverse();
                     break;
                 case 4:
-                    students.Sort((x, y) => x.Groups.Group.CompareTo(y.Groups.Group) == 0 ? x.FullName.CompareTo(y.FullName) : x.Groups.Group.CompareTo(y.Groups.Group));
+                    students.Sort((x, y) => x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()) == 0
+                    ? x.FullName.ToLower().CompareTo(y.FullName.ToLower())
+                    : x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()));
                     students.Reverse();
                     break;
                 case 5:

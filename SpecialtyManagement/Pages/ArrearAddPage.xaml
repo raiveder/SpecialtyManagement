@@ -16,7 +16,7 @@
             <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="0.8*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
@@ -24,9 +24,9 @@
 
         <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Text="Группа" Margin="0 0 0 5"/>
-            <ComboBox Name="CBGroups" Width="300" HorizontalAlignment="Left" Margin="0 0 0 20" SelectionChanged="CBGroups_SelectionChanged"/>
+            <ComboBox Name="CBGroups" Width="{Binding ActualWidth, ElementName=CBStudents}" HorizontalAlignment="Left" Margin="0 0 0 20" SelectionChanged="CBGroups_SelectionChanged"/>
             <TextBlock Text="Студент" Margin="0 0 0 5"/>
-            <ComboBox Name="CBStudents" Width="300" HorizontalAlignment="Left" Margin="0 0 0 20"/>
+            <ComboBox Name="CBStudents" MinWidth="300" MaxWidth="400" HorizontalAlignment="Left" Margin="0 0 0 20"/>
             <RadioButton  Name="RBLastSemester" Content="Прошлый семестр" Height="{Binding ActualHeight, ElementName=CBStudents}" VerticalContentAlignment="Center" Margin="0 0 0 0"/>
             <RadioButton Name="RBCurrentSemester" Content="Текущий семестр" Height="{Binding ActualHeight, ElementName=CBStudents}" VerticalContentAlignment="Center"/>
         </StackPanel>

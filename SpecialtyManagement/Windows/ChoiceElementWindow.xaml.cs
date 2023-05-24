@@ -25,7 +25,7 @@ namespace SpecialtyManagement.Windows
             TBName.Text = "Группа";
 
             List<Groups> groups = Database.Entities.Groups.ToList();
-            groups.Sort((x, y) => x.Group.CompareTo(y.Group));
+            groups.Sort((x, y) => x.Group.ToLower().CompareTo(y.Group.ToLower()));
             CBItems.ItemsSource = groups;
             CBItems.SelectedValuePath = "Id";
             CBItems.DisplayMemberPath = "Group";
@@ -40,7 +40,9 @@ namespace SpecialtyManagement.Windows
             _teacher = teacher;
             TBName.Text = "Преподаватель";
 
-            CBItems.ItemsSource = Database.Entities.Teachers.ToList();
+            List<Teachers> teachers = Database.Entities.Teachers.ToList();
+            teachers.Sort((x, y) => x.FullName.ToLower().CompareTo(y.FullName.ToLower()));
+            CBItems.ItemsSource = teachers;
             CBItems.SelectedValuePath = "Id";
             CBItems.DisplayMemberPath = "FullName";
         }
@@ -54,6 +56,7 @@ namespace SpecialtyManagement.Windows
             _lesson = lesson;
             TBName.Text = "Дисциплина";
 
+            lessonsSource.Sort((x, y) => x.FullName.ToLower().CompareTo(y.FullName.ToLower()));
             CBItems.ItemsSource = lessonsSource;
             CBItems.SelectedValuePath = "Id";
             CBItems.DisplayMemberPath = "FullName";

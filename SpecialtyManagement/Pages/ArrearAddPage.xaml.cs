@@ -75,7 +75,7 @@ namespace SpecialtyManagement.Pages
             CBGroups.SelectedValuePath = "Id";
             CBGroups.DisplayMemberPath = "Group";
 
-            CBStudents.ItemsSource = Database.Entities.Students.ToList();
+            CBStudents.IsEnabled = false;
             CBStudents.SelectedValuePath = "Id";
             CBStudents.DisplayMemberPath = "FullName";
 
@@ -92,6 +92,7 @@ namespace SpecialtyManagement.Pages
         {
             List<Lessons> tempItems = new List<Lessons>();
             tempItems.AddRange(itemsSource);
+            tempItems.Sort((x, y) => x.FullName.ToLower().CompareTo(y.FullName.ToLower()));
             LBLessons.ItemsSource = tempItems;
 
             List<Lessons> tempSelectedItems = new List<Lessons>();
@@ -113,7 +114,10 @@ namespace SpecialtyManagement.Pages
 
                 foreach (DistributionLessons item in Database.Entities.DistributionLessons.Where(x => x.IdGroup == (int)CBGroups.SelectedValue))
                 {
-                    _lessons.Add(item.Lessons);
+                    if (!_lessons.Contains(item.Lessons))
+                    {
+                        _lessons.Add(item.Lessons);
+                    }
                 }
 
                 if (_lessons.Count == 0)
@@ -131,9 +135,12 @@ namespace SpecialtyManagement.Pages
                 {
                     CBStudents.IsEnabled = true;
                 }
+
             }
             else
             {
+                _lessons.Clear();
+                CBStudents.ItemsSource = new List<Students>();
                 CBStudents.IsEnabled = false;
             }
 
@@ -280,6 +287,7 @@ namespace SpecialtyManagement.Pages
                     }
 
                     _arrear = null;
+                    CBGroups.SelectedIndex = -1;
                 }
                 catch (Exception ex)
                 {

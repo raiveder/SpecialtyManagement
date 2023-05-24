@@ -16,7 +16,7 @@
             <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="0.8*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
@@ -26,7 +26,7 @@
             <TextBlock Text="Тип" Margin="0 0 0 5"/>
             <ComboBox Name="CBTypes" Width="300" HorizontalAlignment="Left" Margin="0 0 0 20"/>
             <TextBlock Text="Код" Margin="0 0 0 5"/>
-            <TextBox Name="TBoxCode" Width="300" HorizontalAlignment="Left" Margin="0 0 0 20"/>
+            <TextBox Name="TBoxCode" Width="300" HorizontalAlignment="Left" Margin="0 0 0 20" LostKeyboardFocus="TBoxCode_LostKeyboardFocus"/>
             <TextBlock Text="Наименование" Margin="0 0 0 5"/>
             <TextBox Name="TBoxName" Width="300" HorizontalAlignment="Left" TextWrapping="Wrap"/>
         </StackPanel>

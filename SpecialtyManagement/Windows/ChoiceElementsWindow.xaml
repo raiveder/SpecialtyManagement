@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SpecialtyManagement.Windows"
         mc:Ignorable="d"
-        ResizeMode="NoResize"
-        Title="Управление специальностью" Height="500" Width="700" WindowStartupLocation="CenterScreen" Icon="/Resources/Icon.ico">
+        MinHeight="500" MaxHeight="800"
+        MinWidth="700" MaxWidth="850"
+        Title="Управление специальностью" Height="500" Width="750" WindowStartupLocation="CenterScreen" Icon="/Resources/Icon.ico">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
@@ -14,7 +15,7 @@
             <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="0.8*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
@@ -25,14 +26,8 @@
         <TextBlock Name="TBItems" Grid.Row="1" Grid.Column="1" Margin="10 0"/>
         <ListBox Grid.Row="1" Grid.Column="1" Name="LBItems" Margin="10 30 10 0" SelectionChanged="LBLessons_SelectionChanged"/>
 
-        <TextBlock Name="TBSelectedItems" Grid.Row="1" Margin="10 0"/>
+        <TextBlock Name="TBSelectedItems" Grid.Row="1" Margin="10 0 0 0"/>
         <ListView Grid.Row="1" Name="LVItems" Margin="10 30 10 0">
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel/>
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Border CornerRadius="{StaticResource CornerRadius}" Background="{StaticResource ColorSecondary}" Padding="10" Margin="5">

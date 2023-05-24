@@ -59,6 +59,7 @@ namespace SpecialtyManagement.Windows
                     }
 
                     _typeLesson = null;
+                    TBoxType.Text = string.Empty;
                 }
                 catch (Exception ex)
                 {
@@ -83,6 +84,11 @@ namespace SpecialtyManagement.Windows
             if (TBoxType.Text.Length == 0)
             {
                 MessageBox.Show("Введите тип дисциплины", "Типы дисциплин", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            if (TBoxType.Text.Length < 2)
+            {
+                MessageBox.Show("Тип дисциплины не может быть короче 2-х символов", "Типы дисциплин", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
             else if (_typeLesson == null && Database.Entities.TypesLessons.FirstOrDefault(x => x.Type == TBoxType.Text) != null)

@@ -9,6 +9,9 @@ namespace SpecialtyManagement.Windows
     /// </summary>
     public partial class ChoiceElementsWindow : Window
     {
+        //students.Sort((x, y) => x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()) == 0
+        //? x.FullName.ToLower().CompareTo(y.FullName.ToLower())
+        //: x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()));
         private List<Teachers> _teachersSelectedTemp = new List<Teachers>();
         private List<Teachers> _teachersSelected;
         private List<Teachers> _teachers;
@@ -31,8 +34,9 @@ namespace SpecialtyManagement.Windows
             _teachersSelected = teachers;
             _teachersSelectedTemp.AddRange(_teachersSelected);
 
-            LBItems.ItemsSource = _teachers;
-            LVItems.ItemsSource = _teachersSelected;
+            _teachers.Sort((x, y) => x.FullName.ToLower().CompareTo(y.FullName.ToLower()));
+            _teachersSelected.Sort((x, y) => x.FullName.ToLower().CompareTo(y.FullName.ToLower()));
+            UpdateView(_teachersSelected, _teachers);
         }
 
         public ChoiceElementsWindow(List<Students> students, string text, List<Students> studentsSource)
@@ -47,8 +51,9 @@ namespace SpecialtyManagement.Windows
             _studentsSelected = students;
             _studentsSelectedTemp.AddRange(_studentsSelected);
 
-            LBItems.ItemsSource = _students;
-            LVItems.ItemsSource = _studentsSelected;
+            _students.Sort((x, y) => x.FullName.ToLower().CompareTo(y.FullName.ToLower()));
+            _studentsSelected.Sort((x, y) => x.FullName.ToLower().CompareTo(y.FullName.ToLower()));
+            UpdateView(_studentsSelected, _students);
         }
 
         /// <summary>
@@ -84,51 +89,6 @@ namespace SpecialtyManagement.Windows
             LBItems.DisplayMemberPath = "FullName";
         }
 
-        private void LBLessons_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (LBItems.SelectedIndex != -1)
-            {
-                if (_teachers != null)
-                {
-                    Teachers teacher = LBItems.SelectedItem as Teachers;
-                    _teachersSelectedTemp.Add(teacher);
-                    _teachers.Remove(teacher);
-
-                    UpdateView(_teachersSelectedTemp, _teachers);
-                }
-                else if (_students != null)
-                {
-                    Students student = LBItems.SelectedItem as Students;
-                    _studentsSelectedTemp.Add(student);
-                    _students.Remove(student);
-
-                    UpdateView(_studentsSelectedTemp, _students);
-                }
-            }
-        }
-
-        private void BtnDelete_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = sender as Button;
-
-            if (_teachers != null)
-            {
-                Teachers teacher = button.DataContext as Teachers;
-                _teachersSelectedTemp.Remove(teacher);
-                _teachers.Add(teacher);
-
-                UpdateView(_teachersSelectedTemp, _teachers);
-            }
-            else if (_students != null)
-            {
-                Students student = button.DataContext as Students;
-                _studentsSelectedTemp.Remove(student);
-                _students.Add(student);
-
-                UpdateView(_studentsSelectedTemp, _students);
-            }
-        }
-
         /// <summary>
         /// Обновляет визуальное отображение списков.
         /// </summary>
@@ -151,6 +111,55 @@ namespace SpecialtyManagement.Windows
             else
             {
                 TBSelectedItems.Text = _headerSelectedItems + " (" + tempSelectedItems.Count + ")";
+            }
+        }
+
+        private void LBLessons_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (LBItems.SelectedIndex != -1)
+            {
+                if (_teachers != null)
+                {
+                    Teachers teacher = LBItems.SelectedItem as Teachers;
+                    _teachersSelectedTemp.Add(teacher);
+                    _teachers.Remove(teacher);
+
+                    _teachersSelected.Sort((x, y) => x.FullName.ToLower().CompareTo(y.FullName.ToLower()));
+                    UpdateView(_teachersSelectedTemp, _teachers);
+                }
+                else if (_students != null)
+                {
+                    Students student = LBItems.SelectedItem as Students;
+                    _studentsSelectedTemp.Add(student);
+                    _students.Remove(student);
+
+                    _studentsSelected.Sort((x, y) => x.FullName.ToLower().CompareTo(y.FullName.ToLower()));
+                    UpdateView(_studentsSelectedTemp, _students);
+                }
+            }
+        }
+
+        private void BtnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+
+            if (_teachers != null)
+            {
+                Teachers teacher = button.DataContext as Teachers;
+                _teachersSelectedTemp.Remove(teacher);
+                _teachers.Add(teacher);
+
+                _teachers.Sort((x, y) => x.FullName.ToLower().CompareTo(y.FullName.ToLower()));
+                UpdateView(_teachersSelectedTemp, _teachers);
+            }
+            else if (_students != null)
+            {
+                Students student = button.DataContext as Students;
+                _studentsSelectedTemp.Remove(student);
+                _students.Add(student);
+
+                _students.Sort((x, y) => x.FullName.ToLower().CompareTo(y.FullName.ToLower()));
+                UpdateView(_studentsSelectedTemp, _students);
             }
         }
 

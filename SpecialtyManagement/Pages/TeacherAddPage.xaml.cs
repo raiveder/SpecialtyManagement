@@ -1,6 +1,7 @@
 ﻿using SpecialtyManagement.Windows;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -186,6 +187,13 @@ namespace SpecialtyManagement.Pages
                     }
 
                     _teacher = null;
+                    TBoxSurname.Text = string.Empty;
+                    TBoxName.Text = string.Empty;
+                    TBoxPatronymic.Text = string.Empty;
+                    _groups.Clear();
+                    _lessons.Clear();
+                    _indexGroup = 0;
+                    LVLessons.ItemsSource = new List<Teachers>();
                 }
                 catch (Exception ex)
                 {

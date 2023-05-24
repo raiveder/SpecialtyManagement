@@ -123,7 +123,7 @@ namespace SpecialtyManagement.Pages
                     Database.Entities.SaveChanges();
 
                     // Удаление лишних групп 4-го курса.
-                    Database.Entities.Groups.RemoveRange(Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "4" && x.Students.Count == 0).ToList());
+                    Database.Entities.Groups.RemoveRange(Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "4" && x.Students.Count == 0));
 
                     // Перевод студентов со 2-го курса на 3-ый.
                     groups = Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "2").ToList();

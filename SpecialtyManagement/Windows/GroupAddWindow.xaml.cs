@@ -58,6 +58,7 @@ namespace SpecialtyManagement.Windows
                     }
 
                     _group = null;
+                    TBoxGroup.Text = string.Empty;
                 }
                 catch (Exception ex)
                 {

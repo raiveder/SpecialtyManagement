@@ -197,29 +197,29 @@ namespace SpecialtyManagement.Pages
                     Text = item.Lessons.ShortName
                 };
 
-                if (!item.IsLiquidated)
+                if (item.IsLiquidated)
                 {
-                    if (item.IdType == 2) // Комиссионная задолженность.
-                    {
-                        tb.Foreground = Brushes.Red;
-                    }
 
-                    if (item.Arrears.Students.IsExpelled) // Задолженность, не сданная по причине отчисления.
-                    {
-                        tb.Foreground = Brushes.PaleVioletRed;
-                    }
-                    else if (item.Arrears.Students.IsAcademic) // Задолженность, не сданная по причине академического отпуска.
-                    {
-                        tb.Foreground = Brushes.Brown;
-                    }
-                    else if (item.IsGoodReason) // Задолженность, не сданная по уважительной причине.
-                    {
-                        tb.Foreground = Brushes.Green;
-                    }
+                    tb.Foreground = Brushes.Blue; // Ликвидированная задолженность.
                 }
                 else
                 {
-                    tb.Foreground = Brushes.Blue; // Ликвидированная задолженность.
+                    if (item.Arrears.Students.IsExpelled)
+                    {
+                        tb.Foreground = Brushes.PaleVioletRed; // Задолженность, не сданная по причине отчисления.
+                    }
+                    else if (item.Arrears.Students.IsAcademic)
+                    {
+                        tb.Foreground = Brushes.Brown; // Задолженность, не сданная по причине академического отпуска.
+                    }
+                    else if (item.IsGoodReason)
+                    {
+                        tb.Foreground = Brushes.Green; // Задолженность, не сданная по уважительной причине.
+                    }
+                    else if (item.IdType == 2)
+                    {
+                        tb.Foreground = Brushes.Red; // Комиссионная задолженность.
+                    }
                 }
 
                 tb.Text += ", ";
