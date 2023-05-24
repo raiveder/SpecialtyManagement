@@ -320,10 +320,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="TempFiles\41П.csv" />
-    <None Include="TempFiles\42В.csv" />
-    <None Include="TempFiles\43П.csv" />
-    <None Include="TempFiles\44В.csv" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

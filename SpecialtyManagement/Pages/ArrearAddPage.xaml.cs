@@ -69,7 +69,9 @@ namespace SpecialtyManagement.Pages
 
             _filter = filter;
 
-            CBGroups.ItemsSource = Database.Entities.Groups.ToList();
+            List<Groups> groups = Database.Entities.Groups.ToList();
+            groups.Sort((x, y) => x.Group.ToLower().CompareTo(y.Group.ToLower()));
+            CBGroups.ItemsSource = groups;
             CBGroups.SelectedValuePath = "Id";
             CBGroups.DisplayMemberPath = "Group";
 

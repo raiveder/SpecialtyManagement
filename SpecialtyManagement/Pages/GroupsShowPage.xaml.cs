@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -21,14 +22,23 @@ namespace SpecialtyManagement.Pages
         /// <summary>
         /// Обновляет визуальное отображение списков.
         /// </summary>
-        /// <param name="itemsSelected">выбранные элементы.</param>
-        /// <param name="itemsSource">элементы для выбора.</param>
         private void UpdateView()
         {
-            LVFirstYear.ItemsSource = Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "1").ToList();
-            LVSecondYear.ItemsSource = Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "2").ToList();
-            LVThirdYear.ItemsSource = Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "3").ToList();
-            LVFourthYear.ItemsSource = Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "4").ToList();
+            List<Groups> groups = Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "1").ToList();
+            groups.Sort((x, y) => x.Group.ToLower().CompareTo(y.Group.ToLower()));
+            LVFirstYear.ItemsSource = groups;
+
+            groups = Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "2").ToList();
+            groups.Sort((x, y) => x.Group.ToLower().CompareTo(y.Group.ToLower()));
+            LVSecondYear.ItemsSource = groups;
+
+            groups = Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "3").ToList();
+            groups.Sort((x, y) => x.Group.ToLower().CompareTo(y.Group.ToLower()));
+            LVThirdYear.ItemsSource = groups;
+
+            groups = Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "4").ToList();
+            groups.Sort((x, y) => x.Group.ToLower().CompareTo(y.Group.ToLower()));
+            LVFourthYear.ItemsSource = groups;
         }
 
         private void MIChange_Click(object sender, RoutedEventArgs e)

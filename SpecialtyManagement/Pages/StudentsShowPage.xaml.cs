@@ -43,16 +43,13 @@ namespace SpecialtyManagement.Pages
         {
             InitializeComponent();
 
-            List<Groups> groups = new List<Groups>()
+            List<Groups> groups = Database.Entities.Groups.ToList();
+            groups.Sort((x, y) => x.Group.ToLower().CompareTo(y.Group.ToLower()));
+            groups.Insert(0, new Groups()
             {
-                new Groups()
-                {
-                    Id = 0,
-                    Group = "Все группы"
-                }
-            };
-
-            groups.AddRange(Database.Entities.Groups.ToList());
+                Id = 0,
+                Group = "Все группы"
+            });
 
             CBGroup.ItemsSource = groups;
             CBGroup.SelectedValuePath = "Id";

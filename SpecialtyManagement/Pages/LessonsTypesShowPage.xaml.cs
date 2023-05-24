@@ -41,6 +41,7 @@ namespace SpecialtyManagement.Pages
             {
                 types = types.Where(x => x.Type.ToLower().Contains(TBoxFind.Text.ToLower())).ToList();
             }
+            types.Sort((x, y) => x.Type.ToLower().CompareTo(y.Type.ToLower()));
 
             int number = 1;
             foreach (TypesLessons item in types)

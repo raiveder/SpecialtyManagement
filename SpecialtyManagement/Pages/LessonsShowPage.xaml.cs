@@ -39,16 +39,13 @@ namespace SpecialtyManagement.Pages
         {
             InitializeComponent();
 
-            List<TypesLessons> types = new List<TypesLessons>()
+            List<TypesLessons> types = Database.Entities.TypesLessons.ToList();
+            types.Sort((x, y) => x.Type.ToLower().CompareTo(y.Type.ToLower()));
+            types.Insert(0, new TypesLessons()
             {
-                new TypesLessons()
-                {
-                    Id = 0,
-                    Type = "Все типы"
-                }
-            };
-
-            types.AddRange(Database.Entities.TypesLessons.ToList());
+                Id = 0,
+                Type = "Все типы"
+            });
 
             CBType.ItemsSource = types;
             CBType.SelectedValuePath = "Id";

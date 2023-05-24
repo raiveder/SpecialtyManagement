@@ -60,7 +60,9 @@ namespace SpecialtyManagement.Pages
             LBTeachers.SelectedValuePath = "Id";
             LBTeachers.DisplayMemberPath = "FullName";
 
-            CBTypes.ItemsSource = Database.Entities.TypesLessons.ToList();
+            List<TypesLessons> types = Database.Entities.TypesLessons.ToList();
+            types.Sort((x, y) => x.Type.ToLower().CompareTo(y.Type.ToLower()));
+            CBTypes.ItemsSource = types;
             CBTypes.SelectedValuePath = "Id";
             CBTypes.DisplayMemberPath = "Type";
         }
