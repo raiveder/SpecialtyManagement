@@ -19,11 +19,10 @@ namespace SpecialtyManagement
         public int IdLesson { get; set; }
         public int IdType { get; set; }
         public bool IsLiquidated { get; set; }
-        public Nullable<int> IdReason { get; set; }
+        public bool IsGoodReason { get; set; }
     
         public virtual Arrears Arrears { get; set; }
         public virtual Lessons Lessons { get; set; }
-        public virtual ReasonsArrears ReasonsArrears { get; set; }
         public virtual TypesArrears TypesArrears { get; set; }
     }
 }

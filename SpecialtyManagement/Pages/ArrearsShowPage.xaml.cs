@@ -202,24 +202,22 @@ namespace SpecialtyManagement.Pages
 
                 if (!item.IsLiquidated)
                 {
-                    if (item.IdType == 2)
+                    if (item.IdType == 2) // Комиссионная задолженность.
                     {
-                        tb.Foreground = Brushes.Red; // Комиссионная задолженность.
+                        tb.Foreground = Brushes.Red;
                     }
 
-                    switch (item.IdReason)
+                    if (item.Arrears.Students.IsExpelled) // Задолженность, не сданная по причине отчисления.
                     {
-                        case 1:
-                            tb.Foreground = Brushes.Green; // Задолженность, не сданная по уважительной причине.
-                            break;
-                        case 2:
-                            tb.Foreground = Brushes.PaleVioletRed; // Задолженность, не сданная по причине академического отпуска.
-                            break;
-                        case 3:
-                            tb.Foreground = Brushes.Brown; // Задолженность, не сданная по причине отчисления.
-                            break;
-                        default:
-                            break;
+                        tb.Foreground = Brushes.PaleVioletRed;
+                    }
+                    else if (item.Arrears.Students.IsAcademic) // Задолженность, не сданная по причине академического отпуска.
+                    {
+                        tb.Foreground = Brushes.Brown;
+                    }
+                    else if (item.IsGoodReason) // Задолженность, не сданная по уважительной причине.
+                    {
+                        tb.Foreground = Brushes.Green;
                     }
                 }
                 else

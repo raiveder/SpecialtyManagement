@@ -59,7 +59,10 @@
                                 <TextBlock Name="TBLiquidated" Text="Отметка о ликвидации" Margin="0 0 10 0" VerticalAlignment="Center"/>
                                 <CheckBox Name="ChBLiquidated" Height="{Binding ActualHeight, ElementName=TBLiquidated}" FontSize="17" Loaded="ChBLiquidated_Loaded" Click="ChBLiquidated_Click"/>
                             </StackPanel>
-                            <ComboBox Grid.Row="1" Name="CBReason" MinWidth="250" VerticalAlignment="Center" Margin="0 5" Loaded="CBReason_Loaded" SelectionChanged="CBReason_SelectionChanged"/>
+                            <StackPanel Orientation="Horizontal" Margin="0 5" VerticalAlignment="Center">
+                                <TextBlock Name="TBGoodReason" Text="Уважительная причина" Margin="0 0 10 0" VerticalAlignment="Center"/>
+                                <CheckBox Name="ChBGoodReason" Height="{Binding ActualHeight, ElementName=TBLiquidated}" FontSize="17" Loaded="ChBGoodReason_Loaded" Click="ChBGoodReason_Click"/>
+                            </StackPanel>
                         </WrapPanel>
                     </Grid>
                 </DataTemplate>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Media;
 
 namespace SpecialtyManagement
 {
@@ -41,6 +42,23 @@ namespace SpecialtyManagement
                     return SurnameAndName;
                 }
                 return SurnameAndName + " " + Patronymic;
+            }
+            set { }
+        }
+
+        public SolidColorBrush BackgroundColor
+        {
+            get
+            {
+                if (IsExpelled)
+                {
+                    return Brushes.Gray;
+                }
+                if (IsAcademic)
+                {
+                    return Brushes.LightGray;
+                }
+                return ApplicationColor.ColorPrimary;
             }
             set { }
         }

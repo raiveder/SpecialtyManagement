@@ -17,7 +17,7 @@ namespace SpecialtyManagement.Pages
         private List<Lessons> _lessonsSelected = new List<Lessons>();    // Список дисциплин, по которым у студента есть задолженности.
         private List<bool> _isPrimaryArrears = new List<bool>(); // Список типов задолженностей (true - первичная, false - комиссионная).
         private List<bool> _isLiquidated = new List<bool>();     // Список статусов задолженностей (true - ликвидирована, false - нет).
-        private List<int?> _reasonsArrears = new List<int?>();   // Список индексов причин неликвидированности задолженностей.
+        private List<bool> _isGoodReason = new List<bool>();   // Список причин неликвидированности задолженностей (true - уважительная, false - нет).
 
         public ArrearAddPage(Filter filter)
         {
@@ -52,7 +52,7 @@ namespace SpecialtyManagement.Pages
                 _lessonsSelected.Add(item.Lessons);
                 _isPrimaryArrears.Add(item.IdType == 1);
                 _isLiquidated.Add(item.IsLiquidated);
-                _reasonsArrears.Add(item.IdReason);
+                _isGoodReason.Add(item.IsGoodReason);
             }
 
             UpdateView(_lessonsSelected, _lessons);
@@ -103,7 +103,7 @@ namespace SpecialtyManagement.Pages
             _lessonsSelected.Clear();
             _isPrimaryArrears.Clear();
             _isLiquidated.Clear();
-            _reasonsArrears.Clear();
+            _isGoodReason.Clear();
 
             if (CBGroups.SelectedIndex != -1)
             {
@@ -141,71 +141,44 @@ namespace SpecialtyManagement.Pages
         private void RBPrimary_Loaded(object sender, RoutedEventArgs e)
         {
             RadioButton button = sender as RadioButton;
-
-            if (_isPrimaryArrears[_lessonsSelected.IndexOf(button.DataContext as Lessons)])
-            {
-                button.IsChecked = true;
-            }
+            button.IsChecked = _isPrimaryArrears[_lessonsSelected.IndexOf(button.DataContext as Lessons)];
         }
 
         private void RBComission_Loaded(object sender, RoutedEventArgs e)
         {
             RadioButton button = sender as RadioButton;
-
-            if (!_isPrimaryArrears[_lessonsSelected.IndexOf(button.DataContext as Lessons)])
-            {
-                button.IsChecked = true;
-            }
+            button.IsChecked = !_isPrimaryArrears[_lessonsSelected.IndexOf(button.DataContext as Lessons)];
         }
 
         private void ChBLiquidated_Loaded(object sender, RoutedEventArgs e)
         {
             CheckBox box = sender as CheckBox;
-
-            if (_isLiquidated[_lessonsSelected.IndexOf(box.DataContext as Lessons)])
-            {
-                box.IsChecked = true;
-            }
+            box.IsChecked = _isLiquidated[_lessonsSelected.IndexOf(box.DataContext as Lessons)];
         }
 
-        private void CBReason_Loaded(object sender, RoutedEventArgs e)
+        private void ChBGoodReason_Loaded(object sender, RoutedEventArgs e)
         {
-            ComboBox box = sender as ComboBox;
+            CheckBox box = sender as CheckBox;
             int index = _lessonsSelected.IndexOf(box.DataContext as Lessons);
 
             if (_isLiquidated[index])
             {
-                box.Visibility = Visibility.Collapsed;
+                (box.Parent as StackPanel).Visibility = Visibility.Collapsed;
             }
             else
             {
-                List<ReasonsArrears> reasons = new List<ReasonsArrears>()
-                {
-                    new ReasonsArrears()
-                    {
-                        Id= 0,
-                        Reason = "Причина"
-                    }
-                };
-                reasons.AddRange(Database.Entities.ReasonsArrears.ToList());
-
-                box.ItemsSource = reasons;
-                box.SelectedValuePath = "Id";
-                box.DisplayMemberPath = "Reason";
-                box.SelectedValue = Convert.ToInt32(_reasonsArrears[index]);
+                box.IsChecked = _isGoodReason[index];
             }
         }
 
         private void RBPrimary_Checked(object sender, RoutedEventArgs e)
         {
-            int index = _lessonsSelected.IndexOf((sender as RadioButton).DataContext as Lessons);
-            _isPrimaryArrears[index] = true;
+            _isPrimaryArrears[_lessonsSelected.IndexOf((sender as RadioButton).DataContext as Lessons)] = true;
         }
 
         private void RBComission_Checked(object sender, RoutedEventArgs e)
         {
-            int index = _lessonsSelected.IndexOf((sender as RadioButton).DataContext as Lessons);
-            _isPrimaryArrears[index] = false;
+            _isPrimaryArrears[_lessonsSelected.IndexOf((sender as RadioButton).DataContext as Lessons)] = false;
         }
 
         private void ChBLiquidated_Click(object sender, RoutedEventArgs e)
@@ -220,16 +193,16 @@ namespace SpecialtyManagement.Pages
             else
             {
                 _isLiquidated[index] = false;
-                _reasonsArrears[index] = null;
+                _isGoodReason[index] = false;
             }
 
             UpdateView(_lessonsSelected, _lessons);
         }
 
-        private void CBReason_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ChBGoodReason_Click(object sender, RoutedEventArgs e)
         {
-            ComboBox box = sender as ComboBox;
-            _reasonsArrears[_lessonsSelected.IndexOf(box.DataContext as Lessons)] = (int)box.SelectedValue;
+            CheckBox box = sender as CheckBox;
+            _isGoodReason[_lessonsSelected.IndexOf(box.DataContext as Lessons)] = (bool)box.IsChecked;
         }
 
         private void LBLessons_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -242,7 +215,7 @@ namespace SpecialtyManagement.Pages
                 _lessonsSelected.Add(lesson);
                 _isPrimaryArrears.Add(true);
                 _isLiquidated.Add(false);
-                _reasonsArrears.Add(null);
+                _isGoodReason.Add(false);
 
                 UpdateView(_lessonsSelected, _lessons);
             }
@@ -257,7 +230,7 @@ namespace SpecialtyManagement.Pages
             _lessonsSelected.RemoveAt(index);
             _isPrimaryArrears.RemoveAt(index);
             _isLiquidated.RemoveAt(index);
-            _reasonsArrears.RemoveAt(index);
+            _isGoodReason.RemoveAt(index);
 
             UpdateView(_lessonsSelected, _lessons);
         }
@@ -302,10 +275,6 @@ namespace SpecialtyManagement.Pages
                     if (isUpdate)
                     {
                         Navigation.Frame.Navigate(new ArrearsShowPage(_filter));
-                    }
-                    else
-                    {
-                        MessageBox.Show("Задолженность успешно добавлена", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
 
                     _arrear = null;
@@ -378,7 +347,7 @@ namespace SpecialtyManagement.Pages
                     IdLesson = _lessonsSelected[i].Id,
                     IdType = _isPrimaryArrears[i] ? 1 : 2,
                     IsLiquidated = _isLiquidated[i],
-                    IdReason = _reasonsArrears[i] == 0 ? null : _reasonsArrears[i]
+                    IsGoodReason = _isGoodReason[i]
                 });
             }
 

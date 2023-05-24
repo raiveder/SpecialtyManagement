@@ -24,7 +24,7 @@
           <Property Name="IdLesson" Type="int" Nullable="false" />
           <Property Name="IdType" Type="int" Nullable="false" />
           <Property Name="IsLiquidated" Type="bit" Nullable="false" />
-          <Property Name="IdReason" Type="int" />
+          <Property Name="IsGoodReason" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="DistributionLessons">
           <Key>
@@ -51,13 +51,6 @@
           <Property Name="IdType" Type="int" Nullable="false" />
           <Property Name="Code" Type="nvarchar" MaxLength="5" Nullable="false" />
         </EntityType>
-        <EntityType Name="ReasonsArrears">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Reason" Type="nvarchar" MaxLength="50" Nullable="false" />
-        </EntityType>
         <EntityType Name="Specialty">
           <Key>
             <PropertyRef Name="Id" />
@@ -80,6 +73,7 @@
           <Property Name="IdGroup" Type="int" Nullable="false" />
           <Property Name="Note" Type="nvarchar(max)" />
           <Property Name="IsExpelled" Type="bit" Nullable="false" />
+          <Property Name="IsAcademic" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Teachers">
           <Key>
@@ -143,18 +137,6 @@
             </Principal>
             <Dependent Role="ArrearsLessons">
               <PropertyRef Name="IdLesson" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ArrearsLe__IdRea__3E52440B">
-          <End Role="ReasonsArrears" Type="Self.ReasonsArrears" Multiplicity="0..1" />
-          <End Role="ArrearsLessons" Type="Self.ArrearsLessons" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ReasonsArrears">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ArrearsLessons">
-              <PropertyRef Name="IdReason" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -248,7 +230,6 @@
           <EntitySet Name="DistributionLessons" EntityType="Self.DistributionLessons" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Groups" EntityType="Self.Groups" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Lessons" EntityType="Self.Lessons" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ReasonsArrears" EntityType="Self.ReasonsArrears" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Specialty" EntityType="Self.Specialty" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Teachers" EntityType="Self.Teachers" Schema="dbo" store:Type="Tables" />
@@ -264,10 +245,6 @@
           </AssociationSet>
           <AssociationSet Name="FK__ArrearsLe__IdLes__3C69FB99" Association="Self.FK__ArrearsLe__IdLes__3C69FB99">
             <End Role="Lessons" EntitySet="Lessons" />
-            <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ArrearsLe__IdRea__3E52440B" Association="Self.FK__ArrearsLe__IdRea__3E52440B">
-            <End Role="ReasonsArrears" EntitySet="ReasonsArrears" />
             <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
           </AssociationSet>
           <AssociationSet Name="FK__ArrearsLe__IdTyp__3D5E1FD2" Association="Self.FK__ArrearsLe__IdTyp__3D5E1FD2">
@@ -305,7 +282,6 @@
           <EntitySet Name="DistributionLessons" EntityType="SpecialtyManagementModel.DistributionLessons" />
           <EntitySet Name="Groups" EntityType="SpecialtyManagementModel.Groups" />
           <EntitySet Name="Lessons" EntityType="SpecialtyManagementModel.Lessons" />
-          <EntitySet Name="ReasonsArrears" EntityType="SpecialtyManagementModel.ReasonsArrears" />
           <EntitySet Name="Specialty" EntityType="SpecialtyManagementModel.Specialty" />
           <EntitySet Name="Students" EntityType="SpecialtyManagementModel.Students" />
           <EntitySet Name="Teachers" EntityType="SpecialtyManagementModel.Teachers" />
@@ -321,10 +297,6 @@
           </AssociationSet>
           <AssociationSet Name="FK__ArrearsLe__IdLes__3C69FB99" Association="SpecialtyManagementModel.FK__ArrearsLe__IdLes__3C69FB99">
             <End Role="Lessons" EntitySet="Lessons" />
-            <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ArrearsLe__IdRea__3E52440B" Association="SpecialtyManagementModel.FK__ArrearsLe__IdRea__3E52440B">
-            <End Role="ReasonsArrears" EntitySet="ReasonsArrears" />
             <End Role="ArrearsLessons" EntitySet="ArrearsLessons" />
           </AssociationSet>
           <AssociationSet Name="FK__ArrearsLe__IdTyp__3D5E1FD2" Association="SpecialtyManagementModel.FK__ArrearsLe__IdTyp__3D5E1FD2">
@@ -373,10 +345,9 @@
           <Property Name="IdLesson" Type="Int32" Nullable="false" />
           <Property Name="IdType" Type="Int32" Nullable="false" />
           <Property Name="IsLiquidated" Type="Boolean" Nullable="false" />
-          <Property Name="IdReason" Type="Int32" />
+          <Property Name="IsGoodReason" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Arrears" Relationship="SpecialtyManagementModel.FK__ArrearsLe__IdArr__3B75D760" FromRole="ArrearsLessons" ToRole="Arrears" />
           <NavigationProperty Name="Lessons" Relationship="SpecialtyManagementModel.FK__ArrearsLe__IdLes__3C69FB99" FromRole="ArrearsLessons" ToRole="Lessons" />
-          <NavigationProperty Name="ReasonsArrears" Relationship="SpecialtyManagementModel.FK__ArrearsLe__IdRea__3E52440B" FromRole="ArrearsLessons" ToRole="ReasonsArrears" />
           <NavigationProperty Name="TypesArrears" Relationship="SpecialtyManagementModel.FK__ArrearsLe__IdTyp__3D5E1FD2" FromRole="ArrearsLessons" ToRole="TypesArrears" />
         </EntityType>
         <EntityType Name="DistributionLessons">
@@ -412,14 +383,6 @@
           <NavigationProperty Name="DistributionLessons" Relationship="SpecialtyManagementModel.FK__Distribut__IdLes__2E1BDC42" FromRole="Lessons" ToRole="DistributionLessons" />
           <NavigationProperty Name="TypesLessons" Relationship="SpecialtyManagementModel.FK__Lessons__IdType__286302EC" FromRole="Lessons" ToRole="TypesLessons" />
         </EntityType>
-        <EntityType Name="ReasonsArrears">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Reason" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ArrearsLessons" Relationship="SpecialtyManagementModel.FK__ArrearsLe__IdRea__3E52440B" FromRole="ReasonsArrears" ToRole="ArrearsLessons" />
-        </EntityType>
         <EntityType Name="Specialty">
           <Key>
             <PropertyRef Name="Id" />
@@ -442,6 +405,7 @@
           <Property Name="IdGroup" Type="Int32" Nullable="false" />
           <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IsExpelled" Type="Boolean" Nullable="false" />
+          <Property Name="IsAcademic" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Arrears" Relationship="SpecialtyManagementModel.FK__Arrears__IdStude__34C8D9D1" FromRole="Students" ToRole="Arrears" />
           <NavigationProperty Name="Groups" Relationship="SpecialtyManagementModel.FK__Students__IdGrou__31EC6D26" FromRole="Students" ToRole="Groups" />
         </EntityType>
@@ -510,18 +474,6 @@
             </Principal>
             <Dependent Role="ArrearsLessons">
               <PropertyRef Name="IdLesson" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ArrearsLe__IdRea__3E52440B">
-          <End Type="SpecialtyManagementModel.ReasonsArrears" Role="ReasonsArrears" Multiplicity="0..1" />
-          <End Type="SpecialtyManagementModel.ArrearsLessons" Role="ArrearsLessons" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ReasonsArrears">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ArrearsLessons">
-              <PropertyRef Name="IdReason" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -629,7 +581,7 @@
           <EntitySetMapping Name="ArrearsLessons">
             <EntityTypeMapping TypeName="SpecialtyManagementModel.ArrearsLessons">
               <MappingFragment StoreEntitySet="ArrearsLessons">
-                <ScalarProperty Name="IdReason" ColumnName="IdReason" />
+                <ScalarProperty Name="IsGoodReason" ColumnName="IsGoodReason" />
                 <ScalarProperty Name="IsLiquidated" ColumnName="IsLiquidated" />
                 <ScalarProperty Name="IdType" ColumnName="IdType" />
                 <ScalarProperty Name="IdLesson" ColumnName="IdLesson" />
@@ -666,14 +618,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ReasonsArrears">
-            <EntityTypeMapping TypeName="SpecialtyManagementModel.ReasonsArrears">
-              <MappingFragment StoreEntitySet="ReasonsArrears">
-                <ScalarProperty Name="Reason" ColumnName="Reason" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Specialty">
             <EntityTypeMapping TypeName="SpecialtyManagementModel.Specialty">
               <MappingFragment StoreEntitySet="Specialty">
@@ -688,6 +632,7 @@
           <EntitySetMapping Name="Students">
             <EntityTypeMapping TypeName="SpecialtyManagementModel.Students">
               <MappingFragment StoreEntitySet="Students">
+                <ScalarProperty Name="IsAcademic" ColumnName="IsAcademic" />
                 <ScalarProperty Name="IsExpelled" ColumnName="IsExpelled" />
                 <ScalarProperty Name="Note" ColumnName="Note" />
                 <ScalarProperty Name="IdGroup" ColumnName="IdGroup" />

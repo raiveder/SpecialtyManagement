@@ -56,10 +56,6 @@ namespace SpecialtyManagement.Windows
                     {
                         Close();
                     }
-                    else
-                    {
-                        MessageBox.Show("Группа успешно добавлена", "Группы", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
 
                     _group = null;
                 }

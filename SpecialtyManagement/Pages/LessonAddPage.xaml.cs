@@ -180,10 +180,6 @@ namespace SpecialtyManagement.Pages
                     {
                         Navigation.Frame.Navigate(new LessonsShowPage(_filter));
                     }
-                    else
-                    {
-                        MessageBox.Show("Дисциплина успешно добавлена", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
 
                     _lesson = null;
                 }

@@ -387,43 +387,6 @@ namespace SpecialtyManagement.Pages
                 }
             }
 
-            //foreach (string item in _dates)
-            //{
-            //    if (item == string.Empty)
-            //    {
-            //        MessageBox.Show("Не все даты работы преподавателей выбраны", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
-            //        return false;
-            //    }
-            //    else if (!DateTime.TryParse(item, out DateTime result))
-            //    {
-            //        MessageBox.Show("Проверьте корректность выбранных дат работы преподавателей", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
-            //        return false;
-            //    }
-            //}
-
-            //foreach (string item in _times)
-            //{
-            //    if (item == string.Empty)
-            //    {
-            //        MessageBox.Show("Не все времена работы преподавателей выбраны", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
-            //        return false;
-            //    }
-            //    else if (!Regex.IsMatch(item, @"^(([0-1][0-9])|([2][0-3])):([0-5][0-9])$"))
-            //    {
-            //        MessageBox.Show("Проверьте корректность выбранного времени работы преподавателей", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
-            //        return false;
-            //    }
-            //}
-
-            //foreach (string item in _audiences)
-            //{
-            //    if (item == string.Empty)
-            //    {
-            //        MessageBox.Show("Не все аудитории выбраны", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
-            //        return false;
-            //    }
-            //}
-
             return true;
         }
 
@@ -523,9 +486,7 @@ namespace SpecialtyManagement.Pages
                     rangeDescription.Text += $" {s_lessons[i].FullName} ";
                     int indexWordsUnderlineEnd = rangeDescription.Words.Count;
                     rangeDescription.Text += $"для следующих обучающихся {GetGroupsInString(s_students[i])} в {GetDayOfWeek(s_dates[i])}, ";
-                    int indexWordsBackgroundStart = rangeDescription.Words.Count + 1;
                     rangeDescription.Text += $"{s_dates[i]:D}";
-                    int indexWordsBackgroundEnd = rangeDescription.Words.Count;
                     rangeDescription.Text += $" в {s_times[i]} в кабинете {s_audiences[i]}:";
                     rangeDescription.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
                     rangeDescription.Font.Name = "Times New Roman";
@@ -540,10 +501,6 @@ namespace SpecialtyManagement.Pages
                     for (int j = indexWordsUnderlineStart; j <= indexWordsUnderlineEnd; j++)
                     {
                         rangeDescription.Words[j].Underline = Word.WdUnderline.wdUnderlineSingle;
-                    }
-                    for (int j = indexWordsBackgroundStart; j <= indexWordsBackgroundEnd; j++)
-                    {
-                        rangeDescription.Words[j].HighlightColorIndex = Word.WdColorIndex.wdBrightGreen;
                     }
                     rangeDescription.InsertParagraphAfter();
                     paragraphDescription.SpaceAfter = 0;

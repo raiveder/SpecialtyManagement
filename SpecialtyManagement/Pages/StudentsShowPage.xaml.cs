@@ -112,7 +112,7 @@ namespace SpecialtyManagement.Pages
                     students.Reverse();
                     break;
                 case 4:
-                    students.Sort((x, y) => x.Groups.Group.CompareTo(y.Groups.Group));
+                    students.Sort((x, y) => x.Groups.Group.CompareTo(y.Groups.Group) == 0 ? x.FullName.CompareTo(y.FullName) : x.Groups.Group.CompareTo(y.Groups.Group));
                     students.Reverse();
                     break;
                 case 5:
@@ -123,11 +123,7 @@ namespace SpecialtyManagement.Pages
                     break;
             }
 
-            int number = 1;
-            foreach (Students item in students)
-            {
-                item.SequenceNumber = number++;
-            }
+            SetAdditionalInformation(students);
 
             DGStudents.ItemsSource = students;
 
@@ -135,6 +131,42 @@ namespace SpecialtyManagement.Pages
             {
                 MessageBox.Show("Подходящих фильтру студентов не найдено", "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
+        }
+
+        /// <summary>
+        /// Устанавливает дополнительную информацию: номер студента и количество по категориям.
+        /// </summary>
+        /// <param name="students">список студентов.</param>
+        private void SetAdditionalInformation(List<Students> students)
+        {
+            int number = 1;
+            int countAll = students.Count;
+            int countActive = 0;
+            int countAcademic = 0;
+            int countExpelled = 0;
+
+            foreach (Students item in students)
+            {
+                item.SequenceNumber = number++;
+
+                if (item.IsExpelled)
+                {
+                    countExpelled++;
+                }
+                else if (item.IsAcademic)
+                {
+                    countAcademic++;
+                }
+                else
+                {
+                    countActive++;
+                }
+            }
+
+            TBCountAll.Text = countAll.ToString();
+            TBCountActive.Text = countActive.ToString();
+            TBCountAcademic.Text = countAcademic.ToString();
+            TBCountExpelled.Text = countExpelled.ToString();
         }
 
         private void MIAdd_Click(object sender, RoutedEventArgs e)
@@ -151,59 +183,68 @@ namespace SpecialtyManagement.Pages
 
         private void MIReadFile_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            ofd.Filter = "Все файлы|*.*|CSV|*.csv";
-            ofd.FilterIndex = 2;
-            ofd.ShowDialog();
-
-            if (ofd.FileName.Length > 0)
+            if (Database.Entities.Groups.FirstOrDefault() != null)
             {
-                List<Students> students = Students.GetStudentsFromFile(ofd.FileName);
-
-                if (students.Count > 0)
+                OpenFileDialog ofd = new OpenFileDialog
                 {
-                    Groups group = new Groups();
-                    ChoiceElementWindow window = new ChoiceElementWindow(group, "Выберите группу добавляемых студентов");
-                    window.ShowDialog();
+                    InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                    Filter = "Все файлы|*.*|CSV|*.csv",
+                    FilterIndex = 2
+                };
+                ofd.ShowDialog();
 
-                    if ((bool)window.DialogResult)
+                if (ofd.FileName.Length > 0)
+                {
+                    List<Students> students = Students.GetStudentsFromFile(ofd.FileName);
+
+                    if (students.Count > 0)
                     {
-                        foreach (Students item in students)
-                        {
-                            item.IdGroup = group.Id;
-                        }
+                        Groups group = new Groups();
+                        ChoiceElementWindow window = new ChoiceElementWindow(group, "Выберите группу добавляемых студентов");
+                        window.ShowDialog();
 
-                        MessageBoxResult result = MessageBoxResult.Yes;
-                        if (IsStudentContainsInGroup(students, false))
+                        if ((bool)window.DialogResult)
                         {
-                            result = MessageBox.Show("Некоторые из добавляемых студентов уже есть в этой группе. Вы уверены, что хотите добавить их снова?", "Студенты", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                        }
-
-                        if (result == MessageBoxResult.Yes)
-                        {
-                            Database.Entities.Students.AddRange(students);
-
-                            try
+                            foreach (Students item in students)
                             {
-                                Database.Entities.SaveChanges();
-
-                                if ((int)CBGroup.SelectedValue != students[0].IdGroup)
-                                {
-                                    CBGroup.SelectedValue = students[0].IdGroup;
-                                }
-                                else
-                                {
-                                    SetFilter();
-                                }
+                                item.IdGroup = group.Id;
                             }
-                            catch (Exception ex)
+
+                            MessageBoxResult result = MessageBoxResult.Yes;
+                            if (IsStudentContainsInGroup(students, false))
                             {
-                                MessageBox.Show("При добавлении студентов возникла ошибка\nТекст ошибки: " + ex.Message, "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                result = MessageBox.Show("Некоторые из добавляемых студентов уже есть в этой группе. Вы уверены, что хотите добавить их снова?", "Студенты", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                            }
+
+                            if (result == MessageBoxResult.Yes)
+                            {
+                                Database.Entities.Students.AddRange(students);
+
+                                try
+                                {
+                                    Database.Entities.SaveChanges();
+
+                                    if ((int)CBGroup.SelectedValue != students[0].IdGroup)
+                                    {
+                                        CBGroup.SelectedValue = students[0].IdGroup;
+                                    }
+                                    else
+                                    {
+                                        SetFilter();
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show("При добавлении студентов возникла ошибка\nТекст ошибки: " + ex.Message, "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                }
                             }
                         }
                     }
                 }
+            }
+            else
+            {
+                MessageBox.Show("Сначала добавьте хотя бы 1-у группу, прежде чем добавлять студентов", "Студенты", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -267,6 +308,31 @@ namespace SpecialtyManagement.Pages
             };
         }
 
+        private void MIExpel_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (Students item in DGStudents.SelectedItems)
+            {
+                item.IsExpelled = true;
+                item.IsAcademic = false;
+            }
+
+            try
+            {
+                Database.Entities.SaveChanges();
+                SetFilter();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show
+                (
+                    "При отчислении " + (DGStudents.SelectedItems.Count == 1 ? "студента" : "студентов") + " возникла ошибка\nТекст ошибки: " + ex.Message,
+                    "Студенты",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning
+                );
+            }
+        }
+
         private void MIRestore_Click(object sender, RoutedEventArgs e)
         {
             foreach (Students item in DGStudents.SelectedItems)
@@ -291,11 +357,11 @@ namespace SpecialtyManagement.Pages
             }
         }
 
-        private void MIExpel_Click(object sender, RoutedEventArgs e)
+        private void MIAcadem_Click(object sender, RoutedEventArgs e)
         {
             foreach (Students item in DGStudents.SelectedItems)
             {
-                item.IsExpelled = true;
+                item.IsAcademic = true;
             }
 
             try
@@ -307,7 +373,32 @@ namespace SpecialtyManagement.Pages
             {
                 MessageBox.Show
                 (
-                    "При отчислении " + (DGStudents.SelectedItems.Count == 1 ? "студента" : "студентов") + " возникла ошибка\nТекст ошибки: " + ex.Message,
+                    "При переводе " + (DGStudents.SelectedItems.Count == 1 ? "студента" : "студентов") + " в ак. отпуск возникла ошибка\nТекст ошибки: " + ex.Message,
+                    "Студенты",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning
+                );
+            }
+        }
+
+
+        private void MIAcademRestore_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (Students item in DGStudents.SelectedItems)
+            {
+                item.IsAcademic = false;
+            }
+
+            try
+            {
+                Database.Entities.SaveChanges();
+                SetFilter();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show
+                (
+                    "При восстановлении " + (DGStudents.SelectedItems.Count == 1 ? "студента" : "студентов") + " из ак. отпуска возникла ошибка\nТекст ошибки: " + ex.Message,
                     "Студенты",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning
@@ -366,6 +457,8 @@ namespace SpecialtyManagement.Pages
                 MIChange.Visibility = Visibility.Visible;
                 MIExpel.Visibility = Visibility.Visible;
                 MIRestore.Visibility = Visibility.Visible;
+                MIAcadem.Visibility = Visibility.Visible;
+                MIAcademRestore.Visibility = Visibility.Visible;
 
                 if (DGStudents.SelectedItems.Count > 1)
                 {
@@ -385,6 +478,22 @@ namespace SpecialtyManagement.Pages
                 if (students.FirstOrDefault(x => !x.IsExpelled) != null)
                 {
                     MIRestore.Visibility = Visibility.Collapsed;
+                }
+                if (students.FirstOrDefault(x => x.IsExpelled) != null)
+                {
+                    MIAcadem.Visibility = Visibility.Collapsed;
+                    MIAcademRestore.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    if (students.FirstOrDefault(x => x.IsAcademic) != null)
+                    {
+                        MIAcadem.Visibility = Visibility.Collapsed;
+                    }
+                    if (students.FirstOrDefault(x => !x.IsAcademic) != null)
+                    {
+                        MIAcademRestore.Visibility = Visibility.Collapsed;
+                    }
                 }
 
                 CMStudents.IsOpen = true;

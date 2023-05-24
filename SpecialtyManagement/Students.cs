@@ -28,6 +28,7 @@ namespace SpecialtyManagement
         public int IdGroup { get; set; }
         public string Note { get; set; }
         public bool IsExpelled { get; set; }
+        public bool IsAcademic { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Arrears> Arrears { get; set; }

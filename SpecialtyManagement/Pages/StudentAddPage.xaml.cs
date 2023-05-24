@@ -69,7 +69,8 @@ namespace SpecialtyManagement.Pages
                         IdGroup = (int)CBGroups.SelectedValue,
                         Birthday = DPBirthday.SelectedDate.Value,
                         Note = TBoxNote.Text.Length == 0 ? null : TBoxNote.Text,
-                        IsExpelled = false
+                        IsExpelled = false,
+                        IsAcademic = false
                     });
 
                     isUpdate = false;
@@ -93,10 +94,6 @@ namespace SpecialtyManagement.Pages
                     if (isUpdate)
                     {
                         Navigation.Frame.Navigate(new StudentsShowPage(_filter));
-                    }
-                    else
-                    {
-                        MessageBox.Show("Студент успешно добавлен", "Студенты", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
 
                     _student = null;

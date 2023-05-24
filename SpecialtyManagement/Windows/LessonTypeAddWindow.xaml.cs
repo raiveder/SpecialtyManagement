@@ -57,10 +57,6 @@ namespace SpecialtyManagement.Windows
                     {
                         Close();
                     }
-                    else
-                    {
-                        MessageBox.Show("Тип дисциплины успешно добавлен", "Типы дисциплин", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
 
                     _typeLesson = null;
                 }

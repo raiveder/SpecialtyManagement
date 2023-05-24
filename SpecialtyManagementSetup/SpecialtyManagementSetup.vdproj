@@ -51,12 +51,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_655EAFB3E8CE4DBA9B020FF918105D23"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_6A2B1D2550C20057B4C17CD840008031"
         "OwnerKey" = "8:_0185B94EE36D411E8E8A73D1343520CD"
         "MsmSig" = "8:_UNDEFINED"
@@ -71,6 +65,12 @@
         {
         "MsmKey" = "8:_6A2B1D2550C20057B4C17CD840008031"
         "OwnerKey" = "8:_A77B1A24569C3F70EF361A680826991F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_75B6C8C8F96541C09A1F13C555F5C8C4"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -487,26 +487,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_655EAFB3E8CE4DBA9B020FF918105D23"
-            {
-            "SourcePath" = "8:..\\SpecialtyManagement\\ScriptDatabase.sql"
-            "TargetName" = "8:ScriptDatabase.sql"
-            "Tag" = "8:"
-            "Folder" = "8:_4C1FD96D779C481B97029D688CC37736"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6A2B1D2550C20057B4C17CD840008031"
             {
             "AssemblyRegister" = "3:1"
@@ -536,6 +516,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_75B6C8C8F96541C09A1F13C555F5C8C4"
+            {
+            "SourcePath" = "8:..\\SpecialtyManagement\\ScriptDatabase.sql"
+            "TargetName" = "8:ScriptDatabase.sql"
+            "Tag" = "8:"
+            "Folder" = "8:_4C1FD96D779C481B97029D688CC37736"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_92192135A6E68160379E75BAADECC405"

@@ -184,10 +184,6 @@ namespace SpecialtyManagement.Pages
                     {
                         Navigation.Frame.Navigate(new TeahersShowPage(_filter));
                     }
-                    else
-                    {
-                        MessageBox.Show("Преподаватель успешно добавлен", "Преподаватели", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
 
                     _teacher = null;
                 }
