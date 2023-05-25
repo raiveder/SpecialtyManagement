@@ -79,6 +79,7 @@ namespace SpecialtyManagement.Windows
             _canClosing = true;
             await Dispatcher.BeginInvoke(new ThreadStart(() => Close()));
         }
+
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (_canClosing)
