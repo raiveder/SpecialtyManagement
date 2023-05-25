@@ -70,24 +70,7 @@ namespace SpecialtyManagement.Pages
                         }
                         else
                         {
-                            List<DistributionLessons> distributions = s_distributions.Where(x => x.Lessons == lessons[i] && x.Groups != arrear.Students.Groups).ToList();
-                            foreach (DistributionLessons item in distributions)
-                            {
-                                DistributionLessons temp = new DistributionLessons()
-                                {
-                                    Lessons = item.Lessons,
-                                    Groups = arrear.Students.Groups,
-                                    Teachers = item.Teachers,
-                                    IdLesson = item.IdLesson,
-                                    IdGroup = arrear.Students.Groups.Id,
-                                    IdTeacher = item.IdTeacher
-                                };
-
-                                if (!IsDistributionContains(temp))
-                                {
-                                    s_distributions.Add(temp);
-                                }
-                            }
+                            ActionWithDistributionAlreadyAdded(lessons[i], arrear);
                         }
                     }
                 }
@@ -111,19 +94,7 @@ namespace SpecialtyManagement.Pages
                         }
                         else
                         {
-                            List<DistributionLessons> distributions = s_distributions.Where(x => x.Lessons == lessonsPM[i] && x.Groups != arrear.Students.Groups).ToList();
-                            foreach (DistributionLessons item in distributions)
-                            {
-                                s_distributions.Add(new DistributionLessons()
-                                {
-                                    Lessons = item.Lessons,
-                                    Groups = arrear.Students.Groups,
-                                    Teachers = item.Teachers,
-                                    IdLesson = item.IdLesson,
-                                    IdGroup = arrear.Students.Groups.Id,
-                                    IdTeacher = item.IdTeacher
-                                });
-                            }
+                            ActionWithDistributionAlreadyAdded(lessonsPM[i], arrear);
                         }
                     }
                 }
@@ -363,6 +334,28 @@ namespace SpecialtyManagement.Pages
             return false;
         }
 
+        private void ActionWithDistributionAlreadyAdded(Lessons lesson, Arrears arrear)
+        {
+            List<DistributionLessons> distributions = s_distributions.Where(x => x.Lessons == lesson && x.Groups != arrear.Students.Groups).ToList();
+            foreach (DistributionLessons item in distributions)
+            {
+                DistributionLessons temp = new DistributionLessons()
+                {
+                    Lessons = item.Lessons,
+                    Groups = arrear.Students.Groups,
+                    Teachers = item.Teachers,
+                    IdLesson = item.IdLesson,
+                    IdGroup = arrear.Students.Groups.Id,
+                    IdTeacher = item.IdTeacher
+                };
+
+                if (!IsDistributionContains(temp))
+                {
+                    s_distributions.Add(temp);
+                }
+            }
+        }
+
         private void TBTypeLessons_Loaded(object sender, RoutedEventArgs e)
         {
             TextBlock tb = sender as TextBlock;
@@ -590,7 +583,7 @@ namespace SpecialtyManagement.Pages
                     // Для корректной ширины столбцов задаётся текст, длина которого показывает, какое количество символов будет отображено в одной строке.
                     // Это количество подсчитано на основании реальных данных таблицы.
                     tableStudents.Cell(1, 1).Range.Text = new string('a', 1);
-                    tableStudents.Cell(1, 2).Range.Text = new string('a', GetMaxLengthSurnameAndName(tempStudents) + 1);
+                    tableStudents.Cell(1, 2).Range.Text = new string('a', GetMaxLengthSurnameAndName(tempStudents) + 1); // + 1 для сохранения места под пробел.
                     tableStudents.Cell(1, 3).Range.Text = new string('a', 1);
                     tableStudents.Cell(1, 4).Range.Text = new string('a', 18);
                     tableStudents.Cell(1, 5).Range.Text = new string('a', 8);
@@ -601,13 +594,12 @@ namespace SpecialtyManagement.Pages
                     };
                     tableStudents.AutoFitBehavior(Word.WdAutoFitBehavior.wdAutoFitWindow);
                     Thread.Sleep(100);
-
                     tableStudents.Columns[1].SetWidth(widths[0], Word.WdRulerStyle.wdAdjustProportional);
-                    tableStudents.Columns[2].SetWidth(widths[1], Word.WdRulerStyle.wdAdjustProportional);
                     tableStudents.Columns[3].SetWidth(widths[2], Word.WdRulerStyle.wdAdjustProportional);
                     float tempWidth = tableStudents.Columns[5].Width;
                     tableStudents.Columns[5].Width = widths[4];
                     tableStudents.Columns[4].Width += tempWidth - tableStudents.Columns[5].Width;
+                    tableStudents.Columns[2].SetWidth(widths[1], Word.WdRulerStyle.wdAdjustProportional);
 
                     tableStudents.Cell(1, 1).Range.Text = "№";
                     tableStudents.Cell(1, 2).Range.Text = "ФИО";
@@ -687,14 +679,11 @@ namespace SpecialtyManagement.Pages
                     paragraphTeachers.FirstLineIndent = 0;
                     paragraphTeachers.RightIndent = 0;
                     paragraphTeachers.LeftIndent = 0;
-
-                    List<Teachers> listTeachrsPM = GetAllTeachersForGroupWithLessons(groups[i].Id, lessonsPM);
-                    teachers.AddRange(listTeachrsPM);
-                    tableTeachers.Cell(1, 1).Range.Text = new string('a', GetMaxLengthFullName(teachers));
+                    
+                    tableTeachers.Cell(1, 1).Range.Text = new string('a', GetMaxLengthFullName(teachers, GetAllTeachersForGroupWithLessons(groups[i].Id, lessonsPM)));
                     tableTeachers.Cell(1, 2).Range.Text = new string('a', 18);
                     tableTeachers.Cell(1, 3).Range.Text = new string('a', 11);
                     tableTeachers.Cell(1, 4).Range.Text = new string('a', 13);
-                    teachers.RemoveRange(teachers.Count - listTeachrsPM.Count, listTeachrsPM.Count);
 
                     widths = new float[4];
                     for (int j = 4; j >= 1; j--)
@@ -961,7 +950,7 @@ namespace SpecialtyManagement.Pages
         /// </summary>
         /// <param name="teachers">список преподавателей.</param>
         /// <returns>Количество символов.</returns>
-        private static int GetMaxLengthFullName(List<Teachers> teachers)
+        private static int GetMaxLengthFullName(List<Teachers> teachers, List<Teachers> teachersPM)
         {
             int length = 0;
 
@@ -970,6 +959,24 @@ namespace SpecialtyManagement.Pages
                 if (item.FullName.Length > length)
                 {
                     length = item.FullName.Length;
+                }
+            }
+
+            foreach (Teachers item in teachersPM)
+            {
+                if (teachersPM.Last() != item)
+                {
+                    if (item.FullName.Length + 1 > length) // + 1 для сохранения места под запятую.
+                    {
+                        length = item.FullName.Length;
+                    }
+                }
+                else
+                {
+                    if (item.FullName.Length > length)
+                    {
+                        length = item.FullName.Length;
+                    }
                 }
             }
 

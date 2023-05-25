@@ -544,7 +544,7 @@ namespace SpecialtyManagement.Pages
                     paragraphStudents.LeftIndent = 0;
 
                     float[] widths = new float[3];
-                    tableStudents.Cell(1, 1).Range.Text = "а";
+                    tableStudents.Cell(1, 1).Range.Text = "а"; // Для корректной ширины столбцов задаётся текст минимальной длины.
                     tableStudents.Columns[1].AutoFit();
                     widths[0] = tableStudents.Columns[1].Width;
 
@@ -552,7 +552,7 @@ namespace SpecialtyManagement.Pages
                     tableStudents.Columns[2].AutoFit();
                     widths[1] = tableStudents.Columns[2].Width;
 
-                    tableStudents.Cell(1, 3).Range.Text = "Группа"; // Для корректной ширины столбцов задаётся текст минимальной длины.
+                    tableStudents.Cell(1, 3).Range.Text = "Группа"; // Для задания ширины столбца по максимальной длине контента.
                     tableStudents.Columns[3].AutoFit();
                     widths[2] = tableStudents.Columns[3].Width;
 
@@ -958,9 +958,19 @@ namespace SpecialtyManagement.Pages
             {
                 foreach (Teachers item in list)
                 {
-                    if (item.FullName.Length > length)
+                    if (list.Last() != item)
                     {
-                        length = item.FullName.Length;
+                        if (item.FullName.Length + 1 > length) // + 1 для учёта запятой.
+                        {
+                            length = item.FullName.Length;
+                        }
+                    }
+                    else
+                    {
+                        if (item.FullName.Length > length)
+                        {
+                            length = item.FullName.Length;
+                        }
                     }
                 }
             }

@@ -101,6 +101,6 @@
 
         <Button Grid.Row="3" Name="BtnBack" Content="Назад" HorizontalAlignment="Left" Margin="10" Click="BtnBack_Click"/>
         <Button Grid.Row="3" Grid.ColumnSpan="2" Name="BtnAdd" Content="Добавить дисциплину" Margin="10" Click="BtnAdd_Click"/>
-        <Button Grid.Row="3" Grid.Column="1" Name="BtnGenerate" Content="Сформировать документ" HorizontalAlignment="Right" Margin="10" Click="BtnGenerate_Click"/>
+        <Button Grid.Row="3" Grid.Column="1" Name="BtnGenerate" Content="Сформировать документы" HorizontalAlignment="Right" Margin="10" Click="BtnGenerate_Click"/>
     </Grid>
 </Page>

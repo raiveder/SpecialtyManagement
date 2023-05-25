@@ -258,7 +258,12 @@ namespace SpecialtyManagement.Pages
                 MessageBox.Show("Введите наименование дисциплины", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
-            else if (Database.Entities.Lessons.FirstOrDefault(x => x.IdType == (int)CBTypes.SelectedValue && x.Code == TBoxCode.Text) != null)
+            else if (_lesson == null && Database.Entities.Lessons.FirstOrDefault(x => x.IdType == (int)CBTypes.SelectedValue && x.Code == TBoxCode.Text) != null)
+            {
+                MessageBox.Show("Дисциплина с таким кодом уже есть в базе данных, для изменения списка преподавателей отредактируйте её", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            else if (_lesson != null && Database.Entities.Lessons.FirstOrDefault(x => x.Id != _lesson.Id && x.IdType == (int)CBTypes.SelectedValue && x.Code == TBoxCode.Text) != null)
             {
                 MessageBox.Show("Дисциплина с таким кодом уже есть в базе данных, для изменения списка преподавателей отредактируйте её", "Дисциплины", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;

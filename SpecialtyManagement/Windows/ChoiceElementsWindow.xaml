@@ -28,13 +28,19 @@
 
         <TextBlock Name="TBSelectedItems" Grid.Row="1" Margin="10 0 0 0"/>
         <ListView Grid.Row="1" Name="LVItems" Margin="10 30 10 0">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Border CornerRadius="{StaticResource CornerRadius}" Background="{StaticResource ColorSecondary}" Padding="10" Margin="5">
-                        <StackPanel Orientation="Horizontal">
+                        <Grid>
                             <TextBlock Text="{Binding ShortName}" Margin="0 0 2 0"/>
-                            <Button Name="BtnDelete" Content="✕" MinWidth="0" Padding="5 2" Click="BtnDelete_Click"/>
-                        </StackPanel>
+                            <Button Name="BtnDelete" Content="✕" MinWidth="0" HorizontalAlignment="Right" Padding="5 2" Click="BtnDelete_Click"/>
+                        </Grid>
                     </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>

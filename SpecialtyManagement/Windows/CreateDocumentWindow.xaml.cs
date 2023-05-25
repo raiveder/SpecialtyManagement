@@ -78,7 +78,7 @@ namespace SpecialtyManagement.Windows
         {
             if (_canClosing)
             {
-                Navigation.SPDimming.Visibility = Visibility.Visible;
+                Navigation.SPDimming.Visibility = Visibility.Collapsed;
             }
             else
             {

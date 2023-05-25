@@ -125,7 +125,8 @@ namespace SpecialtyManagement.Windows
                     _teachersSelectedTemp.Add(teacher);
                     _teachers.Remove(teacher);
 
-                    _teachersSelected.Sort((x, y) => x.FullName.ToLower().CompareTo(y.FullName.ToLower()));
+                    _teachers.Sort((x, y) => x.FullName.ToLower().CompareTo(y.FullName.ToLower()));
+                    _teachersSelectedTemp.Sort((x, y) => x.FullName.ToLower().CompareTo(y.FullName.ToLower()));
                     UpdateView(_teachersSelectedTemp, _teachers);
                 }
                 else if (_students != null)
@@ -134,7 +135,12 @@ namespace SpecialtyManagement.Windows
                     _studentsSelectedTemp.Add(student);
                     _students.Remove(student);
 
-                    _studentsSelected.Sort((x, y) => x.FullName.ToLower().CompareTo(y.FullName.ToLower()));
+                    _students.Sort((x, y) => x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()) == 0
+                    ? x.FullName.ToLower().CompareTo(y.FullName.ToLower())
+                    : x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()));
+                    _studentsSelectedTemp.Sort((x, y) => x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()) == 0
+                    ? x.FullName.ToLower().CompareTo(y.FullName.ToLower())
+                    : x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()));
                     UpdateView(_studentsSelectedTemp, _students);
                 }
             }
@@ -151,6 +157,7 @@ namespace SpecialtyManagement.Windows
                 _teachers.Add(teacher);
 
                 _teachers.Sort((x, y) => x.FullName.ToLower().CompareTo(y.FullName.ToLower()));
+                _teachersSelectedTemp.Sort((x, y) => x.FullName.ToLower().CompareTo(y.FullName.ToLower()));
                 UpdateView(_teachersSelectedTemp, _teachers);
             }
             else if (_students != null)
@@ -159,7 +166,12 @@ namespace SpecialtyManagement.Windows
                 _studentsSelectedTemp.Remove(student);
                 _students.Add(student);
 
-                _students.Sort((x, y) => x.FullName.ToLower().CompareTo(y.FullName.ToLower()));
+                _students.Sort((x, y) => x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()) == 0
+                    ? x.FullName.ToLower().CompareTo(y.FullName.ToLower())
+                    : x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()));
+                _studentsSelectedTemp.Sort((x, y) => x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()) == 0
+                ? x.FullName.ToLower().CompareTo(y.FullName.ToLower())
+                : x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()));
                 UpdateView(_studentsSelectedTemp, _students);
             }
         }
