@@ -70,6 +70,20 @@
                             </WrapPanel>
                         </StackPanel>
 
+                        <StackPanel Grid.Row="1" Grid.Column="1">
+                            <TextBlock Text="Состав комиссии" HorizontalAlignment="Center"/>
+                            <Grid Name="GridTeachers" Uid="{Binding SequenceNumber}" Margin="0 10" Loaded="GridTeachers_Loaded">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel HorizontalAlignment="Right" Margin="0 0 10 0"/>
+                                <StackPanel Grid.Column="1" HorizontalAlignment="Left" Margin="10 0 0 0"/>
+                                <StackPanel Grid.ColumnSpan="2" Visibility="Collapsed"/>
+                            </Grid>
+                            <Button Name="BtnChangeTeachers" Content="Изменить" Uid="{Binding SequenceNumber}" MinWidth="0" Padding="5" Click="BtnChangeTeachers_Click"/>
+                        </StackPanel>
+                        
                         <StackPanel Grid.Row="1" Grid.Column="2">
                             <TextBlock Text="Студенты" HorizontalAlignment="Center"/>
                             <Grid Name="GridStudents" Uid="{Binding SequenceNumber}" Margin="0 10" Loaded="GridStudents_Loaded">
@@ -81,18 +95,6 @@
                                 <StackPanel Grid.Column="1" HorizontalAlignment="Left" Margin="10 0 0 0"/>
                             </Grid>
                             <Button Name="BtnChangeStudents" Content="Изменить" Uid="{Binding SequenceNumber}" MinWidth="0" Padding="5" Click="BtnChangeStudents_Click"/>
-                        </StackPanel>
-                        <StackPanel Grid.Row="1" Grid.Column="1">
-                            <TextBlock Text="Состав комиссии" HorizontalAlignment="Center"/>
-                            <Grid Name="GridTeachers" Uid="{Binding SequenceNumber}" Margin="0 10" Loaded="GridTeachers_Loaded">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <StackPanel HorizontalAlignment="Right" Margin="0 0 10 0"/>
-                                <StackPanel Grid.Column="1" HorizontalAlignment="Left" Margin="10 0 0 0"/>
-                            </Grid>
-                            <Button Name="BtnChangeTeachers" Content="Изменить" Uid="{Binding SequenceNumber}" MinWidth="0" Padding="5" Click="BtnChangeTeachers_Click"/>
                         </StackPanel>
                     </Grid>
                 </DataTemplate>

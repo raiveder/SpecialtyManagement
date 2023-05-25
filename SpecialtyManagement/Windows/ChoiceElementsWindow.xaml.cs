@@ -35,6 +35,7 @@ namespace SpecialtyManagement.Windows
             _teachers.Sort((x, y) => x.FullName.ToLower().CompareTo(y.FullName.ToLower()));
             _teachersSelected.Sort((x, y) => x.FullName.ToLower().CompareTo(y.FullName.ToLower()));
 
+            LBItems.DisplayMemberPath = "FullName";
             UpdateView(_teachersSelected, _teachers);
         }
 
@@ -50,9 +51,14 @@ namespace SpecialtyManagement.Windows
             _studentsSelected = students;
             _studentsSelectedTemp.AddRange(_studentsSelected);
 
-            _students.Sort((x, y) => x.FullName.ToLower().CompareTo(y.FullName.ToLower()));
-            _studentsSelected.Sort((x, y) => x.FullName.ToLower().CompareTo(y.FullName.ToLower()));
+            _students.Sort((x, y) => x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()) == 0
+            ? x.FullName.ToLower().CompareTo(y.FullName.ToLower())
+            : x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()));
+            _studentsSelectedTemp.Sort((x, y) => x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()) == 0
+            ? x.FullName.ToLower().CompareTo(y.FullName.ToLower())
+            : x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()));
 
+            LBItems.DisplayMemberPath = "FullNameAndGroup";
             UpdateView(_studentsSelected, _students);
         }
 
@@ -87,7 +93,6 @@ namespace SpecialtyManagement.Windows
             }
 
             LBItems.SelectedValuePath = "Id";
-            LBItems.DisplayMemberPath = "FullName";
         }
 
         /// <summary>
@@ -167,8 +172,8 @@ namespace SpecialtyManagement.Windows
                 _students.Add(student);
 
                 _students.Sort((x, y) => x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()) == 0
-                    ? x.FullName.ToLower().CompareTo(y.FullName.ToLower())
-                    : x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()));
+                ? x.FullName.ToLower().CompareTo(y.FullName.ToLower())
+                : x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()));
                 _studentsSelectedTemp.Sort((x, y) => x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()) == 0
                 ? x.FullName.ToLower().CompareTo(y.FullName.ToLower())
                 : x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()));

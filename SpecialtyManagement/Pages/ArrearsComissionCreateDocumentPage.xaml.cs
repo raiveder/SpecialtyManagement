@@ -48,20 +48,13 @@ namespace SpecialtyManagement.Pages
         /// <param name="arrears">список задолженностей.</param>
         /// <param name="idType">тип задолженности.</param>
         /// <returns>Список всех дисциплин, по которым у студентов есть задолженности определённого типа.</returns>
-        private List<Lessons> GetAllLessonsForArrearsByType(List<Arrears> arrears, int? idType)
+        private List<Lessons> GetAllLessonsForArrearsByType(List<Arrears> arrears, int idType)
         {
             List<Lessons> lessons = new List<Lessons>();
 
             foreach (Arrears arrear in arrears)
             {
-                List<ArrearsLessons> arrearLessons = Database.Entities.ArrearsLessons.Where(x => x.IdArrear == arrear.Id).ToList();
-
-                if (idType != null)
-                {
-                    arrearLessons = arrearLessons.Where(x => x.IdType == idType).ToList();
-                }
-
-                foreach (ArrearsLessons item in arrearLessons)
+                foreach (ArrearsLessons item in Database.Entities.ArrearsLessons.Where(x => x.IdArrear == arrear.Id && x.IdType == idType))
                 {
                     if (!lessons.Contains(item.Lessons))
                     {
@@ -76,7 +69,7 @@ namespace SpecialtyManagement.Pages
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
             Lessons lesson = new Lessons();
-            ChoiceElementWindow window = new ChoiceElementWindow(lesson, "Выберите дисциплину", s_lessonsSource);
+            ChoiceElementWindow window = new ChoiceElementWindow(lesson, "Выберите дисциплину", RemoveLessonsWithZeroStudents());
             window.ShowDialog();
 
             if ((bool)window.DialogResult)
@@ -90,6 +83,24 @@ namespace SpecialtyManagement.Pages
 
                 UpdateListView();
             }
+        }
+
+        private List<Lessons> RemoveLessonsWithZeroStudents()
+        {
+            List<Lessons> lessons = new List<Lessons>();
+            lessons.AddRange(s_lessonsSource);
+
+            foreach (Lessons item in ListView.Items)
+            {
+                List<Students> students = GetStudentsForLessonWithoutAlreadyAdded(item);
+
+                if (students.Count == 0)
+                {
+                    lessons.Remove(s_lessonsSource.FirstOrDefault(x => x.Id == item.Id));
+                }
+            }
+
+            return lessons;
         }
 
         private void DPDate_Loaded(object sender, RoutedEventArgs e)
@@ -207,7 +218,7 @@ namespace SpecialtyManagement.Pages
                     {
                         panelFirst.Children.Add(new TextBlock()
                         {
-                            Text = s_students[index][i].ShortName,
+                            Text = s_students[index][i].ShortNameAndGroup,
                             Margin = new Thickness(0, 0, 0, 5)
                         });
                     }
@@ -215,7 +226,7 @@ namespace SpecialtyManagement.Pages
                     {
                         panelSecond.Children.Add(new TextBlock()
                         {
-                            Text = s_students[index][i].ShortName,
+                            Text = s_students[index][i].ShortNameAndGroup,
                             Margin = new Thickness(0, 0, 0, 5)
                         });
                     }
@@ -227,7 +238,7 @@ namespace SpecialtyManagement.Pages
                 {
                     panelFirst.Children.Add(new TextBlock()
                     {
-                        Text = s_students[index][i].ShortName,
+                        Text = s_students[index][i].ShortNameAndGroup,
                         Margin = new Thickness(0, 0, 0, 5)
                     });
                 }
@@ -250,23 +261,8 @@ namespace SpecialtyManagement.Pages
         private void BtnChangeStudents_Click(object sender, RoutedEventArgs e)
         {
             int index = Convert.ToInt32((sender as Button).Uid);
-            int idLesson = s_lessons[index].Id;
 
-            List<Lessons> lessonsEquals = s_lessons.Where(x => x.Id == idLesson).ToList();
-            List<Students> studentsSource = GetStudentsForLesson(s_arrears, s_lessons[index]);
-
-            for (int i = 0; i < lessonsEquals.Count; i++)
-            {
-                foreach (Students item in s_students[lessonsEquals[i].SequenceNumber])
-                {
-                    if (studentsSource.Contains(item))
-                    {
-                        studentsSource.Remove(item);
-                    }
-                }
-            }
-
-            ChoiceElementsWindow window = new ChoiceElementsWindow(s_students[index], "Выберите студентов", studentsSource);
+            ChoiceElementsWindow window = new ChoiceElementsWindow(s_students[index], "Выберите студентов", GetStudentsForLessonWithoutAlreadyAdded(s_lessons[index]));
             window.ShowDialog();
 
             if ((bool)window.DialogResult)
@@ -276,12 +272,36 @@ namespace SpecialtyManagement.Pages
         }
 
         /// <summary>
-        /// Получает список студентов, у которых есть задолженность по указанному предмету.
+        /// Получает список ещё не добавленных студентов, у которых есть задолженность по указанному предмету.
+        /// </summary>
+        /// <param name="lesson">дисциплина.</param>
+        /// <returns>Список студентов, у которых есть задолженность по указанному предмету.</returns>
+        private List<Students> GetStudentsForLessonWithoutAlreadyAdded(Lessons lesson)
+        {
+            List<Lessons> lessonsEquals = s_lessons.Where(x => x.Id == lesson.Id).ToList();
+            List<Students> students = GetAllStudentsForLesson(s_arrears, lesson);
+
+            for (int i = 0; i < lessonsEquals.Count; i++)
+            {
+                foreach (Students item in s_students[lessonsEquals[i].SequenceNumber])
+                {
+                    if (students.Contains(item))
+                    {
+                        students.Remove(item);
+                    }
+                }
+            }
+
+            return students;
+        }
+
+        /// <summary>
+        /// Получает список всех студентов, у которых есть задолженность по указанному предмету.
         /// </summary>
         /// <param name="arrears">список задолженностей.</param>
         /// <param name="lesson">дисциплина.</param>
         /// <returns>Список студентов, у которых есть задолженность по указанному предмету.</returns>
-        private List<Students> GetStudentsForLesson(List<Arrears> arrears, Lessons lesson)
+        private List<Students> GetAllStudentsForLesson(List<Arrears> arrears, Lessons lesson)
         {
             List<Students> students = new List<Students>();
 

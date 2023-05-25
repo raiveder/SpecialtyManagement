@@ -46,6 +46,18 @@ namespace SpecialtyManagement
             set { }
         }
 
+        public string FullNameAndGroup
+        {
+            get => FullName + " (" + Groups.Group + ")";
+            set { }
+        }
+
+        public string ShortNameAndGroup
+        {
+            get => ShortName + " (" + Groups.Group + ")";
+            set { }
+        }
+
         public SolidColorBrush BackgroundColor
         {
             get

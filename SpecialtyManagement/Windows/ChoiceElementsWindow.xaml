@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:SpecialtyManagement.Windows"
         mc:Ignorable="d"
         MinHeight="500" MaxHeight="800"
-        MinWidth="700" MaxWidth="850"
-        Title="Управление специальностью" Height="500" Width="750" WindowStartupLocation="CenterScreen" Icon="/Resources/Icon.ico" Closing="Window_Closing">
+        MinWidth="700" MaxWidth="1000"
+        Title="Управление специальностью" Height="500" Width="760" WindowStartupLocation="CenterScreen" Icon="/Resources/Icon.ico" Closing="Window_Closing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
@@ -15,7 +15,7 @@
             <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.8*"/>
+            <ColumnDefinition Width="0.8*" MaxWidth="350"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
@@ -38,7 +38,10 @@
                 <DataTemplate>
                     <Border CornerRadius="{StaticResource CornerRadius}" Background="{StaticResource ColorSecondary}" Padding="10" Margin="5">
                         <Grid>
-                            <TextBlock Text="{Binding ShortName}" Margin="0 0 2 0"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding ShortName}" Margin="0 0 5 0"/>
+                                <TextBlock Text="{Binding Groups.Group,StringFormat=({0})}"/>
+                            </StackPanel>
                             <Button Name="BtnDelete" Content="✕" MinWidth="0" HorizontalAlignment="Right" Padding="5 2" Click="BtnDelete_Click"/>
                         </Grid>
                     </Border>
