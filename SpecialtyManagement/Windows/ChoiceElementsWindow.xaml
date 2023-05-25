@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         MinHeight="500" MaxHeight="800"
         MinWidth="700" MaxWidth="850"
-        Title="Управление специальностью" Height="500" Width="750" WindowStartupLocation="CenterScreen" Icon="/Resources/Icon.ico">
+        Title="Управление специальностью" Height="500" Width="750" WindowStartupLocation="CenterScreen" Icon="/Resources/Icon.ico" Closing="Window_Closing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>

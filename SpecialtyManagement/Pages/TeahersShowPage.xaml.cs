@@ -127,6 +127,14 @@ namespace SpecialtyManagement.Pages
         {
             if (DGTeachers.SelectedItems.Count > 0)
             {
+                MIChange.Visibility = Visibility.Visible;
+                MIDelete.Visibility = Visibility.Visible;
+
+                if (DGTeachers.SelectedItems.Count > 1)
+                {
+                    MIChange.Visibility = Visibility.Collapsed;
+                }
+
                 CMTeachers.IsOpen = true;
             }
         }

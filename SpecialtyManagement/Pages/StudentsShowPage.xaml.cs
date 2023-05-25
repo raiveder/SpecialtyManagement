@@ -192,7 +192,9 @@ namespace SpecialtyManagement.Pages
                     Filter = "Все файлы|*.*|CSV|*.csv",
                     FilterIndex = 2
                 };
+                Navigation.SPDimming.Visibility = Visibility.Visible;
                 ofd.ShowDialog();
+                Navigation.SPDimming.Visibility = Visibility.Collapsed;
 
                 if (ofd.FileName.Length > 0)
                 {

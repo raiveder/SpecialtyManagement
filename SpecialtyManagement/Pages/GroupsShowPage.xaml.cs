@@ -22,7 +22,7 @@ namespace SpecialtyManagement.Pages
         /// <summary>
         /// Обновляет визуальное отображение списков.
         /// </summary>
-        private void UpdateView()
+        public void UpdateView()
         {
             List<Groups> groups = Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "1").ToList();
             groups.Sort((x, y) => x.Group.ToLower().CompareTo(y.Group.ToLower()));
@@ -43,18 +43,13 @@ namespace SpecialtyManagement.Pages
 
         private void MIChange_Click(object sender, RoutedEventArgs e)
         {
-            GroupAddWindow window = new GroupAddWindow((sender as MenuItem).DataContext as Groups);
+            GroupAddWindow window = new GroupAddWindow((sender as MenuItem).DataContext as Groups, this);
             window.ShowDialog();
-
-            if ((bool)window.DialogResult)
-            {
-                Navigation.Frame.Navigate(new GroupsShowPage());
-            }
         }
 
         private void MIDelete_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("При удалении группы удалится список её студентов. Вы действительно хотите удалить группу?", "Группы", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show("При удалении группы очистится список её студентов. Вы действительно хотите удалить группу?", "Группы", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
             {
@@ -76,13 +71,8 @@ namespace SpecialtyManagement.Pages
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
-            GroupAddWindow window = new GroupAddWindow();
+            GroupAddWindow window = new GroupAddWindow(this);
             window.ShowDialog();
-
-            if ((bool)window.DialogResult)
-            {
-                UpdateView();
-            }
         }
 
         private void MIAll_Click(object sender, RoutedEventArgs e)

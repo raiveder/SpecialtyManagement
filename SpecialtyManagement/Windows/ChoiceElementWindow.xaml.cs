@@ -12,15 +12,14 @@ namespace SpecialtyManagement.Windows
         private Groups _group;
         private Lessons _lesson;
         private Teachers _teacher;
+        private bool? _dialogResult = false;
 
         public string Text { get; private set; }
 
         public ChoiceElementWindow(Groups group, string text)
         {
-            InitializeComponent();
-            DataContext = this;
+            UploadPage(text);
 
-            Text = text;
             _group = group;
             TBName.Text = "Группа";
 
@@ -33,10 +32,8 @@ namespace SpecialtyManagement.Windows
 
         public ChoiceElementWindow(Teachers teacher, string text)
         {
-            InitializeComponent();
-            DataContext = this;
+            UploadPage(text);
 
-            Text = text;
             _teacher = teacher;
             TBName.Text = "Преподаватель";
 
@@ -49,10 +46,8 @@ namespace SpecialtyManagement.Windows
 
         public ChoiceElementWindow(Lessons lesson, string text, List<Lessons> lessonsSource)
         {
-            InitializeComponent();
-            DataContext = this;
+            UploadPage(text);
 
-            Text = text;
             _lesson = lesson;
             TBName.Text = "Дисциплина";
 
@@ -60,6 +55,18 @@ namespace SpecialtyManagement.Windows
             CBItems.ItemsSource = lessonsSource;
             CBItems.SelectedValuePath = "Id";
             CBItems.DisplayMemberPath = "FullName";
+        }
+
+        /// <summary>
+        /// Настраивает элементы управления окна.
+        /// </summary>
+        /// <param name="text">текст заголовка окна.</param>
+        private void UploadPage(string text)
+        {
+            InitializeComponent();
+            DataContext = this;
+            Text = text;
+            Navigation.SPDimming.Visibility = Visibility.Visible;
         }
 
         private void BtnAccept_Click(object sender, RoutedEventArgs e)
@@ -89,7 +96,8 @@ namespace SpecialtyManagement.Windows
                     _teacher.Patronymic = teacher.Patronymic;
                 }
 
-                DialogResult = true;
+                _dialogResult = true;
+                Close();
             }
             else
             {
@@ -106,6 +114,12 @@ namespace SpecialtyManagement.Windows
                     MessageBox.Show("Выберите преподавателя", "Выбор преподавателя", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            DialogResult = _dialogResult;
+            Navigation.SPDimming.Visibility = Visibility.Collapsed;
         }
     }
 }

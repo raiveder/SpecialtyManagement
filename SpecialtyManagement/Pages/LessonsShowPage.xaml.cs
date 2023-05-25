@@ -167,6 +167,14 @@ namespace SpecialtyManagement.Pages
         {
             if (DGLessons.SelectedItems.Count > 0)
             {
+                MIChange.Visibility = Visibility.Visible;
+                MIDelete.Visibility = Visibility.Visible;
+
+                if (DGLessons.SelectedItems.Count > 1)
+                {
+                    MIChange.Visibility = Visibility.Collapsed;
+                }
+
                 CMLessons.IsOpen = true;
             }
         }

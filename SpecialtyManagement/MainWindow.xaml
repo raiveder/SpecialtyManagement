@@ -42,5 +42,7 @@
         </Border>
 
         <Frame Grid.Row="1" Grid.Column="1" Name="MainFrame" NavigationUIVisibility="Hidden"/>
+
+        <StackPanel Name="SPDimming" Grid.RowSpan="2" Grid.ColumnSpan="2" Background="Gray" Opacity="0.3" Visibility="Collapsed"/>
     </Grid>
 </Window>

@@ -18,7 +18,9 @@ namespace SpecialtyManagement.Windows
         {
             InitializeComponent();
             _students = students;
+            Navigation.SPDimming.Visibility = Visibility.Visible;
         }
+
 
         private void BtnAccept_Click(object sender, RoutedEventArgs e)
         {
@@ -85,6 +87,7 @@ namespace SpecialtyManagement.Windows
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             DialogResult = _dialogResult;
+            Navigation.SPDimming.Visibility = Visibility.Collapsed;
         }
     }
 }

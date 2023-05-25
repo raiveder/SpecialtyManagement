@@ -9,9 +9,6 @@ namespace SpecialtyManagement.Windows
     /// </summary>
     public partial class ChoiceElementsWindow : Window
     {
-        //students.Sort((x, y) => x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()) == 0
-        //? x.FullName.ToLower().CompareTo(y.FullName.ToLower())
-        //: x.Groups.Group.ToLower().CompareTo(y.Groups.Group.ToLower()));
         private List<Teachers> _teachersSelectedTemp = new List<Teachers>();
         private List<Teachers> _teachersSelected;
         private List<Teachers> _teachers;
@@ -19,6 +16,7 @@ namespace SpecialtyManagement.Windows
         private List<Students> _studentsSelected;
         private List<Students> _students;
         private string _headerSelectedItems;
+        private bool? _dialogResult = false;
 
         public string Text { get; private set; }
 
@@ -36,6 +34,7 @@ namespace SpecialtyManagement.Windows
 
             _teachers.Sort((x, y) => x.FullName.ToLower().CompareTo(y.FullName.ToLower()));
             _teachersSelected.Sort((x, y) => x.FullName.ToLower().CompareTo(y.FullName.ToLower()));
+
             UpdateView(_teachersSelected, _teachers);
         }
 
@@ -53,6 +52,7 @@ namespace SpecialtyManagement.Windows
 
             _students.Sort((x, y) => x.FullName.ToLower().CompareTo(y.FullName.ToLower()));
             _studentsSelected.Sort((x, y) => x.FullName.ToLower().CompareTo(y.FullName.ToLower()));
+
             UpdateView(_studentsSelected, _students);
         }
 
@@ -67,6 +67,7 @@ namespace SpecialtyManagement.Windows
             InitializeComponent();
             DataContext = this;
             Text = text;
+            Navigation.SPDimming.Visibility = Visibility.Visible;
 
             if (itemsSelected.Count == 0)
             {
@@ -165,8 +166,6 @@ namespace SpecialtyManagement.Windows
 
         private void BtnAccept_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = true;
-
             if (_teachers != null)
             {
                 _teachersSelected.Clear();
@@ -177,6 +176,15 @@ namespace SpecialtyManagement.Windows
                 _studentsSelected.Clear();
                 _studentsSelected.AddRange(_studentsSelectedTemp);
             }
+
+            _dialogResult = true;
+            Close();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            DialogResult = _dialogResult;
+            Navigation.SPDimming.Visibility = Visibility.Collapsed;
         }
     }
 }

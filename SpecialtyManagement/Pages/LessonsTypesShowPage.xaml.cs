@@ -33,7 +33,7 @@ namespace SpecialtyManagement.Pages
         /// <summary>
         /// Устанавливает фильтр для вывода данных.
         /// </summary>
-        private void SetFilter()
+        public void SetFilter()
         {
             List<TypesLessons> types = Database.Entities.TypesLessons.ToList();
 
@@ -59,24 +59,14 @@ namespace SpecialtyManagement.Pages
 
         private void MIChange_Click(object sender, RoutedEventArgs e)
         {
-            LessonTypeAddWindow window = new LessonTypeAddWindow(DGTypesLessons.SelectedItem as TypesLessons);
+            LessonTypeAddWindow window = new LessonTypeAddWindow(DGTypesLessons.SelectedItem as TypesLessons, this);
             window.ShowDialog();
-
-            if ((bool)window.DialogResult)
-            {
-                SetFilter();
-            }
         }
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
-            LessonTypeAddWindow window = new LessonTypeAddWindow();
+            LessonTypeAddWindow window = new LessonTypeAddWindow(this);
             window.ShowDialog();
-
-            if ((bool)window.DialogResult)
-            {
-                SetFilter();
-            }
         }
 
         private void MIDelete_Click(object sender, RoutedEventArgs e)

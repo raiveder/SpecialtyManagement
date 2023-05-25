@@ -19,6 +19,7 @@ namespace SpecialtyManagement
     public class Navigation
     {
         public static Frame Frame;
+        public static StackPanel SPDimming;
         public static Setting Setting;
     }
 }

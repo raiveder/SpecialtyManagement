@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpecialtyManagement.Pages;
+using System;
 using System.Linq;
 using System.Windows;
 
@@ -10,23 +11,34 @@ namespace SpecialtyManagement.Windows
     public partial class GroupAddWindow : Window
     {
         private Groups _group;
-        private bool? _dialogResult;
+        private GroupsShowPage _page;
 
-        public GroupAddWindow()
+        public GroupAddWindow(GroupsShowPage page)
         {
-            InitializeComponent();
+            UploadPage(page);
         }
 
-        public GroupAddWindow(Groups group)
+        public GroupAddWindow(Groups group, GroupsShowPage page)
         {
-            InitializeComponent();
-
+            UploadPage(page);
             _group = group;
 
             TBHeader.Text = "Изменение группы";
             TBoxGroup.Text = _group.Group;
             BtnAdd.Content = "Сохранить";
         }
+
+        /// <summary>
+        /// Настраивает элементы управления окна.
+        /// </summary>
+        /// <param name="page">экземпляр страницы, из которой было вызвано данное окно.</param>
+        private void UploadPage(GroupsShowPage page)
+        {
+            InitializeComponent();
+            _page = page;
+            Navigation.SPDimming.Visibility = Visibility.Visible;
+        }
+
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
             if (CheckFillData())
@@ -50,7 +62,7 @@ namespace SpecialtyManagement.Windows
                 try
                 {
                     Database.Entities.SaveChanges();
-                    _dialogResult = true;
+                    _page.UpdateView();
 
                     if (isUpdate)
                     {
@@ -101,7 +113,7 @@ namespace SpecialtyManagement.Windows
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            DialogResult = _dialogResult;
+            Navigation.SPDimming.Visibility = Visibility.Collapsed;
         }
     }
 }

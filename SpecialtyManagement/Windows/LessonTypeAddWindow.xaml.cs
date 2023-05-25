@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpecialtyManagement.Pages;
+using System;
 using System.Linq;
 using System.Windows;
 
@@ -10,22 +11,32 @@ namespace SpecialtyManagement.Windows
     public partial class LessonTypeAddWindow : Window
     {
         private TypesLessons _typeLesson;
-        private bool? _dialogResult;
+        private LessonsTypesShowPage _page;
 
-        public LessonTypeAddWindow()
+        public LessonTypeAddWindow(LessonsTypesShowPage page)
         {
-            InitializeComponent();
+            UploadPage(page);
         }
 
-        public LessonTypeAddWindow(TypesLessons type)
+        public LessonTypeAddWindow(TypesLessons type, LessonsTypesShowPage page)
         {
-            InitializeComponent();
-
+            UploadPage(page);
             _typeLesson = type;
 
             TBHeader.Text = "Изменение типа дисциплины";
             TBoxType.Text = _typeLesson.Type;
             BtnAdd.Content = "Сохранить";
+        }
+
+        /// <summary>
+        /// Настраивает элементы управления окна.
+        /// </summary>
+        /// <param name="page">экземпляр страницы, из которой было вызвано данное окно.</param>
+        private void UploadPage(LessonsTypesShowPage page)
+        {
+            InitializeComponent();
+            _page = page;
+            Navigation.SPDimming.Visibility = Visibility.Visible;
         }
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
@@ -51,7 +62,7 @@ namespace SpecialtyManagement.Windows
                 try
                 {
                     Database.Entities.SaveChanges();
-                    _dialogResult = true;
+                    _page.SetFilter();
 
                     if (isUpdate)
                     {
@@ -107,7 +118,7 @@ namespace SpecialtyManagement.Windows
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            DialogResult = _dialogResult;
+            Navigation.SPDimming.Visibility = Visibility.Collapsed;
         }
     }
 }

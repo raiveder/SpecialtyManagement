@@ -20,7 +20,7 @@
             <TextBox Name="TBoxFind" Width="200" Height="{Binding ActualHeight, ElementName=CBSort}" VerticalAlignment="Center" TextChanged="TBoxFind_TextChanged"/>
         </StackPanel>
 
-        <DataGrid Grid.Row="1" Name="DGTeachers" Margin="10 0" ColumnWidth="*" MouseLeftButtonUp="DGTeachers_MouseLeftButtonUp" MouseRightButtonUp="DGTeachers_MouseRightButtonUp">
+        <DataGrid Grid.Row="1" Name="DGTeachers" Margin="10 0" ColumnWidth="*" CellStyle="{StaticResource DataGridTextCell}" MouseLeftButtonUp="DGTeachers_MouseLeftButtonUp" MouseRightButtonUp="DGTeachers_MouseRightButtonUp">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="№" Binding="{Binding SequenceNumber}" MinWidth="50" MaxWidth="50" ElementStyle="{StaticResource TextBlockAligmentCenter}"/>
                 <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}"/>

@@ -17,7 +17,7 @@ namespace SpecialtyManagement.Windows
 
         public CreateDocumentWindow()
         {
-            InitializeComponent();
+            UploadPage();
 
             TBHeader.Text = "Формирование документа";
             new Thread(CreateDocumentPrimaryArrears).Start();
@@ -25,12 +25,21 @@ namespace SpecialtyManagement.Windows
 
         public CreateDocumentWindow(string sender, string recipient)
         {
-            InitializeComponent();
+            UploadPage();
 
             TBHeader.Text = "Формирование документов";
             _sender = sender;
             _recipient = recipient;
             new Thread(CreateDocumentsComissionArrears).Start();
+        }
+
+        /// <summary>
+        /// Настраивает элементы управления окна.
+        /// </summary>
+        private void UploadPage()
+        {
+            InitializeComponent();
+            Navigation.SPDimming.Visibility = Visibility.Visible;
         }
 
         private async void CreateDocumentPrimaryArrears()
@@ -67,7 +76,11 @@ namespace SpecialtyManagement.Windows
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (!_canClosing)
+            if (_canClosing)
+            {
+                Navigation.SPDimming.Visibility = Visibility.Visible;
+            }
+            else
             {
                 e.Cancel = true;
             }

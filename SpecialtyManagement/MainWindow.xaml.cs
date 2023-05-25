@@ -43,6 +43,7 @@ namespace SpecialtyManagement
             }
 
             Navigation.Frame = MainFrame;
+            Navigation.SPDimming = SPDimming;
             Navigation.Setting = new Setting();
 
             if (Database.Entities.Specialty.FirstOrDefault() == null)
