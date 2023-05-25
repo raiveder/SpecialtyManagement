@@ -478,7 +478,7 @@ namespace SpecialtyManagement.Pages
             {
                 List<Groups> groups = Arrears.GetGroupsWithArrears(s_arrears, 1);
 
-                Word.Document document = new Word.Document();
+                Word.Document document = app.Documents.Add();
                 document.PageSetup.LeftMargin = app.CentimetersToPoints(1.25F);
                 document.PageSetup.TopMargin = app.CentimetersToPoints(0.5F);
                 document.PageSetup.RightMargin = app.CentimetersToPoints(0.75F);
@@ -782,8 +782,6 @@ namespace SpecialtyManagement.Pages
                     MessageBox.Show("При формировании документа возникла ошибка\nТекст ошибки: " + ex.Message, "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
-
-            app.Visible = true;
         }
 
         /// <summary>

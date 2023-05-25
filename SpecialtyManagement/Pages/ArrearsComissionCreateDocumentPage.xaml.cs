@@ -439,7 +439,7 @@ namespace SpecialtyManagement.Pages
         {
             try
             {
-                Word.Document document = new Word.Document();
+                Word.Document document = app.Documents.Add();
                 document.PageSetup.LeftMargin = app.CentimetersToPoints(1.25F);
                 document.PageSetup.TopMargin = app.CentimetersToPoints(0.5F);
                 document.PageSetup.RightMargin = app.CentimetersToPoints(0.75F);
@@ -627,7 +627,7 @@ namespace SpecialtyManagement.Pages
         {
             try
             {
-                Word.Document document = new Word.Document();
+                Word.Document document = app.Documents.Add();
                 document.PageSetup.LeftMargin = app.CentimetersToPoints(1.25F);
                 document.PageSetup.TopMargin = app.CentimetersToPoints(0.5F);
                 document.PageSetup.RightMargin = app.CentimetersToPoints(0.75F);
