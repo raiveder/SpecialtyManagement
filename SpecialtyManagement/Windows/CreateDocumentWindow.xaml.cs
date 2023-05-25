@@ -42,6 +42,9 @@ namespace SpecialtyManagement.Windows
             Navigation.SPDimming.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// Формирует документ о первичных задолженностях.
+        /// </summary>
         private async void CreateDocumentPrimaryArrears()
         {
             Word.Application app = new Word.Application
@@ -56,6 +59,9 @@ namespace SpecialtyManagement.Windows
             await Dispatcher.BeginInvoke(new ThreadStart(() => Close()));
         }
 
+        /// <summary>
+        /// Формирует документы для комиссионных задолженностей.
+        /// </summary>
         private async void CreateDocumentsComissionArrears()
         {
             Word.Application app = new Word.Application
@@ -73,7 +79,6 @@ namespace SpecialtyManagement.Windows
             _canClosing = true;
             await Dispatcher.BeginInvoke(new ThreadStart(() => Close()));
         }
-
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (_canClosing)
