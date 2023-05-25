@@ -679,7 +679,7 @@ namespace SpecialtyManagement.Pages
                     paragraphTeachers.FirstLineIndent = 0;
                     paragraphTeachers.RightIndent = 0;
                     paragraphTeachers.LeftIndent = 0;
-                    
+
                     tableTeachers.Cell(1, 1).Range.Text = new string('a', GetMaxLengthFullName(teachers, GetAllTeachersForGroupWithLessons(groups[i].Id, lessonsPM)));
                     tableTeachers.Cell(1, 2).Range.Text = new string('a', 18);
                     tableTeachers.Cell(1, 3).Range.Text = new string('a', 11);
@@ -773,11 +773,7 @@ namespace SpecialtyManagement.Pages
             }
             catch (Exception ex)
             {
-                if (ex.Message.ToLower().Contains("занято"))
-                {
-                    MessageBox.Show("Не изменяйте документ, пока он не будет сформирован", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-                else if (!ex.Message.ToLower().Contains("вызов был отклонен"))
+                if (!ex.Message.ToLower().Contains("rpc") && !ex.Message.ToLower().Contains("удален"))
                 {
                     MessageBox.Show("При формировании документа возникла ошибка\nТекст ошибки: " + ex.Message, "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }

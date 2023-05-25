@@ -609,11 +609,7 @@ namespace SpecialtyManagement.Pages
             }
             catch (Exception ex)
             {
-                if (ex.Message.ToLower().Contains("занято"))
-                {
-                    MessageBox.Show("Не изменяйте документ, пока он не будет сформирован", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-                else if (!ex.Message.ToLower().Contains("вызов был отклонен"))
+                if (!ex.Message.ToLower().Contains("rpc") && !ex.Message.ToLower().Contains("удален"))
                 {
                     MessageBox.Show("При формировании документа возникла ошибка\nТекст ошибки: " + ex.Message, "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
@@ -819,11 +815,7 @@ namespace SpecialtyManagement.Pages
             }
             catch (Exception ex)
             {
-                if (ex.Message.ToLower().Contains("занято"))
-                {
-                    MessageBox.Show("Не изменяйте документ, пока он не будет сформирован", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-                else if (!ex.Message.ToLower().Contains("вызов был отклонен"))
+                if (!ex.Message.ToLower().Contains("rpc") && !ex.Message.ToLower().Contains("удален"))
                 {
                     MessageBox.Show("При формировании документа возникла ошибка\nТекст ошибки: " + ex.Message, "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }

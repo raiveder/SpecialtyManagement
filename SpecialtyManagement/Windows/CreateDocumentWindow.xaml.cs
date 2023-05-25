@@ -11,7 +11,8 @@ namespace SpecialtyManagement.Windows
     /// </summary>
     public partial class CreateDocumentWindow : Window
     {
-        private bool _canClosing; // True, если окно может быть закрыто, в противном случае - false.
+        private Word.Application _applicationWord;
+        private bool _canClosingWord = true;
         private string _sender;
         private string _recipient;
 
@@ -47,15 +48,23 @@ namespace SpecialtyManagement.Windows
         /// </summary>
         private async void CreateDocumentPrimaryArrears()
         {
-            Word.Application app = new Word.Application
+            _applicationWord = new Word.Application
             {
                 Visible = false
             };
 
-            await Task.Run(() => ArrearsPrimaryCreateDocumentPage.CreateDocument(app));
-            app.Visible = true;
+            await Task.Run(() => ArrearsPrimaryCreateDocumentPage.CreateDocument(_applicationWord));
 
-            _canClosing = true;
+            try
+            {
+                _applicationWord.Visible = true;
+            }
+            catch
+            {
+                Thread.Sleep(50); // 50, так как раз в 50 мс. метод прервывания процесса
+            }                     // формирования документов опрашивает состояние _applicationWord.
+
+            _canClosingWord = false;
             await Dispatcher.BeginInvoke(new ThreadStart(() => Close()));
         }
 
@@ -64,32 +73,59 @@ namespace SpecialtyManagement.Windows
         /// </summary>
         private async void CreateDocumentsComissionArrears()
         {
-            Word.Application app = new Word.Application
+            _applicationWord = new Word.Application
             {
                 Visible = false
             };
 
-            Task shedule = Task.Run(() => ArrearsComissionCreateDocumentPage.CreateDocumentShedule(app));
-            Task memo = Task.Run(() => ArrearsComissionCreateDocumentPage.CreateDocumentMemo(app, _sender, _recipient));
+            Task shedule = Task.Run(() => ArrearsComissionCreateDocumentPage.CreateDocumentShedule(_applicationWord));
+            Task memo = Task.Run(() => ArrearsComissionCreateDocumentPage.CreateDocumentMemo(_applicationWord, _sender, _recipient));
 
             await shedule;
             await memo;
-            app.Visible = true;
 
-            _canClosing = true;
+            try
+            {
+                _applicationWord.Visible = true;
+            }
+            catch
+            {
+                Thread.Sleep(50); // 50, так как раз в 50 мс. метод прервывания процесса
+            }                     // формирования документов опрашивает состояние _applicationWord.
+
+            _canClosingWord = false;
             await Dispatcher.BeginInvoke(new ThreadStart(() => Close()));
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (_canClosing)
+            if (_canClosingWord)
             {
-                Navigation.SPDimming.Visibility = Visibility.Collapsed;
+                for (int i = 0; i < 100; i++)
+                {
+                    if (_applicationWord != null)
+                    {
+                        object saveOption = Word.WdSaveOptions.wdDoNotSaveChanges;
+                        object originalFormat = Word.WdOriginalFormat.wdOriginalDocumentFormat;
+                        object routeDocument = false;
+
+                        foreach (Word.Document item in _applicationWord.Documents)
+                        {
+                            item.Close(ref saveOption, ref originalFormat, ref routeDocument);
+                        }
+
+                        _applicationWord.DisplayAlerts = Word.WdAlertLevel.wdAlertsNone;
+                        _applicationWord.Quit();
+                        break;
+                    }
+                    else
+                    {
+                        Thread.Sleep(50);
+                    }
+                }
             }
-            else
-            {
-                e.Cancel = true;
-            }
+
+            Navigation.SPDimming.Visibility = Visibility.Collapsed;
         }
     }
 }
