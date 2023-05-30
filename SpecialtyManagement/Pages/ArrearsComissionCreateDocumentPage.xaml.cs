@@ -658,9 +658,9 @@ namespace SpecialtyManagement.Pages
                                 audiences[i].Add(s_audiences[index]);
                                 foreach (Teachers teacher in s_teachers[index])
                                 {
-                                    if (!teachers[i][lessons[i].IndexOf(lessons[i].Last())].Contains(teacher))
+                                    if (!teachers[i][lessons[i].LastIndexOf(lessons[i].Last())].Contains(teacher))
                                     {
-                                        teachers[i][lessons[i].IndexOf(lessons[i].Last())].Add(teacher);
+                                        teachers[i][lessons[i].LastIndexOf(lessons[i].Last())].Add(teacher);
                                     }
                                 }
                             }
