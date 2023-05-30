@@ -33,6 +33,7 @@ namespace SpecialtyManagement.Pages
     /// </summary>
     public partial class ArrearsPrimaryCreateDocumentPage : Page
     {
+
         private const int IdTypeArrear = 1; // Id первичной задолженности.
         private Filter _filter;
         private static int s_idPM; // Id типа дисциплины ПМ.
@@ -103,7 +104,7 @@ namespace SpecialtyManagement.Pages
                             if (!IsTeacherContains(teachers))
                             {
                                 s_teachers.Add(teachers);
-                                s_typesLessons.Add(lessonsPM[i].ShortName);
+                                s_typesLessons.Add(lessonsPM[i].ShortName + $" ({arrear.Students.Groups.Group})");
                                 s_lessons.Add(lessonsPM[i]);
                                 s_lessonsAndGroups.Add(new LessonAndGroup(s_lessons.Count - 1, lessonsPM[i], arrear.Students.Groups));
                                 s_dates.Add(string.Empty);
@@ -273,7 +274,7 @@ namespace SpecialtyManagement.Pages
             {
                 while (true)
                 {
-                    ChoiceElementsWindow window = new ChoiceElementsWindow(teachers, lesson.FullName + " (" + group.Group + ")", Database.Entities.Teachers.ToList());
+                    ChoiceElementsWindow window = new ChoiceElementsWindow(teachers, lesson.FullName + $" ({group.Group})", Database.Entities.Teachers.ToList());
                     window.ShowDialog();
 
                     if ((bool)window.DialogResult)
@@ -288,7 +289,7 @@ namespace SpecialtyManagement.Pages
                 teachers.Add(new Teachers());
                 while (true)
                 {
-                    ChoiceElementWindow window = new ChoiceElementWindow(teachers[0], lesson.FullName + " (" + group.Group + ")");
+                    ChoiceElementWindow window = new ChoiceElementWindow(teachers[0], lesson.FullName + $" ({group.Group})");
                     window.ShowDialog();
 
                     if ((bool)window.DialogResult)
