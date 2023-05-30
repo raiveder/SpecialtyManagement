@@ -134,17 +134,41 @@ namespace SpecialtyManagement.Pages
         /// </summary>
         private void UpdateListView()
         {
+            SortTeachersByGroups(_lessons, _groups);
             List<Lessons> tempLessons = new List<Lessons>();
-            int indexNumber = 0;
-
-            foreach (Lessons item in _lessons)
-            {
-                item.SequenceNumber = indexNumber++;
-                tempLessons.Add(item);
-            }
+            tempLessons.AddRange(_lessons);
 
             _indexGroup = 0;
             LVLessons.ItemsSource = tempLessons;
+        }
+
+        /// <summary>
+        /// Сортирует список дисциплин по группам.
+        /// </summary>
+        /// <param name="lessons">дисциплины.</param>
+        /// <param name="groups">группы.</param>
+        private void SortTeachersByGroups(List<Lessons> lessons, List<Groups> groups)
+        {
+            List<Lessons> tempLessons = new List<Lessons>();
+            List<Groups> tempGroups = new List<Groups>();
+            tempLessons.AddRange(lessons);
+            tempGroups.AddRange(groups);
+            lessons.Clear();
+            groups.Clear();
+
+            Dictionary<int, string> teachersWithKey = new Dictionary<int, string>();
+            for (int i = 0; i < tempLessons.Count; i++)
+            {
+                teachersWithKey.Add(i, $"{tempGroups[i].Group} {tempLessons[i].ShortName}");
+            }
+
+            teachersWithKey = teachersWithKey.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+
+            foreach (var item in teachersWithKey)
+            {
+                lessons.Add(tempLessons[item.Key]);
+                groups.Add(tempGroups[item.Key]);
+            }
         }
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)

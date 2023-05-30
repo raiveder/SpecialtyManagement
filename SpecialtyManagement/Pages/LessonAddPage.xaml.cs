@@ -76,12 +76,15 @@ namespace SpecialtyManagement.Pages
                 foreach (DistributionLessons item in Database.Entities.DistributionLessons
                     .Where(x => x.Lessons.TypesLessons.Type != "ОП" && x.Lessons.Code.Substring(0, 2) == TBoxCode.Text))
                 {
-                    _teachers.Add(item.Teachers);
-                    _groups.Add(item.Groups);
-
-                    if (!isAdded)
+                    if (!IsTeacherContains(item.Teachers, item.Groups))
                     {
-                        isAdded = true;
+                        _teachers.Add(item.Teachers);
+                        _groups.Add(item.Groups);
+
+                        if (!isAdded)
+                        {
+                            isAdded = true;
+                        }
                     }
                 }
 
@@ -91,6 +94,25 @@ namespace SpecialtyManagement.Pages
                     UpdateListView();
                 }
             }
+        }
+
+        /// <summary>
+        /// Проверяет наличие преподавателя в списке добавленных (с учётом группы).
+        /// </summary>
+        /// <param name="teacher">преподаватель.</param>
+        /// <param name="group">группа.</param>
+        /// <returns>True, если совпадение найдено, в противном случае - false.</returns>
+        private bool IsTeacherContains(Teachers teacher, Groups group)
+        {
+            for (int i = 0; i < _teachers.Count; i++)
+            {
+                if (_teachers[i].FullName == teacher.FullName && _groups[i].Id == group.Id)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void LBTeachers_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -105,17 +127,7 @@ namespace SpecialtyManagement.Pages
 
                 if ((bool)window.DialogResult)
                 {
-                    bool checkContains = false;
-                    for (int i = 0; i < _teachers.Count; i++)
-                    {
-                        if (_teachers[i].FullName == teacher.FullName && _groups[i].Id == group.Id)
-                        {
-                            checkContains = true;
-                            break;
-                        }
-                    }
-
-                    if (!checkContains)
+                    if (!IsTeacherContains(teacher, group))
                     {
                         _teachers.Add(teacher);
                         _groups.Add(group);
@@ -164,11 +176,41 @@ namespace SpecialtyManagement.Pages
         /// </summary>
         private void UpdateListView()
         {
+            SortTeachersByGroups(_teachers, _groups);
             List<Teachers> tempTeachers = new List<Teachers>();
             tempTeachers.AddRange(_teachers);
 
             _indexGroup = 0;
             LVTeachers.ItemsSource = tempTeachers;
+        }
+
+        /// <summary>
+        /// Сортирует список преподавателей по группам.
+        /// </summary>
+        /// <param name="teachers">преподаватели.</param>
+        /// <param name="groups">группы.</param>
+        private void SortTeachersByGroups(List<Teachers> teachers, List<Groups> groups)
+        {
+            List<Teachers> tempTeachers = new List<Teachers>();
+            List<Groups> tempGroups = new List<Groups>();
+            tempTeachers.AddRange(teachers);
+            tempGroups.AddRange(groups);
+            teachers.Clear();
+            groups.Clear();
+
+            Dictionary<int, string> teachersWithKey = new Dictionary<int, string>();
+            for (int i = 0; i < tempTeachers.Count; i++)
+            {
+                teachersWithKey.Add(i, $"{tempGroups[i].Group} {tempTeachers[i].ShortName}");
+            }
+
+            teachersWithKey = teachersWithKey.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+
+            foreach (var item in teachersWithKey)
+            {
+                teachers.Add(tempTeachers[item.Key]);
+                groups.Add(tempGroups[item.Key]);
+            }
         }
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)

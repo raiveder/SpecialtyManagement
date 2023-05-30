@@ -33,7 +33,6 @@ namespace SpecialtyManagement.Pages
     /// </summary>
     public partial class ArrearsPrimaryCreateDocumentPage : Page
     {
-
         private const int IdTypeArrear = 1; // Id первичной задолженности.
         private Filter _filter;
         private static int s_idPM; // Id типа дисциплины ПМ.
@@ -120,6 +119,7 @@ namespace SpecialtyManagement.Pages
                 }
             }
 
+            SortListsByTeachers();
             ListView.ItemsSource = s_teachers;
         }
 
@@ -378,6 +378,58 @@ namespace SpecialtyManagement.Pages
             }
         }
 
+        /// <summary>
+        /// Сортирует списки по преподавателям.
+        /// </summary>
+        private void SortListsByTeachers()
+        {
+            List<List<Teachers>> tempTeachers = new List<List<Teachers>>();
+            List<Lessons> tempLessons = new List<Lessons>();
+            List<LessonAndGroup> tempLessonsAndGroups = new List<LessonAndGroup>();
+            List<string> tempTypesLessons = new List<string>();
+
+            tempTeachers.AddRange(s_teachers);
+            tempLessons.AddRange(s_lessons);
+            tempLessonsAndGroups.AddRange(s_lessonsAndGroups);
+            tempTypesLessons.AddRange(s_typesLessons);
+
+            s_teachers.Clear();
+            s_lessons.Clear();
+            s_lessonsAndGroups.Clear();
+            s_typesLessons.Clear();
+
+            List<Lessons> lessonsPM = new List<Lessons>();
+            List<int> lessonsPMIndexes = new List<int>();
+            Dictionary<int, string> teachersWithKey = new Dictionary<int, string>();
+            for (int i = 0; i < tempLessons.Count; i++)
+            {
+                if (tempLessons[i].IdType == s_idPM)
+                {
+                    lessonsPM.Add(tempLessons[i]);
+                    lessonsPMIndexes.Add(i);
+                }
+                else
+                {
+                    teachersWithKey.Add(i, tempTeachers[i][0].ShortName);
+                }
+            }
+
+            teachersWithKey = teachersWithKey.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+            for (int i = 0; i < lessonsPM.Count; i++)
+            {
+                teachersWithKey.Add(lessonsPMIndexes[i], lessonsPM[i].ShortName);
+            }
+
+            int number = 0;
+            foreach (var item in teachersWithKey)
+            {
+                s_teachers.Add(tempTeachers[item.Key]);
+                s_lessons.Add(tempLessons[item.Key]);
+                s_lessonsAndGroups.Add(new LessonAndGroup(number++, tempLessonsAndGroups[item.Key].Lesson, tempLessonsAndGroups[item.Key].Group));
+                s_typesLessons.Add(tempTypesLessons[item.Key]);
+            }
+        }
+
         private void TBTypeLessons_Loaded(object sender, RoutedEventArgs e)
         {
             TextBlock tb = sender as TextBlock;
@@ -432,17 +484,7 @@ namespace SpecialtyManagement.Pages
         private void DPDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             DatePicker datePicker = sender as DatePicker;
-            DateTime date = datePicker.SelectedDate.Value;
-
-            if (date.DayOfWeek == DayOfWeek.Sunday)
-            {
-                MessageBox.Show("Дата назначения пересдачи не может быть в воскресенье", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
-                datePicker.IsDropDownOpen = true;
-            }
-            else
-            {
-                s_dates[GetIndexTeacher(datePicker.DataContext as List<Teachers>)] = date.ToString("d");
-            }
+            s_dates[GetIndexTeacher(datePicker.DataContext as List<Teachers>)] = datePicker.SelectedDate.Value.ToString("d");
         }
 
         private void TBoxTime_GotKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
@@ -518,6 +560,7 @@ namespace SpecialtyManagement.Pages
                         }
                     }
                     Arrears.DeleteArrearsNotMatchByType(arrears, 1);
+                    arrears.Sort((x, y) => x.Students.FullName.CompareTo(y.Students.FullName));
 
                     Word.Paragraph paragraphHeader = document.Paragraphs.Add();
                     Word.Range rangeHeader = paragraphHeader.Range;
@@ -805,7 +848,7 @@ namespace SpecialtyManagement.Pages
         /// <summary>
         /// Возвращает список всех преподавателей, которые ведут указанные дисциплины в указанной группе.
         /// </summary>
-        /// <param name="idGroup">группа.</param>
+        /// <param name="group">группа.</param>
         /// <param name="lessons">дисциплины.</param>
         /// <returns>Список преподавателей, которые ведут указанные дисциплины в указанной группе.</returns>
         private static List<Teachers> GetAllTeachersForGroupWithLessons(Groups group, List<Lessons> lessons)
@@ -820,7 +863,7 @@ namespace SpecialtyManagement.Pages
                 }
             }
 
-            return teachers;
+            return teachers.OrderBy(x => x.FullName).ToList();
         }
 
         /// <summary>
@@ -842,7 +885,7 @@ namespace SpecialtyManagement.Pages
                 }
             }
 
-            return lessons;
+            return lessons.OrderBy(x => x.FullName).ToList();
         }
 
         /// <summary>
@@ -954,7 +997,7 @@ namespace SpecialtyManagement.Pages
         {
             string result = string.Empty;
 
-            foreach (Teachers item in teachers)
+            foreach (Teachers item in teachers.OrderBy(x => x.FullName))
             {
                 result += item.FullName + ",\n";
             }
@@ -1002,21 +1045,6 @@ namespace SpecialtyManagement.Pages
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
             Navigation.Frame.Navigate(new ArrearsShowPage(_filter));
-        }
-
-        private void DPDate_CalendarClosed(object sender, RoutedEventArgs e)
-        {
-            DatePicker datePicker = sender as DatePicker;
-            DateTime date = datePicker.SelectedDate.Value;
-
-            if (date.DayOfWeek == DayOfWeek.Sunday)
-            {
-                MessageBox.Show("Дата назначения пересдачи не может быть в воскресенье", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-            else
-            {
-                s_dates[GetIndexTeacher(datePicker.DataContext as List<Teachers>)] = date.ToString("d");
-            }
         }
     }
 }

@@ -758,7 +758,7 @@ namespace SpecialtyManagement.Pages
                     widths[1] = tableArrears.Columns[2].Width;
 
                     tableArrears.AutoFitBehavior(Word.WdAutoFitBehavior.wdAutoFitWindow);
-                    Thread.Sleep(100);
+                    Thread.Sleep(150);
                     tableArrears.Columns[1].SetWidth(widths[0], Word.WdRulerStyle.wdAdjustProportional);
                     tableArrears.Columns[2].SetWidth(widths[1], Word.WdRulerStyle.wdAdjustProportional);
 
@@ -832,27 +832,29 @@ namespace SpecialtyManagement.Pages
 
             if (students.Count > 0)
             {
-                List<Groups> tempListGroups = new List<Groups>();
+                List<Groups> groups = new List<Groups>();
 
                 foreach (Students item in students)
                 {
-                    if (!tempListGroups.Contains(item.Groups))
+                    if (!groups.Contains(item.Groups))
                     {
-                        tempListGroups.Add(item.Groups);
-                        groupsString += item.Groups.Group + ", ";
+                        groups.Add(item.Groups);
                     }
                 }
 
-                if (tempListGroups.Count == 1)
+                if (groups.Count == 1)
                 {
-                    groupsString = "группы " + groupsString;
+                    groupsString = "группы " + students[0].Groups.Group;
                 }
                 else
                 {
+                    foreach (Groups item in groups.OrderBy(x => x.Group))
+                    {
+                        groupsString += item.Group + ", ";
+                    }
+                    groupsString = groupsString.Substring(0, groupsString.Length - 2);
                     groupsString = "групп " + groupsString;
                 }
-
-                groupsString = groupsString.Substring(0, groupsString.Length - 2);
             }
 
             return groupsString;

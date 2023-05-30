@@ -150,7 +150,7 @@ namespace SpecialtyManagement
                 lessons.Add(item.Lessons);
             }
 
-            return lessons;
+            return lessons.OrderBy(x => x.FullName).ToList();
         }
     }
 }
