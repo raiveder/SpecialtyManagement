@@ -670,7 +670,6 @@ namespace SpecialtyManagement.Pages
 
                 for (int i = 0; i < students.Count; i++)
                 {
-
                     Word.Paragraph paragraphHeader = document.Paragraphs.Add();
                     Word.Range rangeHeader = paragraphHeader.Range;
                     rangeHeader.Text = "Индивидуальный график ликвидации";
