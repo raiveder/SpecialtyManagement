@@ -577,7 +577,7 @@ namespace SpecialtyManagement.Pages
                     widths[2] = tableStudents.Columns[3].Width;
 
                     tableStudents.AutoFitBehavior(Word.WdAutoFitBehavior.wdAutoFitWindow);
-                    Thread.Sleep(100);
+                    Thread.Sleep(150);
                     tableStudents.Columns[1].SetWidth(widths[0], Word.WdRulerStyle.wdAdjustProportional);
                     tableStudents.Columns[2].SetWidth(widths[1], Word.WdRulerStyle.wdAdjustProportional);
                     tableStudents.Columns[3].SetWidth(widths[2], Word.WdRulerStyle.wdAdjustProportional);
@@ -697,7 +697,7 @@ namespace SpecialtyManagement.Pages
                     rangeHeader = paragraphHeader.Range;
                     rangeHeader.Text = "(комиссионные пересдачи)";
                     rangeHeader.Font.Name = "Times New Roman";
-                    rangeHeader.Font.Size = 14;
+                    rangeHeader.Font.Size = 12;
                     rangeHeader.Bold = 1;
                     rangeHeader.InsertParagraphAfter();
 
@@ -705,7 +705,7 @@ namespace SpecialtyManagement.Pages
                     Word.Range rangeTitle = paragraphTitle.Range;
                     rangeTitle.Text = $"Специальность: {Database.Entities.Specialty.FirstOrDefault().FullName}";
                     rangeTitle.Font.Name = "Times New Roman";
-                    rangeTitle.Font.Size = 14;
+                    rangeTitle.Font.Size = 12;
                     rangeTitle.Bold = 0;
                     rangeTitle.Words[1].Bold = 1;
                     rangeTitle.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
@@ -718,13 +718,16 @@ namespace SpecialtyManagement.Pages
                     rangeTitle.Font.Size = 14;
                     rangeTitle.Bold = 0;
                     rangeTitle.Words[1].Bold = 1;
+                    rangeTitle.Words[2].Bold = 1;
+                    rangeTitle.Words[1].Font.Size = 12;
+                    rangeTitle.Words[2].Font.Size = 12;
                     rangeTitle.InsertParagraphAfter();
 
                     paragraphTitle = document.Paragraphs.Add();
                     rangeTitle = paragraphTitle.Range;
                     rangeTitle.Text = $"Группа: {students[i].Groups.Group}";
                     rangeTitle.Font.Name = "Times New Roman";
-                    rangeTitle.Font.Size = 14;
+                    rangeTitle.Font.Size = 12;
                     rangeTitle.Bold = 0;
                     rangeTitle.Words[1].Bold = 1;
                     paragraphTitle.SpaceAfter = 18;

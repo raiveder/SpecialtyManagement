@@ -62,6 +62,21 @@
                     <MenuItem Name="MIDelete" Header="Удалить" Click="MIDelete_Click"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="Background" Value="{Binding BackgroundColor}"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource ColorSecondary}"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="{StaticResource ColorSecondary}"/>
+                            <Setter Property="Foreground" Value="Black"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
         </DataGrid>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center">

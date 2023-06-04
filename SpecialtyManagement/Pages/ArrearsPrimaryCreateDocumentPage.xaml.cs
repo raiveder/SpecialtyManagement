@@ -658,7 +658,7 @@ namespace SpecialtyManagement.Pages
                         widths[j - 1] = tableStudents.Columns[j].Width;
                     };
                     tableStudents.AutoFitBehavior(Word.WdAutoFitBehavior.wdAutoFitWindow);
-                    Thread.Sleep(100);
+                    Thread.Sleep(150);
                     tableStudents.Columns[1].SetWidth(widths[0], Word.WdRulerStyle.wdAdjustProportional);
                     tableStudents.Columns[3].SetWidth(widths[2], Word.WdRulerStyle.wdAdjustProportional);
                     float tempWidth = tableStudents.Columns[5].Width;
@@ -757,7 +757,7 @@ namespace SpecialtyManagement.Pages
                         widths[j - 1] = tableTeachers.Columns[j].Width;
                     };
                     tableTeachers.AutoFitBehavior(Word.WdAutoFitBehavior.wdAutoFitWindow);
-                    Thread.Sleep(100);
+                    Thread.Sleep(150);
                     tableTeachers.Columns[1].SetWidth(widths[0], Word.WdRulerStyle.wdAdjustProportional);
                     tableTeachers.Columns[3].SetWidth(widths[2], Word.WdRulerStyle.wdAdjustProportional);
                     tempWidth = tableTeachers.Columns[4].Width;
