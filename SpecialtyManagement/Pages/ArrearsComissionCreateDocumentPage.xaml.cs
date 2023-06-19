@@ -3,16 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Contexts;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media.TextFormatting;
-using System.Windows.Shapes;
-using static System.Net.Mime.MediaTypeNames;
 using Word = Microsoft.Office.Interop.Word;
 
 namespace SpecialtyManagement.Pages
@@ -22,7 +17,7 @@ namespace SpecialtyManagement.Pages
     /// </summary>
     public partial class ArrearsComissionCreateDocumentPage : Page
     {
-        private string _path = Environment.CurrentDirectory + "\\Memo.txt"; // Путь к файлу с информацией об отправителе и получателе служебной записки.
+        private string _path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\SpecialtyManagement\\Memo.txt"; // Путь к файлу с информацией об отправителе и получателе служебной записки.
         private const int IdTypeArrear = 2; // Id комиссионной задолженности.
         private Filter _filter;
         private static List<Arrears> s_arrears; // Список задолженностей.
@@ -426,6 +421,11 @@ namespace SpecialtyManagement.Pages
 
         private void BtnGenerate_Click(object sender, RoutedEventArgs e)
         {
+            if (!Directory.Exists(_path.Substring(0, _path.Length - 9)))
+            {
+                Directory.CreateDirectory(_path.Substring(0, _path.Length - 9));
+            }
+
             if (TBoxSender.Text.Length > 0 && TBoxRecipient.Text.Length > 0)
             {
                 File.WriteAllText(_path, TBoxSender.Text + "\n" + TBoxRecipient.Text);
