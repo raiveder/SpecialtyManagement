@@ -1,12 +1,18 @@
 ﻿using SpecialtyManagement.Windows;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.TextFormatting;
+using System.Windows.Shapes;
+using static System.Net.Mime.MediaTypeNames;
 using Word = Microsoft.Office.Interop.Word;
 
 namespace SpecialtyManagement.Pages
@@ -16,6 +22,7 @@ namespace SpecialtyManagement.Pages
     /// </summary>
     public partial class ArrearsComissionCreateDocumentPage : Page
     {
+        private string _path = Environment.CurrentDirectory + "\\Memo.txt"; // Путь к файлу с информацией об отправителе и получателе служебной записки.
         private const int IdTypeArrear = 2; // Id комиссионной задолженности.
         private Filter _filter;
         private static List<Arrears> s_arrears; // Список задолженностей.
@@ -40,6 +47,8 @@ namespace SpecialtyManagement.Pages
             s_dates = new List<DateTime>();
             s_times = new List<string>();
             s_audiences = new List<string>();
+
+            SetSenderAndRecipient();
         }
 
         /// <summary>
@@ -64,6 +73,32 @@ namespace SpecialtyManagement.Pages
             }
 
             return lessons;
+        }
+
+        /// <summary>
+        /// Устанавливает отправителя и получателя служебной записки.
+        /// </summary>
+        private void SetSenderAndRecipient()
+        {
+            string[] memo = new string[0];
+
+            if (File.Exists(_path))
+            {
+                using (StreamReader reader = new StreamReader(_path))
+                {
+                    while (!reader.EndOfStream)
+                    {
+                        Array.Resize(ref memo, memo.Length + 1);
+                        memo[memo.Length - 1] = reader.ReadLine();
+                    }
+                }
+
+                if (memo.Length == 2)
+                {
+                    TBoxSender.Text = memo[0];
+                    TBoxRecipient.Text = memo[1];
+                }
+            }
         }
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
@@ -391,6 +426,11 @@ namespace SpecialtyManagement.Pages
 
         private void BtnGenerate_Click(object sender, RoutedEventArgs e)
         {
+            if (TBoxSender.Text.Length > 0 && TBoxRecipient.Text.Length > 0)
+            {
+                File.WriteAllText(_path, TBoxSender.Text + "\n" + TBoxRecipient.Text);
+            }
+
             if (CheckFillData())
             {
                 new CreateDocumentWindow(TBoxSender.Text, TBoxRecipient.Text).ShowDialog();

@@ -14,14 +14,14 @@ namespace SpecialtyManagement
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<Button> _buttonsMenu; // Список кнопок навигации в меню.
+        private static List<Button> s_buttonsMenu; // Список кнопок навигации в меню.
 
         public MainWindow()
         {
             InitializeComponent();
 
-            _buttonsMenu = SPMenu.Children.OfType<Button>().ToList();
-            _buttonsMenu.Add(BtnSettings);
+            s_buttonsMenu = SPMenu.Children.OfType<Button>().ToList();
+            s_buttonsMenu.Add(BtnSettings);
 
             if (!Database.CreateEntities(out string message))
             {
@@ -48,13 +48,13 @@ namespace SpecialtyManagement
 
             if (Database.Entities.Specialty.FirstOrDefault() == null)
             {
-                Navigation.Frame.Navigate(new SettingsPage());
-                SelectButton(_buttonsMenu[_buttonsMenu.Count - 1]);
+                Navigation.Frame.Navigate(new SettingsPage(s_buttonsMenu));
+                SelectButton(s_buttonsMenu.Last());
             }
             else
             {
                 Navigation.Frame.Navigate(new StudentsShowPage());
-                SelectButton(_buttonsMenu[0]);
+                SelectButton(s_buttonsMenu[0]);
             }
 
             DataContext = Navigation.Setting;
@@ -93,16 +93,16 @@ namespace SpecialtyManagement
         private void BtnSettings_Click(object sender, RoutedEventArgs e)
         {
             SelectButton((Button)sender);
-            Navigation.Frame.Navigate(new SettingsPage());
+            Navigation.Frame.Navigate(new SettingsPage(s_buttonsMenu));
         }
 
         /// <summary>
         /// Выделяет кнопку на фоне остальных.
         /// </summary>
         /// <param name="currentButton">выбранная кнопка.</param>
-        private void SelectButton(Button currentButton)
+        public static void SelectButton(Button currentButton)
         {
-            foreach (Button item in _buttonsMenu)
+            foreach (Button item in s_buttonsMenu)
             {
                 item.Background = ApplicationColor.ColorSecondary;
                 item.Foreground = Brushes.Black;

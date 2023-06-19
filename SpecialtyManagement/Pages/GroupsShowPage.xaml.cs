@@ -139,12 +139,17 @@ namespace SpecialtyManagement.Pages
                     Database.Entities.Groups.RemoveRange(Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "3" && x.Students.Count == 0).ToList());
                     Database.Entities.SaveChanges();
 
-                    UpdateView();
-
                     if (Database.Entities.Students.FirstOrDefault(x => x.Groups.Group.Substring(0, 1) == "1") != null)
                     {
                         Navigation.Frame.Navigate(new GroupChoiceForOffsetPage());
+                        return;
                     }
+
+                    // Удаление лишних групп 2-го курса.
+                    Database.Entities.Groups.RemoveRange(Database.Entities.Groups.Where(x => x.Group.Substring(0, 1) == "2" && x.Students.Count == 0).ToList());
+                    Database.Entities.SaveChanges();
+
+                    UpdateView();
 
                 }
                 catch (Exception ex)

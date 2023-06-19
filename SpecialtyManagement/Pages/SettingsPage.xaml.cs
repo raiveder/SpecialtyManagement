@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -12,10 +13,12 @@ namespace SpecialtyManagement.Pages
     public partial class SettingsPage : Page
     {
         private Specialty _specialty = Database.Entities.Specialty.FirstOrDefault();
+        List<Button> _buttonsMenu;
 
-        public SettingsPage()
+        public SettingsPage(List<Button> buttons)
         {
             InitializeComponent();
+            _buttonsMenu = buttons;
 
             if (_specialty != null)
             {
@@ -45,7 +48,8 @@ namespace SpecialtyManagement.Pages
                 {
                     Database.Entities.SaveChanges();
                     Navigation.Setting.UpdateSettings();
-                    MessageBox.Show("Данные успешно обновлены", "Настройки", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Navigation.Frame.Navigate(new StudentsShowPage());
+                    MainWindow.SelectButton(_buttonsMenu[0]);
                 }
                 catch (Exception ex)
                 {

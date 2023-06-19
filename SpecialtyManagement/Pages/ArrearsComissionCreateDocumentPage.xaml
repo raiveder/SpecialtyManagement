@@ -27,12 +27,12 @@
         </TextBlock>
 
         <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="От кого" Margin="0 0 0 5"/>
+            <TextBlock Text="От кого (зав. отделением)" Margin="0 0 0 5"/>
             <TextBox Name="TBoxSender" Width="200"/>
         </StackPanel>
 
         <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="Кому" Margin="0 0 0 5"/>
+            <TextBlock Text="Кому (зам. руководителя по подготовке специалистов)" Width="260" TextWrapping="Wrap" Margin="0 0 0 5"/>
             <TextBox Name="TBoxRecipient" Width="200"/>
         </StackPanel>
 
