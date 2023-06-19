@@ -337,7 +337,7 @@ namespace SpecialtyManagement.Pages
 
             foreach (Arrears item in arrears)
             {
-                ArrearsLessons arrearLesson = Database.Entities.ArrearsLessons.FirstOrDefault(x => x.Arrears.Id == item.Id && x.IdLesson == lesson.Id);
+                ArrearsLessons arrearLesson = Database.Entities.ArrearsLessons.FirstOrDefault(x => x.Arrears.Id == item.Id && x.IdLesson == lesson.Id && x.IdType == IdTypeArrear);
 
                 if (arrearLesson != null && !students.Contains(arrearLesson.Arrears.Students))
                 {

@@ -141,7 +141,7 @@ namespace SpecialtyManagement
 
             if (idType != null)
             {
-                arrearLessons = arrearLessons.Where(x => x.IdType == idType).ToList();
+                arrearLessons = arrearLessons.Where(x => x.IdType == idType && x.IsLiquidated == false).ToList();
             }
 
             List<Lessons> lessons = new List<Lessons>();

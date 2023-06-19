@@ -319,7 +319,7 @@ namespace SpecialtyManagement.Pages
                     List<Arrears> arrears = new List<Arrears>();
                     foreach (Arrears item in DGArrears.Items)
                     {
-                        if (!item.Students.IsExpelled)
+                        if (!item.Students.IsExpelled && !IsAllArrearsLiquidated(item, 1))
                         {
                             arrears.Add(item);
                         }
@@ -332,7 +332,7 @@ namespace SpecialtyManagement.Pages
                     }
                     else
                     {
-                        MessageBox.Show("В списке отсутствуют первичные задолженности, которые имеются у неотчисленных студентов", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        MessageBox.Show("В списке отсутствуют неликвидированные первичные задолженности, которые имеются у неотчисленных студентов", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
                 }
                 else
@@ -349,7 +349,7 @@ namespace SpecialtyManagement.Pages
                 List<Arrears> arrears = new List<Arrears>();
                 foreach (Arrears item in DGArrears.Items)
                 {
-                    if (!item.Students.IsExpelled)
+                    if (!item.Students.IsExpelled && !IsAllArrearsLiquidated(item, 2))
                     {
                         arrears.Add(item);
                     }
@@ -362,9 +362,29 @@ namespace SpecialtyManagement.Pages
                 }
                 else
                 {
-                    MessageBox.Show("В списке отсутствуют комисионные задолженности, которые имеются у неотчисленных студентов", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("В списке отсутствуют неликвидированные комисионные задолженности, которые имеются у неотчисленных студентов", "Задолженности", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
+        }
+
+        /// <summary>
+        /// Проверяет, есть ли среди задолженностей неликвидированные.
+        /// </summary>
+        /// <param name="arrear">задолженность.</param>
+        /// <param name="idTypeArrear">индекс типа задолженности.</param>
+        /// <returns>True, если все задолженности ликвидированы, в противном случае - false.</returns>
+        private bool IsAllArrearsLiquidated(Arrears arrear, int idTypeArrear)
+        {
+            int countArrears = 0;
+            foreach (ArrearsLessons item in Database.Entities.ArrearsLessons.Where(x => x.IdArrear == arrear.Id && x.IdType == idTypeArrear))
+            {
+                if (item.IsLiquidated)
+                {
+                    countArrears++;
+                }
+            }
+
+            return countArrears == Database.Entities.ArrearsLessons.Where(x => x.IdArrear == arrear.Id && x.IdType == idTypeArrear).Count();
         }
 
         /// <summary>
