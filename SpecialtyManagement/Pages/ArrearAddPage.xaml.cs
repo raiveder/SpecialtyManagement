@@ -13,7 +13,7 @@ namespace SpecialtyManagement.Pages
     {
         private Filter _filter;
         private Arrears _arrear;
-        private List<Lessons> _lessons = new List<Lessons>();    // Список дисциплин, которые ведутся у студента.
+        private List<Lessons> _lessons = new List<Lessons>();    // Список дисциплин, которые ведутся у группы студента.
         private List<Lessons> _lessonsSelected = new List<Lessons>();    // Список дисциплин, по которым у студента есть задолженности.
         private List<bool> _isPrimaryArrears = new List<bool>(); // Список типов задолженностей (true - первичная, false - комиссионная).
         private List<bool> _isLiquidated = new List<bool>();     // Список статусов задолженностей (true - ликвидирована, false - нет).
@@ -53,6 +53,11 @@ namespace SpecialtyManagement.Pages
                 _isPrimaryArrears.Add(item.IdType == 1);
                 _isLiquidated.Add(item.IsLiquidated);
                 _isGoodReason.Add(item.IsGoodReason);
+
+                if (_lessonsSelected.Contains(item.Lessons))
+                {
+                    _lessons.Remove(item.Lessons);
+                }
             }
 
             UpdateView(_lessonsSelected, _lessons);
