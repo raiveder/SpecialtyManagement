@@ -7,7 +7,6 @@
       mc:Ignorable="d" 
       d:DesignHeight="730" d:DesignWidth="960"
       Title="ArrearAddPage">
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
@@ -27,7 +26,7 @@
             <ComboBox Name="CBGroups" Width="{Binding ActualWidth, ElementName=CBStudents}" HorizontalAlignment="Left" Margin="0 0 0 20" SelectionChanged="CBGroups_SelectionChanged"/>
             <TextBlock Text="Студент" Margin="0 0 0 5"/>
             <ComboBox Name="CBStudents" MinWidth="300" MaxWidth="400" HorizontalAlignment="Left" Margin="0 0 0 20"/>
-            <RadioButton  Name="RBLastSemester" Content="Прошлый семестр" Height="{Binding ActualHeight, ElementName=CBStudents}" VerticalContentAlignment="Center" Margin="0 0 0 0"/>
+            <RadioButton Name="RBLastSemester" Content="Прошлый семестр" Height="{Binding ActualHeight, ElementName=CBStudents}" VerticalContentAlignment="Center" Margin="0 0 0 0"/>
             <RadioButton Name="RBCurrentSemester" Content="Текущий семестр" Height="{Binding ActualHeight, ElementName=CBStudents}" VerticalContentAlignment="Center"/>
         </StackPanel>
 
