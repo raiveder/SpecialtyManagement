@@ -41,7 +41,10 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
+                        <Border Name="Border"
+                                BorderThickness="1"
+                                BorderBrush="{StaticResource ColorSecondary}"
+                                Background="{TemplateBinding Background}"
                                 CornerRadius="{StaticResource CornerRadius}"
                                 Padding="{TemplateBinding Padding}"
                                 HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
@@ -53,7 +56,13 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="{StaticResource ColorAccent}"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource ColorAccent}"/>
                                 <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{StaticResource ColorPrimary}"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="Black"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -562,6 +571,8 @@
                                 </Border.Style>
                             </Border>
                             <Border x:Name="BtnBorder"
+                                    BorderThickness="1"
+                                    BorderBrush="{TemplateBinding Background}"
                                     Background="{TemplateBinding Background}"
                                     CornerRadius="{StaticResource CornerRadius}"
                                     Padding="10"
@@ -575,7 +586,13 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="BtnBorder" Property="Background" Value="{StaticResource ColorAccent}"/>
+                                <Setter TargetName="BtnBorder" Property="BorderBrush" Value="{StaticResource ColorAccent}"/>
                                 <Setter TargetName="BtnContentControl" Property="Foreground" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="BtnBorder" Property="Background" Value="{StaticResource ColorPrimary}"/>
+                                <Setter TargetName="BtnContentControl" Property="Foreground" Value="Black"/>
+                                <Setter TargetName="BtnBorder" Property="BorderBrush" Value="Black"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -638,7 +655,10 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="MenuItem">
-                        <Border Background="{TemplateBinding Background}"
+                        <Border Name="Border"
+                                BorderThickness="1"
+                                BorderBrush="{StaticResource ColorPrimary}"
+                                Background="{TemplateBinding Background}"
                                 Padding="10"
                                 SnapsToDevicePixels="true">
                             <ContentPresenter ContentSource="Header"
@@ -648,6 +668,12 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsHighlighted" Value="True">
                                 <Setter Property="Background" Value="{StaticResource ColorSecondary}"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource ColorSecondary}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{StaticResource ColorAccent}"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource ColorPrimary}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>

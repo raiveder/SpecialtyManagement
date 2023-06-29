@@ -79,7 +79,7 @@ namespace SpecialtyManagement.Pages
         {
             if (Database.Entities.Groups.FirstOrDefault() == null)
             {
-                MessageBox.Show("Отсутствуют группы для смещения", "Группы", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                MessageBox.Show("Отсутствуют группы для смещения", "Группы", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -154,7 +154,7 @@ namespace SpecialtyManagement.Pages
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("При осуществлении смещения групп возникла ошибка\nТекст ошибки: " + ex.Message, "Группы", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    MessageBox.Show("При осуществлении смещения групп возникла ошибка\nТекст ошибки: " + ex.Message, "Группы", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
         }
